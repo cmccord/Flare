@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btnButton1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="button 1" />
+
+    <Button
+        android:id="@+id/btnButton2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="button 2" />
+    <Button
+        android:id="@+id/btnButton3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="button 3" />
+
+    <TableLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/duration"
+                android:id="@+id/textView"
+                android:layout_column="0" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/seekBarDuration"
+                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
+                android:layout_column="1" />
+        </TableRow>
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/frequency"
+                android:id="@+id/textView2"
+                android:layout_column="0" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/seekBarFrequency"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_column="1" />
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/shareButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/share"
+        android:textColor="#fff"
+        android:padding="15dp"
+        android:fontFamily="sans-serif-thin"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:background="@drawable/button_red"
+        android:layout_gravity="center"/>
+
+
+</LinearLayout>

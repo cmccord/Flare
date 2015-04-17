@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Flare</string>
+    <string name="title_activity_maps">Flare</string>
+    <string name="hourglass">⌛</string>
+    <string name="watch">\u231A</string>
+    <string name="X">x</string>
+    <string name="menu">\u2261</string>
+    <string name="circle">o</string>
+    <string name="share">Share Location</string>
+    <string name="duration">Duration</string>
+    <string name="frequency">Frequency</string>
+    <string-array
+        name="leftmenu">
+        <item>Share Location</item>
+        <item>Circles</item>
+        <item>Drop Pin</item>
+    </string-array>
+    <string-array
+        name="rightmenu">
+        <item>Edit Profile</item>
+        <item>Add Friends</item>
+    </string-array>
+</resources>
