@@ -22,4 +22,8 @@
         <item>Edit Profile</item>
         <item>Add Friends</item>
     </string-array>
+    <string name="title_activity_edit_profile">editProfileActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>
