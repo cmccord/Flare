@@ -3,6 +3,7 @@ package sunglass.com.loco;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
@@ -423,13 +424,20 @@ public class MapsActivity extends FragmentActivity {
         mLeftDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, mMenuStrings));
         // Set the list's click listener
-        mLeftDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mLeftDrawerList.setOnItemClickListener(new LeftDrawerItemClickListener());
     }
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+    private class LeftDrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
-            selectItem(position);
+            selectLeftItem(position);
+        }
+    }
+
+    private class RightDrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView parent, View view, int position, long id) {
+            selectRightItem(position);
         }
     }
 
@@ -442,11 +450,11 @@ public class MapsActivity extends FragmentActivity {
         mRightDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, mMenuStrings));
         // Set the list's click listener
-        mRightDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mRightDrawerList.setOnItemClickListener(new RightDrawerItemClickListener());
     }
 
     /** Swaps fragments in the main content view */
-    private void selectItem(int position) {
+    private void selectLeftItem(int position) {
         // Create a new fragment and specify the planet to show based on position
 //        Fragment fragment = new PlanetFragment();
 //        Bundle args = new Bundle();
@@ -463,6 +471,36 @@ public class MapsActivity extends FragmentActivity {
         mLeftDrawerList.setItemChecked(position, true);
         setTitle(mMenuStrings[position]);
         mLeftDrawer.closeDrawer(mLeftDrawerList);
+        Intent i;
+        switch(position){
+            case 0:
+                i = new Intent(this, ShareActivity.class);
+                startActivity(i);
+                break;
+        }
+    }
+
+    private void selectRightItem(int position) {
+        // Create a new fragment and specify the planet to show based on position
+//        Fragment fragment = new PlanetFragment();
+//        Bundle args = new Bundle();
+//        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
+//        fragment.setArguments(args);
+//
+//        // Insert the fragment by replacing any existing fragment
+//        FragmentManager fragmentManager = getFragmentManager();
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.content_frame, fragment)
+//                .commit();
+
+        // Highlight the selected item, update the title, and close the drawer
+        mRightDrawerList.setItemChecked(position, true);
+        setTitle(mMenuStrings[position]);
+        mRightDrawer.closeDrawer(mRightDrawerList);
+        Intent i;
+        switch(position){
+
+        }
     }
 
     @Override

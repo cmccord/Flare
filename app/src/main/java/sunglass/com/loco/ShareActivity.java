@@ -23,6 +23,8 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -54,7 +56,35 @@ public class ShareActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
-
-
+        SeekBar durationBar = (SeekBar) findViewById(R.id.seekBarDuration);
+        SeekBar frequencyBar = (SeekBar) findViewById(R.id.seekBarFrequency);
+        durationBar.setOnSeekBarChangeListener(new durationBarListener());
+        frequencyBar.setOnSeekBarChangeListener(new frequencyBarListener());
     }
+
+    private class durationBarListener implements SeekBar.OnSeekBarChangeListener {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            TextView durationSetting = (TextView) findViewById(R.id.durationSetting);
+            durationSetting.setText(progress + 1 + " m");
+        }
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar){}
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar){}
+    }
+
+    private class frequencyBarListener implements SeekBar.OnSeekBarChangeListener {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            TextView durationSetting = (TextView) findViewById(R.id.frequencySetting);
+            durationSetting.setText(progress + 1 + " /s");
+        }
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar){}
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar){}
+    }
+
+
 }
