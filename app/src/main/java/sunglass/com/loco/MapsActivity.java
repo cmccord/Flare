@@ -91,7 +91,7 @@ public class MapsActivity extends FragmentActivity {
         Log.v("GPS", "initializing GPS");
         setUpGPS();
         setUpLeftDrawer();
-        setUpRightDrawer();
+//        setUpRightDrawer();
         setUpFactory();
         Firebase.setAndroidContext(this);
         mFirebaseRef = new Firebase("https://loco-android.firebaseio.com/");
