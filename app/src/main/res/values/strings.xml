@@ -8,7 +8,7 @@
     <string name="backarrow">\u2190</string>
     <string name="selectfriends">Select Friends</string>
     <string name="editprofile">Edit Profile</string>
-    <string name="editprofilepic">Edit Profile Picture</string>
+    <string name="editprofilepic">Select New Profile Picture</string>
     <string name="displayname">Display Name</string>
     <string name="username">Username</string>
     <string name="password">Password</string>

@@ -65,8 +65,7 @@ public class ShareActivity extends FragmentActivity {
         backButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
-                        Intent i = new Intent(v.getContext(), MapsActivity.class);
-                        startActivity(i);
+                        finish();
                     }
                 }
         );

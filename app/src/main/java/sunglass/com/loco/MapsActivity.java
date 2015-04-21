@@ -105,7 +105,9 @@ public class MapsActivity extends FragmentActivity {
         {
             public void onClick(View v)
             {
-                updateLocation();
+                //updateLocation();
+                Intent i = new Intent(MapsActivity.this, ShareActivity.class);
+                startActivity(i);
             }
         });
 
@@ -499,7 +501,10 @@ public class MapsActivity extends FragmentActivity {
         mRightDrawer.closeDrawer(mRightDrawerList);
         Intent i;
         switch(position){
-
+            case 0:
+                i = new Intent(this, editProfileActivity.class);
+                startActivity(i);
+                break;
         }
     }
 
