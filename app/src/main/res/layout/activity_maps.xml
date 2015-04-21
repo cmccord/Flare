@@ -46,7 +46,7 @@
                 android:id="@+id/rightButton"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:text="@string/menu"
+                android:text="@string/pencil"
                 android:textColor="#fff"
                 android:padding="15dp"
                 android:fontFamily="sans-serif-thin"
@@ -54,6 +54,7 @@
                 android:textSize="40sp"
                 android:background="@drawable/button_red"
                 android:layout_gravity="left"/>
+
         </LinearLayout>
         <FrameLayout
             android:layout_width="fill_parent"

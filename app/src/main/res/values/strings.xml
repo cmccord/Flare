@@ -15,6 +15,7 @@
     <string name="addFriends">Type Names or Circles</string>
     <string name="X">x</string>
     <string name="menu">\u2261</string>
+    <string name="pencil">\u270E</string>
     <string name="circle">o</string>
     <string name="share">Share Location</string>
     <string name="duration">Duration</string>
@@ -23,6 +24,7 @@
         name="leftmenu">
         <item>Share Location</item>
         <item>Circles</item>
+        <item>Add Friends</item>
         <item>Drop Pin</item>
     </string-array>
     <string-array

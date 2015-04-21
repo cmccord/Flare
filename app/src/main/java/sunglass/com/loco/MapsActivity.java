@@ -119,14 +119,24 @@ public class MapsActivity extends FragmentActivity {
                     }
                 }
         );
+//        mRightButton = (Button) findViewById(R.id.rightButton);
+//        mRightButton.setOnClickListener(
+//                new Button.OnClickListener() {
+//                    public void onClick(View v) {
+//                        mRightDrawer.openDrawer(mRightDrawerList);
+//                    }
+//                }
+//        );
         mRightButton = (Button) findViewById(R.id.rightButton);
-        mRightButton.setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View v) {
-                        mRightDrawer.openDrawer(mRightDrawerList);
-                    }
-                }
-        );
+        mRightButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                //updateLocation();
+                Intent i = new Intent(MapsActivity.this, editProfileActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     private void updateLocation() {
@@ -345,7 +355,6 @@ public class MapsActivity extends FragmentActivity {
         setUpMapIfNeeded();
         return mMap;
     }
-
 
     private boolean setUpGPS() {
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
