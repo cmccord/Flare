@@ -3,12 +3,45 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnButton1"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="button 1" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="@string/backarrow"
+            android:textColor="#fff"
+            android:padding="15dp"
+            android:fontFamily="sans-serif-thin"
+            android:textStyle="bold"
+            android:textSize="34sp"
+            android:background="@drawable/button_red"
+            android:layout_gravity="left"/>
+        <Button
+            android:id="@+id/selectFriendsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/selectfriends"
+            android:textColor="#fff"
+            android:padding="15dp"
+            android:fontFamily="sans-serif-thin"
+            android:textStyle="bold"
+            android:textSize="34sp"
+            android:background="@drawable/button_red"
+            android:layout_gravity="right"/>
+
+    </LinearLayout>
+
+    <MultiAutoCompleteTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/addFriends"
+        android:id="@+id/addFriends"
+        android:layout_gravity="center_horizontal" />
 
     <Button
         android:id="@+id/btnButton2"

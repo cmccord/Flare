@@ -3,6 +3,7 @@ package sunglass.com.loco;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
@@ -60,6 +61,16 @@ public class ShareActivity extends FragmentActivity {
         SeekBar frequencyBar = (SeekBar) findViewById(R.id.seekBarFrequency);
         durationBar.setOnSeekBarChangeListener(new durationBarListener());
         frequencyBar.setOnSeekBarChangeListener(new frequencyBarListener());
+        Button backButton = (Button) findViewById(R.id.backButton);
+        backButton.setOnClickListener(
+                new Button.OnClickListener() {
+                    public void onClick(View v) {
+                        Intent i = new Intent(v.getContext(), MapsActivity.class);
+                        startActivity(i);
+                    }
+                }
+        );
+
     }
 
     private class durationBarListener implements SeekBar.OnSeekBarChangeListener {
