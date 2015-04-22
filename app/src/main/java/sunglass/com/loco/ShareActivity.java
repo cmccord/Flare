@@ -84,11 +84,13 @@ public class ShareActivity extends FragmentActivity {
         mt.setAdapter(adp);
 
         Button shareLocation = (Button) findViewById(R.id.shareButton);
+        final Application app = (Application) this.getApplication();
         shareLocation.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
             {
-                //MapsActivity.class.updateLocation();
+                app.updateLocation();
+                finish();
             }
         });
 

@@ -63,7 +63,6 @@ public class MapsActivity extends FragmentActivity {
     private String mImei;
     private boolean mIsNew = true;
     private String mInputText;
-    private IconGenerator mIconFactory;
     private String[] mMenuStrings;
     private DrawerLayout mLeftDrawer, mRightDrawer;
     private ListView mLeftDrawerList, mRightDrawerList;
@@ -86,24 +85,24 @@ public class MapsActivity extends FragmentActivity {
 
 //        mImei += System.currentTimeMillis() / 1000*60;
         // for now!
-        mUserID = mImei;
+        Application app = (Application) this.getApplication();
+        app.setmUserID(mImei);
         setUpMapIfNeeded();
         Log.v("GPS", "initializing GPS");
-        setUpGPS();
+        app.setUpGPS();
         setUpLeftDrawer();
-        setUpFactory();
-        ((Application) this.getApplication()).setUpFirebase();
-        mMarkers = new HashMap<String, Marker>();
+        app.setUpFactory();
+        app.setUpFirebase();
+        app.setUpMarkers();
 
 //        trackCircles();
-        //trackAll();
+        app.trackAll();
         mPingButton = (Button) findViewById(R.id.topButton);
 //        mPingButton.setLayoutParams(new LinearLayout.LayoutParams(mPingButton.getMeasuredHeight(), mPingButton.getMeasuredHeight()));
         mPingButton.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
             {
-                //updateLocation();
                 Intent i = new Intent(MapsActivity.this, ShareActivity.class);
                 startActivity(i);
             }
@@ -210,6 +209,7 @@ public class MapsActivity extends FragmentActivity {
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
+                ((Application) this.getApplication()).setmMap(mMap);
             }
         }
     }
@@ -228,47 +228,6 @@ public class MapsActivity extends FragmentActivity {
     protected GoogleMap getMap() {
         setUpMapIfNeeded();
         return mMap;
-    }
-
-    private boolean setUpGPS() {
-        mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-        mCriteria = new Criteria();
-        mCriteria.setAccuracy(Criteria.ACCURACY_FINE);
-        Log.v("LocationNews", mCriteria.toString());
-
-        mProvider = mLocationManager.getBestProvider(mCriteria, true);
-        Log.v("LocationNews", mProvider);
-
-        boolean isEnabled = mLocationManager.isProviderEnabled(mProvider);
-        Log.v("LocationNews", String.valueOf(isEnabled));
-
-
-        if (isEnabled) {
-            // Define a listener that responds to location updates
-            mLocationListener = new LocationListener() {
-                public void onLocationChanged(Location location) {
-                    // Called when a new location is found by the network location provider.
-                    Log.v("LocationNews", location.getLatitude() + " " + location.getLongitude());
-                    mLocation = location;
-                }
-
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-                }
-
-                public void onProviderEnabled(String provider) {
-                }
-
-                public void onProviderDisabled(String provider) {
-                }
-            };
-
-            // Register the listener with the Location Manager to receive location updates
-            mLocationManager.requestLocationUpdates(mProvider, 0, 1, mLocationListener);
-            return true;
-        }
-        else
-            return false;
     }
 
     private void zoomToCoverAllMarkers()
@@ -291,13 +250,6 @@ public class MapsActivity extends FragmentActivity {
 //        mMap.moveCamera(cu);
             mMap.animateCamera(cu);
         }
-    }
-    private void setUpFactory() {
-        mIconFactory = new IconGenerator(this);
-        mIconFactory.setStyle(IconGenerator.STYLE_GREEN);
-        mIconFactory.setRotation(90);
-        mIconFactory.setContentRotation(-90);
-        mIconFactory.setTextAppearance(R.style.marker);
     }
 
     private void setUpLeftDrawer() {
