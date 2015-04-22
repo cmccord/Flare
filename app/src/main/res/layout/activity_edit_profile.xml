@@ -90,4 +90,23 @@
         android:imeOptions="actionDone"
         android:layout_gravity="center_horizontal" />
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/logout"
+        android:textColor="#fff"
+        android:padding="15dp"
+        android:fontFamily="sans-serif-thin"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_red" />
+
+    </RelativeLayout>
+
 </LinearLayout>

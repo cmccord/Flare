@@ -16,11 +16,13 @@
     <string name="X">x</string>
     <string name="menu">\u2261</string>
     <string name="pencil">\u270E</string>
-    <string name="person">\u26F9</string>
+    <string name="person">\u26C4</string>
+    <!--<string name="person">\u26F9</string>-->
     <string name="circle">o</string>
     <string name="share">Share Location</string>
     <string name="duration">Duration</string>
     <string name="frequency">Frequency</string>
+    <string name="logout">Logout</string>
     <string-array
         name="leftmenu">
         <item>Share Location</item>

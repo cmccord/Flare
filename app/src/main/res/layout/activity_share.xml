@@ -41,8 +41,9 @@
         android:layout_height="wrap_content"
         android:hint="@string/addFriends"
         android:id="@+id/addFriends"
-        android:imeOptions="actionDone"
+        android:imeActionLabel="Done"
         android:layout_gravity="center_horizontal" />
+    <!--android:imeOptions="actionDone"-->
 
     <Button
         android:id="@+id/btnButton2"
@@ -136,6 +137,5 @@
         android:textSize="24sp"
         android:background="@drawable/button_red"
         android:layout_gravity="center"/>
-
 
 </LinearLayout>
