@@ -83,6 +83,15 @@ public class ShareActivity extends FragmentActivity {
         mt.setThreshold(0);
         mt.setAdapter(adp);
 
+        Button shareLocation = (Button) findViewById(R.id.shareButton);
+        shareLocation.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                //MapsActivity.class.updateLocation();
+            }
+        });
+
     }
 
     private class durationBarListener implements SeekBar.OnSeekBarChangeListener {
