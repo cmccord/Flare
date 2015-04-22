@@ -25,7 +25,7 @@
                 android:padding="15dp"
                 android:fontFamily="sans-serif-thin"
                 android:textStyle="bold"
-                android:textSize="40sp"
+                android:textSize="34sp"
                 android:background="@drawable/button_red"
                 android:layout_gravity="right"/>
 
@@ -38,7 +38,7 @@
                 android:padding="15dp"
                 android:fontFamily="sans-serif-thin"
                 android:textStyle="bold"
-                android:textSize="40sp"
+                android:textSize="34sp"
                 android:background="@drawable/button_red"
                 android:layout_weight="0.5" />
 
@@ -46,12 +46,12 @@
                 android:id="@+id/rightButton"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:text="@string/pencil"
+                android:text="@string/person"
                 android:textColor="#fff"
                 android:padding="15dp"
                 android:fontFamily="sans-serif-thin"
                 android:textStyle="bold"
-                android:textSize="40sp"
+                android:textSize="34sp"
                 android:background="@drawable/button_red"
                 android:layout_gravity="left"/>
 

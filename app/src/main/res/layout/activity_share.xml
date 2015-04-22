@@ -41,6 +41,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/addFriends"
         android:id="@+id/addFriends"
+        android:imeOptions="actionDone"
         android:layout_gravity="center_horizontal" />
 
     <Button

@@ -7,7 +7,7 @@
     <string name="watch">\u231A</string>
     <string name="backarrow">\u2190</string>
     <string name="selectfriends">Select Friends</string>
-    <string name="editprofile">Edit Profile</string>
+    <string name="profile">Profile</string>
     <string name="editprofilepic">Select New Profile Picture</string>
     <string name="displayname">Display Name</string>
     <string name="username">Username</string>
@@ -16,6 +16,7 @@
     <string name="X">x</string>
     <string name="menu">\u2261</string>
     <string name="pencil">\u270E</string>
+    <string name="person">\u26F9</string>
     <string name="circle">o</string>
     <string name="share">Share Location</string>
     <string name="duration">Duration</string>
