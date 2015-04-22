@@ -39,7 +39,7 @@
     <MultiAutoCompleteTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/addFriends"
+        android:hint="@string/addFriends"
         android:id="@+id/addFriends"
         android:layout_gravity="center_horizontal" />
 

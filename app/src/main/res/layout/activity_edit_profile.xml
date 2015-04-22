@@ -60,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="@string/displayname"
+        android:hint="@string/displayname"
         android:ems="10"
         android:id="@+id/editDisplayName"
         android:layout_gravity="center_horizontal" />
@@ -69,7 +69,7 @@
         android:paddingTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/username"
+        android:hint="@string/username"
         android:id="@+id/editUsername"
         android:layout_gravity="center_horizontal" />
 
@@ -78,7 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:text="@string/password"
+        android:hint="@string/password"
         android:ems="10"
         android:id="@+id/editPassword"
         android:layout_gravity="center_horizontal" />
