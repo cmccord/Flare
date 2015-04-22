@@ -10,6 +10,7 @@ import java.util.Map;
 /**
  * Created by jabreezy on 3/4/15.
  */
+
 public class User {
 //    String id;
     String pos;

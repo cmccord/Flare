@@ -231,7 +231,7 @@ public class MapsActivity extends FragmentActivity {
         Log.v("New User", "Creating new user " + mImei);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Welcome to Loco! What is your name?");
+        builder.setTitle("Welcome to Flare! What is your name?");
 
         if (mFirebaseRef != null) {
             User newUser = new User(mImei, mLocation);
@@ -275,6 +275,7 @@ public class MapsActivity extends FragmentActivity {
 
         trackUser(mImei);
     }
+
     private void trackAll() {
         if (mFirebaseRef != null)
             mFirebaseRef.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -297,6 +298,7 @@ public class MapsActivity extends FragmentActivity {
                 }
             });
     }
+
     @Override
     protected void onResume() {
         super.onResume();

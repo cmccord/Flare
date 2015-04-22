@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -69,6 +70,18 @@ public class ShareActivity extends FragmentActivity {
                     }
                 }
         );
+
+        String[] str={"Andoid","Jelly Bean","Froyo",
+                "Ginger Bread","Eclipse Indigo","Eclipse Juno"};
+
+        // set up auto complete box
+        MultiAutoCompleteTextView mt=(MultiAutoCompleteTextView)
+                findViewById(R.id.addFriends);
+        mt.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        ArrayAdapter<String> adp=new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line,str);
+        mt.setThreshold(1);
+        mt.setAdapter(adp);
 
     }
 
