@@ -31,7 +31,7 @@
             android:fontFamily="sans-serif-thin"
             android:textStyle="bold"
             android:textSize="34sp"
-            android:background="@drawable/button_red"
+            android:background="@drawable/button_true_red"
             android:layout_gravity="right"/>
 
     </LinearLayout>
