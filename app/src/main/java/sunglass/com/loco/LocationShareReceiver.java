@@ -39,6 +39,7 @@ public class LocationShareReceiver extends BroadcastReceiver{
         String mUserID = telephonyManager.getDeviceId();
         boolean isEnabled = mLocationManager.isProviderEnabled(mProvider);
         if(isEnabled) {
+            mLocation = mLocationManager.getLastKnownLocation(mProvider);
             LocationListener mLocationListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
                     // Called when a new location is found by the network location provider.
