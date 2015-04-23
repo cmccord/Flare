@@ -11,12 +11,22 @@ import android.widget.Button;
 
 public class editProfileActivity extends FragmentActivity {
 
+    private Application app;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        app = (Application) this.getApplication();
         Button backButton = (Button) findViewById(R.id.back_butt);
         backButton.setOnClickListener(
+                new Button.OnClickListener() {
+                    public void onClick(View v) {
+                        finish();
+                    }
+                }
+        );
+        Button logoutButton = (Button) findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
                         finish();
