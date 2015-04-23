@@ -24,10 +24,10 @@
             android:layout_gravity="right"/>
 
         <Button
-            android:id="@+id/editProfile_butt"
+            android:id="@+id/makeProfile_butt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/profile"
+            android:text="Make a Spark"
             android:textColor="#fff"
             android:padding="15dp"
             android:fontFamily="sans-serif-thin"
@@ -35,19 +35,6 @@
             android:textSize="34sp"
             android:background="@drawable/button_true_red"
             android:layout_weight="0.5" />
-
-        <Button
-            android:id="@+id/rightButton"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:text="@string/pencil"
-            android:textColor="#fff"
-            android:padding="15dp"
-            android:fontFamily="sans-serif-thin"
-            android:textStyle="bold"
-            android:textSize="34sp"
-            android:background="@drawable/button_red"
-            android:layout_gravity="left"/>
 
     </LinearLayout>
 
@@ -57,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/editprofilepic"
+        android:text="Select Profile Picture"
         android:id="@+id/editProPicText"
         android:layout_gravity="center_horizontal" />
 
@@ -74,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
-        android:hint="@string/exampleemail"
+        android:hint="@string/sampleemail"
         android:gravity="center"
         android:ems="10"
         android:id="@+id/editEmail"
@@ -109,18 +96,18 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/logout"
-        android:textColor="#fff"
-        android:padding="15dp"
-        android:fontFamily="sans-serif-thin"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/button_red" />
+        <Button
+            android:id="@+id/finishNewUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Join the Fire"
+            android:textColor="#fff"
+            android:padding="15dp"
+            android:fontFamily="sans-serif-thin"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/button_red" />
 
     </RelativeLayout>
 

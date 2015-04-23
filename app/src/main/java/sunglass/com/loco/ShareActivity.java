@@ -115,7 +115,7 @@ public class ShareActivity extends FragmentActivity {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             TextView durationSetting = (TextView) findViewById(R.id.frequencySetting);
-            durationSetting.setText(progress + 1 + " /s");
+            durationSetting.setText(progress + 1 + "/s");
         }
         @Override
         public void onStartTrackingTouch(SeekBar seekBar){}

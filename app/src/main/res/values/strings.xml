@@ -10,6 +10,7 @@
     <string name="profile">Profile</string>
     <string name="editprofilepic">Select New Profile Picture</string>
     <string name="displayname">Display Name</string>
+    <string name="exampleemail">kwdougla@gmail.com</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="addFriends">Type Names or Circles</string>
@@ -17,12 +18,18 @@
     <string name="menu">\u2261</string>
     <string name="pencil">\u270E</string>
     <string name="person">\u26C4</string>
+
+    <string name="welcome">Welcome to Flare</string>
+    <string name="login">Log In</string>
+    <string name="createnewaccount">New User? Get Flare</string>
+    <string name="sampleemail">example@cooldomain.com</string>
+
     <!--<string name="person">\u26F9</string>-->
     <string name="circle">o</string>
     <string name="share">Share Location</string>
     <string name="duration">Duration</string>
     <string name="frequency">Frequency</string>
-    <string name="logout">Logout</string>
+    <string name="logout">Log Out</string>
     <string-array
         name="leftmenu">
         <item>Share Location</item>
@@ -34,4 +41,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_login">loginActivity</string>
+    <string name="title_activity_new_user">newUserActivity</string>
+    <string name="title_activity_circles">circlesActivity</string>
 </resources>

@@ -27,7 +27,7 @@
             android:id="@+id/editProfile_butt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/profile"
+            android:text="Circles"
             android:textColor="#fff"
             android:padding="15dp"
             android:fontFamily="sans-serif-thin"
@@ -40,7 +40,7 @@
             android:id="@+id/rightButton"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:text="@string/pencil"
+            android:text="+"
             android:textColor="#fff"
             android:padding="15dp"
             android:fontFamily="sans-serif-thin"
@@ -52,75 +52,43 @@
     </LinearLayout>
 
     <TextView
+        android:paddingTop="170dp"
+        android:paddingBottom="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="You don't have any circles."
+        android:gravity="center"
+        android:id="@+id/noCircles"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
         android:paddingTop="46dp"
         android:paddingBottom="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/editprofilepic"
-        android:id="@+id/editProPicText"
-        android:layout_gravity="center_horizontal" />
-
-    <ImageButton
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:scaleType="fitXY"
-        android:id="@+id/editProPic"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/circle_plus" />
-
-    <EditText
-        android:paddingTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:hint="@string/exampleemail"
+        android:text="Create one now!"
         android:gravity="center"
-        android:ems="10"
-        android:id="@+id/editEmail"
-        android:imeOptions="actionDone"
-        android:layout_gravity="center_horizontal" />
-
-    <EditText
-        android:paddingTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/displayname"
-        android:gravity="center"
-        android:ems="10"
-        android:id="@+id/editDisplayName"
-        android:imeOptions="actionDone"
-        android:layout_gravity="center_horizontal" />
-
-    <EditText
-        android:paddingTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="@string/password"
-        android:gravity="center"
-        android:ems="10"
-        android:id="@+id/editPassword"
-        android:imeOptions="actionDone"
+        android:id="@+id/createOneNow"
         android:layout_gravity="center_horizontal" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/logout"
-        android:textColor="#fff"
-        android:padding="15dp"
-        android:fontFamily="sans-serif-thin"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/button_red" />
+        <Button
+            android:id="@+id/saveChangesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Changes"
+            android:textColor="#fff"
+            android:padding="15dp"
+            android:fontFamily="sans-serif-thin"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/button_red" />
 
     </RelativeLayout>
 

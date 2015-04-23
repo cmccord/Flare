@@ -135,8 +135,6 @@ public class MapsActivity extends FragmentActivity {
         });
     }
 
-
-
     private void createNewUser(){
         Log.v("New User", "Creating new user " + mImei);
 
@@ -302,13 +300,17 @@ public class MapsActivity extends FragmentActivity {
                 i = new Intent(this, ShareActivity.class);
                 startActivity(i);
                 break;
+            case 1:
+                i = new Intent(this, circlesActivity.class);
+                startActivity(i);
+                break;
         }
     }
-
 
     @Override
     public void setTitle(CharSequence title) {
 //        mTitle = title;
 //        getActionBar().setTitle(mTitle);
     }
+
 }
