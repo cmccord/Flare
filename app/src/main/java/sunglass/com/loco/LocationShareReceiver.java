@@ -63,10 +63,12 @@ public class LocationShareReceiver extends BroadcastReceiver{
                     mFirebaseRef.child("users").child(mUserID).child("pos").setValue(
                             mLocation.getLatitude() + "," + mLocation.getLongitude()
                     );
+                    Toast.makeText(context, "Location Updated", Toast.LENGTH_SHORT).show();
                 }
+                else
+                    Toast.makeText(context, "Location Update Failed", Toast.LENGTH_SHORT).show();
                 mFirebaseRef.child("users").child(mUserID).child("timestamp").setValue(System.currentTimeMillis());
                 Log.v("GPS", "Firebase GPS updated.");
-                Toast.makeText(context, "Location Updated", Toast.LENGTH_SHORT).show();
             }
             mLocationManager.removeUpdates(mLocationListener);
         }
