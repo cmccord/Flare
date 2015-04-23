@@ -66,6 +66,7 @@ public class MapsActivity extends FragmentActivity {
     private String[] mMenuStrings;
     private DrawerLayout mLeftDrawer, mRightDrawer;
     private ListView mLeftDrawerList, mRightDrawerList;
+    private Application app;
 
     @Override
     protected void onPause() {
@@ -85,7 +86,7 @@ public class MapsActivity extends FragmentActivity {
 
 //        mImei += System.currentTimeMillis() / 1000*60;
         // for now!
-        Application app = (Application) this.getApplication();
+        app = (Application) this.getApplication();
         app.setmUserID(mImei);
         setUpMapIfNeeded();
         Log.v("GPS", "initializing GPS");
@@ -103,8 +104,14 @@ public class MapsActivity extends FragmentActivity {
         {
             public void onClick(View v)
             {
-                Intent i = new Intent(MapsActivity.this, ShareActivity.class);
-                startActivity(i);
+                if(app.getService() == null) {
+                    Intent i = new Intent(MapsActivity.this, ShareActivity.class);
+                    startActivity(i);
+                }
+                else {
+                    stopService(app.getService());
+                    app.setService(null);
+                }
             }
         });
 

@@ -89,7 +89,10 @@ public class ShareActivity extends FragmentActivity {
         {
             public void onClick(View v)
             {
-                app.updateLocation();
+                //app.updateLocation();
+                Intent i = new Intent(ShareActivity.this, LocationService.class);
+                app.setService(i);
+                startService(i);
                 finish();
             }
         });
