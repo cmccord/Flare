@@ -80,6 +80,7 @@ public class LocationShareReceiver extends BroadcastReceiver{
     {
         AlarmManager am =( AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent(context, LocationShareReceiver.class);
+        //Intent i = new Intent("sunglass.com.loco.LOCATION_SHARE");
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, 0);
         am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 20, pi); // Millisec * Second * Minute
     }
@@ -87,7 +88,8 @@ public class LocationShareReceiver extends BroadcastReceiver{
     public void CancelAlarm(Context context)
     {
         Intent intent = new Intent(context, LocationShareReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
+        //Intent intent = new Intent("sunglass.com.loco.LOCATION_SHARE");
+        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(sender);
     }

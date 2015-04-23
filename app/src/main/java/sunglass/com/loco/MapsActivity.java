@@ -1,6 +1,7 @@
 package sunglass.com.loco;
 
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -104,14 +105,19 @@ public class MapsActivity extends FragmentActivity {
         {
             public void onClick(View v)
             {
-                if(app.getService() == null) {
+//                boolean alarmUp = (PendingIntent.getBroadcast(MapsActivity.this, 0,
+//                        new Intent("sunglass.com.loco.LOCATION_SHARE"),
+//                        PendingIntent.FLAG_NO_CREATE) != null);
+                //if(!alarmUp) {
                     Intent i = new Intent(MapsActivity.this, ShareActivity.class);
                     startActivity(i);
-                }
-                else {
-                    stopService(app.getService());
-                    app.setService(null);
-                }
+                //}
+                //else {
+//                    LocationShareReceiver alarm = new LocationShareReceiver();
+//                    alarm.CancelAlarm(MapsActivity.this);
+//                    stopService(app.getService());
+//                    app.setService(null);
+                //}
             }
         });
 
