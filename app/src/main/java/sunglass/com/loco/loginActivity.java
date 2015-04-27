@@ -8,19 +8,49 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 public class loginActivity extends Activity {
+
+    private Firebase ref;
+    private EditText mEmail;
+    private EditText mDisplayName;
+    private EditText mPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Firebase.setAndroidContext(this);
+
         Button mLoginButton = (Button) findViewById(R.id.loginButton);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //updateLocation();
+
+                mEmail = (EditText)findViewById(R.id.editEmail);
+                mDisplayName = (EditText)findViewById(R.id.editDisplayName);
+                mPassword = (EditText)findViewById(R.id.editPassword);
+
+                ref = new Firebase("https://loco-android.firebaseio.com");
+
+                ref.authWithPassword(mEmail.getText().toString(), mPassword.getText().toString(), new Firebase.AuthResultHandler() {
+                    @Override
+                    public void onAuthenticated(AuthData authData) {
+                        Toast.makeText(getApplicationContext(), "User ID: " + authData.getUid() + ", Password: " + authData.getProvider(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onAuthenticationError(FirebaseError firebaseError) {
+                        Toast.makeText(getApplicationContext(), "Log In Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 Intent i = new Intent(loginActivity.this, MapsActivity.class);
                 startActivity(i);
             }
@@ -29,7 +59,6 @@ public class loginActivity extends Activity {
         Button mNewUserButton = (Button) findViewById(R.id.newUserButton);
         mNewUserButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //updateLocation();
                 Intent i = new Intent(loginActivity.this, newUserActivity.class);
                 startActivity(i);
             }

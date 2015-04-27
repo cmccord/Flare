@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +25,7 @@ import java.util.Map;
 
 public class newUserActivity extends Activity {
 
-    private String mImei;
+//    private String mImei;
     private Firebase ref;
     private EditText mEmail;
     private EditText mDisplayName;
@@ -66,17 +67,17 @@ public class newUserActivity extends Activity {
                                     @Override
                                     public void onSuccess(Map<String, Object> result) {
 
-                                        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-                                        mImei = telephonyManager.getDeviceId();
+//                                        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+//                                        mImei = telephonyManager.getDeviceId();
 
                                         if (ref != null) {
                                             Map user = new HashMap<>();
                                             Map dets = new HashMap<>();
-                                            dets.put("pos", "0.00000000,-20.00000000");
+                                            dets.put("pos", "");
                                             dets.put("name", mDisplayName.getText().toString());
                                             dets.put("timestamp", System.currentTimeMillis());
                                             dets.put("time_created", System.currentTimeMillis());
-                                            user.put(mImei, dets);
+                                            user.put(result.get("uid"), dets);
 
                                             ref.child("users").updateChildren(user);
                                         }
@@ -98,7 +99,14 @@ public class newUserActivity extends Activity {
 
                                     @Override
                                     public void onError(FirebaseError firebaseError) {
-                                        Toast.makeText(getApplicationContext(), "Create New User Failed", Toast.LENGTH_SHORT).show();
+                                        Log.v("ERRORERROR","ERRORERROR"+firebaseError.getCode());
+                                        switch (firebaseError.getCode()) {
+                                            case -18:
+                                                Toast.makeText(getApplicationContext(), "Email Already in Use", Toast.LENGTH_SHORT).show();
+                                                break;
+                                            default:
+                                                Toast.makeText(getApplicationContext(), "Create New User Failed", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 });
 
