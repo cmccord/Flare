@@ -11,6 +11,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -25,20 +26,21 @@ public class LocationShareReceiver extends BroadcastReceiver{
     private LocationManager mLocationManager;
     private String mProvider;
     private Firebase mFirebaseRef;
+
     @Override
     public void onReceive(Context context, Intent intent) {
-
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
         wl.acquire();
+        long expiration = Long.parseLong(intent.getStringExtra("expiration"));
         mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         Criteria mCriteria = new Criteria();
         mCriteria.setAccuracy(Criteria.ACCURACY_FINE);
         mProvider = mLocationManager.getBestProvider(mCriteria, true);
-        TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String mUserID = telephonyManager.getDeviceId();
         boolean isEnabled = mLocationManager.isProviderEnabled(mProvider);
-        if(isEnabled) {
+        if (isEnabled) {
             mLocation = mLocationManager.getLastKnownLocation(mProvider);
             LocationListener mLocationListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
@@ -65,32 +67,41 @@ public class LocationShareReceiver extends BroadcastReceiver{
                             mLocation.getLatitude() + "," + mLocation.getLongitude()
                     );
                     Toast.makeText(context, "Location Updated", Toast.LENGTH_SHORT).show();
-                }
-                else
+                } else
                     Toast.makeText(context, "Location Update Failed", Toast.LENGTH_SHORT).show();
                 mFirebaseRef.child("users").child(mUserID).child("timestamp").setValue(System.currentTimeMillis());
                 Log.v("GPS", "Firebase GPS updated.");
             }
             mLocationManager.removeUpdates(mLocationListener);
         }
+        if(System.currentTimeMillis() > expiration) {
+            LocationShareReceiver alarm = new LocationShareReceiver();
+            alarm.CancelAlarm(context);
+            Toast.makeText(context, "Location Share Cancelled", Toast.LENGTH_SHORT).show();
+        }
         wl.release();
     }
 
-    public void SetAlarm(Context context)
+    public void SetAlarm(Context context, int interval, int duration)
     {
+        //iterations = 60 * d / interval;
         AlarmManager am =( AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent(context, LocationShareReceiver.class);
-        //Intent i = new Intent("sunglass.com.loco.LOCATION_SHARE");
-        PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, 0);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 20, pi); // Millisec * Second * Minute
+        long expiration = System.currentTimeMillis() + 1000*60*duration - 1000*interval;
+        i.putExtra("expiration", expiration + "");
+        i.setAction("sunglass.com.loco.LOCATION_SHARE");
+        PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * interval, pi); // Millisec * Second * Minute
+        //am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 1000 * interval, pi);
     }
 
     public void CancelAlarm(Context context)
     {
         Intent intent = new Intent(context, LocationShareReceiver.class);
-        //Intent intent = new Intent("sunglass.com.loco.LOCATION_SHARE");
-        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.setAction("sunglass.com.loco.LOCATION_SHARE");
+        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(sender);
+        sender.cancel();
     }
 }

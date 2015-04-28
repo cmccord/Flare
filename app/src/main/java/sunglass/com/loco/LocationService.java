@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 public class LocationService extends Service {
 
@@ -16,13 +17,18 @@ public class LocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
-        alarm.SetAlarm(LocationService.this);
-        return START_STICKY;
+        int interval = Integer.parseInt(intent.getStringExtra("frequency"));
+        int d = Integer.parseInt(intent.getStringExtra("duration"));
+        Log.v("duration", d + "");
+        alarm.SetAlarm(LocationService.this, interval, d);
+        return START_NOT_STICKY;
     }
 
     public void onStart(Context context,Intent intent, int startId)
     {
-        alarm.SetAlarm(context);
+        int interval = Integer.parseInt(intent.getStringExtra("frequency"));
+        int d = Integer.parseInt(intent.getStringExtra("duration"));
+        alarm.SetAlarm(context, interval, d);
     }
 
     @Override

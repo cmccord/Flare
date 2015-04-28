@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffdcdcdc">
+    android:background="@android:color/transparent">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -26,7 +26,7 @@
             android:id="@+id/selectFriendsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/selectfriends"
+            android:text="@string/share"
             android:textColor="#fff"
             android:padding="15dp"
             android:fontFamily="sans-serif-thin"
@@ -37,100 +37,99 @@
 
     </LinearLayout>
 
-    <MultiAutoCompleteTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/addFriends"
-        android:id="@+id/addFriends"
-        android:imeActionLabel="Done"
-        android:layout_gravity="center_horizontal" />
     <!--android:imeOptions="actionDone"-->
 
-    <Button
-        android:id="@+id/btnButton2"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="Friends List" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
 
-    <TableLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <TableLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/shareButton"
+            android:background="#ffdcdcdc"
+            android:layout_alignParentStart="true">
 
-        <TableRow>
+            <TableRow
+                android:padding="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/duration"
-                android:id="@+id/textView"
-                android:padding = "10dp"
-                android:layout_column="0" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/duration"
+                    android:id="@+id/textView"
+                    android:layout_column="0" />
 
-            <SeekBar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/seekBarDuration"
-                android:max="119"
-                android:progress="59"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:layout_column="1" />
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/durationSetting"
+                    android:text="60 m"
+                    android:gravity="right"
+                    android:layout_column="1" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/durationSetting"
-                android:text="60 m"
-                android:padding = "10dp"
-                android:layout_column="2" />
-        </TableRow>
-        <TableRow>
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/seekBarDuration"
+                    android:max="119"
+                    android:progress="59"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:layout_column="2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/frequency"
-                android:id="@+id/textView2"
-                android:padding = "10dp"
-                android:layout_column="0" />
+            </TableRow>
+            <TableRow
+                android:padding="10dp">
 
-            <SeekBar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/seekBarFrequency"
-                android:max="3599"
-                android:progress="59"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:layout_column="1" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/frequencySetting"
-                android:text="60/s"
-                android:padding = "10dp"
-                android:layout_column="2" />
-        </TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/frequency"
+                    android:id="@+id/textView2"
+                    android:layout_column="0" />
 
-    </TableLayout>
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/frequencySetting"
+                    android:text="1 m"
+                    android:gravity="right"
+                    android:layout_column="1" />
 
-    <Button
-        android:id="@+id/shareButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/share"
-        android:textColor="#fff"
-        android:padding="15dp"
-        android:fontFamily="sans-serif-thin"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        android:background="@drawable/button_red"
-        android:layout_gravity="center"/>
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/seekBarFrequency"
+                    android:max="100"
+                    android:progress="40"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:layout_column="2" />
+            </TableRow>
+
+        </TableLayout>
+
+        <Button
+            android:id="@+id/shareButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/share"
+            android:textColor="#fff"
+            android:padding="15dp"
+            android:fontFamily="sans-serif-thin"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:background="@drawable/button_red"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
 
 </LinearLayout>

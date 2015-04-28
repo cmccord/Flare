@@ -53,6 +53,8 @@ import java.util.Map;
  */
 public class ShareActivity extends FragmentActivity {
 
+    private int duration = 60; // in minutes
+    private int frequency = 60; // in seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +77,13 @@ public class ShareActivity extends FragmentActivity {
                 "Ginger Bread","Eclipse Indigo","Eclipse Juno"};
 
         // set up auto complete box
-        MultiAutoCompleteTextView mt=(MultiAutoCompleteTextView)
-                findViewById(R.id.addFriends);
-        mt.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-        ArrayAdapter<String> adp=new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line,str);
-        mt.setThreshold(0);
-        mt.setAdapter(adp);
+//        MultiAutoCompleteTextView mt=(MultiAutoCompleteTextView)
+//                findViewById(R.id.addFriends);
+//        mt.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+//        ArrayAdapter<String> adp=new ArrayAdapter<String>(this,
+//                android.R.layout.simple_dropdown_item_1line,str);
+//        mt.setThreshold(0);
+//        mt.setAdapter(adp);
 
         Button shareLocation = (Button) findViewById(R.id.shareButton);
         final Application app = (Application) this.getApplication();
@@ -91,6 +93,8 @@ public class ShareActivity extends FragmentActivity {
             {
                 //app.updateLocation();
                 Intent i = new Intent(ShareActivity.this, LocationService.class);
+                i.putExtra("duration", duration + "");
+                i.putExtra("frequency", frequency + "");
                 app.setService(i);
                 startService(i);
                 finish();
@@ -103,7 +107,8 @@ public class ShareActivity extends FragmentActivity {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             TextView durationSetting = (TextView) findViewById(R.id.durationSetting);
-            durationSetting.setText(progress + 1 + " m");
+            duration = progress + 1;
+            durationSetting.setText(duration + " m");
         }
         @Override
         public void onStartTrackingTouch(SeekBar seekBar){}
@@ -114,8 +119,19 @@ public class ShareActivity extends FragmentActivity {
     private class frequencyBarListener implements SeekBar.OnSeekBarChangeListener {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            TextView durationSetting = (TextView) findViewById(R.id.frequencySetting);
-            durationSetting.setText(progress + 1 + "/s");
+            TextView frequencySetting = (TextView) findViewById(R.id.frequencySetting);
+            if(progress < 40) {
+                frequency = progress + 20;
+                frequencySetting.setText(frequency + " s");
+            }
+            else if(progress < 99) {
+                frequency = (progress - 39) * 60;
+                frequencySetting.setText(progress - 39 + " m");
+            }
+            else {
+                frequency = (progress - 98) * 3600;
+                frequencySetting.setText(progress - 98 + " hr");
+            }
         }
         @Override
         public void onStartTrackingTouch(SeekBar seekBar){}

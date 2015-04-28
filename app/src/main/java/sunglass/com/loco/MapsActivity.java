@@ -105,19 +105,31 @@ public class MapsActivity extends FragmentActivity {
         {
             public void onClick(View v)
             {
-//                boolean alarmUp = (PendingIntent.getBroadcast(MapsActivity.this, 0,
-//                        new Intent("sunglass.com.loco.LOCATION_SHARE"),
-//                        PendingIntent.FLAG_NO_CREATE) != null);
-                //if(!alarmUp) {
+                Intent intent = new Intent(MapsActivity.this, LocationShareReceiver.class);
+                intent.setAction("sunglass.com.loco.LOCATION_SHARE");
+                PendingIntent pi = PendingIntent.getBroadcast(MapsActivity.this, 0,
+                        intent, PendingIntent.FLAG_NO_CREATE);
+                boolean alarmUp = (pi != null);
+                if(!alarmUp) {
                     Intent i = new Intent(MapsActivity.this, ShareActivity.class);
                     startActivity(i);
-                //}
-                //else {
-//                    LocationShareReceiver alarm = new LocationShareReceiver();
-//                    alarm.CancelAlarm(MapsActivity.this);
+                }
+                else {
+                    LocationShareReceiver alarm = new LocationShareReceiver();
+                    alarm.CancelAlarm(MapsActivity.this);
+                    pi.cancel(); // see if this works, cancel the pending intent after cancelling alarm
 //                    stopService(app.getService());
 //                    app.setService(null);
-                //}
+                }
+//                Intent i2 = new Intent(MapsActivity.this, LocationShareCancel.class);
+//                intent.setAction("sunglass.com.loco.LOCATION_SHARE_CANCEL");
+//                PendingIntent pi2 = PendingIntent.getBroadcast(MapsActivity.this, 0,
+//                        i2, PendingIntent.FLAG_NO_CREATE);
+//                if(pi2 != null) {
+//                    LocationShareCancel alarm = new LocationShareCancel();
+//                    alarm.CancelAlarm(MapsActivity.this);
+//                    pi2.cancel();
+//                }
             }
         });
 

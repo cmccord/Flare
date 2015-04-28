@@ -153,10 +153,10 @@ public class Application extends android.app.Application {
 
                     Log.v("Firebase Test", d2.getRef().getParent().getKey() + " moved to " + d2.getValue());
                 }
-                if (mMap.getMyLocation() != null) {
-                    Location l = mMap.getMyLocation();
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(l.getLatitude(), l.getLongitude()), 14));
-                }
+//                if (mMap.getMyLocation() != null) {
+//                    Location l = mMap.getMyLocation();
+//                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(l.getLatitude(), l.getLongitude()), 14));
+//                }
 //                zoomToCoverAllMarkers();
             }
             @Override

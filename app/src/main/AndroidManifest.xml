@@ -43,7 +43,7 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".ShareActivity" >
+        <activity android:name=".ShareActivity">
         </activity>
         <activity android:name=".editProfileActivity" >
         </activity>
@@ -52,7 +52,7 @@
             android:name=".LocationShareReceiver"
             android:process=":remote" >
             <intent-filter>
-                <action android:name="mypackage.START_ALARM" >
+                <action android:name="sunglass.com.loco.LOCATION_SHARE" >
                 </action>
             </intent-filter>
         </receiver>
