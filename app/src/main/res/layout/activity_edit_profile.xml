@@ -37,7 +37,7 @@
             android:layout_weight="0.5" />
 
         <Button
-            android:id="@+id/rightButton"
+            android:id="@+id/edit_butt"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:text="@string/pencil"
@@ -62,8 +62,8 @@
         android:layout_gravity="center_horizontal" />
 
     <ImageButton
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:scaleType="fitXY"
         android:id="@+id/editProPic"
         android:layout_gravity="center_horizontal"
@@ -93,7 +93,21 @@
         android:imeOptions="actionDone"
         android:layout_gravity="center_horizontal" />
 
+    <Button
+        android:id="@+id/removeUser_butt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Douse Profile"
+        android:textColor="#fff"
+        android:padding="15dp"
+        android:fontFamily="sans-serif-thin"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_red" />
+
     <EditText
+        android:visibility="invisible"
         android:paddingTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -109,18 +123,32 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/logout"
-        android:textColor="#fff"
-        android:padding="15dp"
-        android:fontFamily="sans-serif-thin"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/button_red" />
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/logout"
+            android:textColor="#fff"
+            android:padding="15dp"
+            android:fontFamily="sans-serif-thin"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/button_red" />
+
+        <Button
+            android:visibility="invisible"
+            android:id="@+id/save_changes_butt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Changes"
+            android:textColor="#fff"
+            android:padding="15dp"
+            android:fontFamily="sans-serif-thin"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/button_red" />
 
     </RelativeLayout>
 

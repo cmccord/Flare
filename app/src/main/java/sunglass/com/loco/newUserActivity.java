@@ -101,11 +101,15 @@ public class newUserActivity extends Activity {
                                     public void onError(FirebaseError firebaseError) {
                                         Log.v("ERRORERROR","ERRORERROR"+firebaseError.getCode());
                                         switch (firebaseError.getCode()) {
-                                            case -18:
+                                            case FirebaseError.USER_DOES_NOT_EXIST:
                                                 Toast.makeText(getApplicationContext(), "Email Already in Use", Toast.LENGTH_SHORT).show();
+                                                break;
+                                            case FirebaseError.INVALID_EMAIL:
+                                                Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_SHORT).show();
                                                 break;
                                             default:
                                                 Toast.makeText(getApplicationContext(), "Create New User Failed", Toast.LENGTH_SHORT).show();
+                                                break;
                                         }
                                     }
                                 });

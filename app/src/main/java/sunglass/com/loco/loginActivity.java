@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,8 +13,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import java.util.Map;
 
 public class loginActivity extends Activity {
 
@@ -41,18 +46,61 @@ public class loginActivity extends Activity {
 
                 ref.authWithPassword(mEmail.getText().toString(), mPassword.getText().toString(), new Firebase.AuthResultHandler() {
                     @Override
-                    public void onAuthenticated(AuthData authData) {
-                        Toast.makeText(getApplicationContext(), "User ID: " + authData.getUid() + ", Password: " + authData.getProvider(), Toast.LENGTH_SHORT).show();
+                    public void onAuthenticated(final AuthData authData) {
+//                      Toast.makeText(getApplicationContext(), "Welcome, " + authData.getUid() + ", Password: " + authData.getProvider(), Toast.LENGTH_SHORT).show();
+
+                        if (authData != null) {
+
+                            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+                                    Log.v("authData.getUid()", authData.getUid());
+                                    for (DataSnapshot d : snapshot.getChildren()) {
+                                        Log.v("Firebase Test", d.getKey().toString());
+                                        String curr = d.getKey().toString();
+                                        if (curr.equals(authData.getUid())) {
+                                            Map<String, Object> value = (Map<String, Object>) d.getValue();
+                                            Toast.makeText(getApplicationContext(), "Welcome, " + (String)value.get("name") + "!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {
+                                    // Do nothing.
+                                }
+                            });
+
+                        }
+
+
+//                        Toast.makeText(getApplicationContext(), "Welcome, " + authData.getUid() + "!", Toast.LENGTH_SHORT).show();
+
+                        Intent i = new Intent(loginActivity.this, MapsActivity.class);
+                        startActivity(i);
                     }
 
                     @Override
                     public void onAuthenticationError(FirebaseError firebaseError) {
-                        Toast.makeText(getApplicationContext(), "Log In Failed", Toast.LENGTH_SHORT).show();
+
+                        switch (firebaseError.getCode()) {
+                            case FirebaseError.INVALID_EMAIL:
+                                Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_SHORT).show();
+                                break;
+                            case FirebaseError.USER_DOES_NOT_EXIST:
+                                Toast.makeText(getApplicationContext(), "User Does Not Exist", Toast.LENGTH_SHORT).show();
+                                break;
+                            case FirebaseError.INVALID_PASSWORD:
+                                Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_SHORT).show();
+                                break;
+                            default:
+                                Toast.makeText(getApplicationContext(), "Log In Failed", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+
                     }
                 });
 
-                Intent i = new Intent(loginActivity.this, MapsActivity.class);
-                startActivity(i);
             }
         });
 
@@ -63,6 +111,14 @@ public class loginActivity extends Activity {
                 startActivity(i);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 }
