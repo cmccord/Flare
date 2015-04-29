@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.telephony.TelephonyManager;
@@ -17,6 +18,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+
+import java.io.Serializable;
 
 /**
  * Created by cmccord on 4/23/15.
@@ -26,6 +29,7 @@ public class LocationShareReceiver extends BroadcastReceiver{
     private LocationManager mLocationManager;
     private String mProvider;
     private Firebase mFirebaseRef;
+    private Application app;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -93,6 +97,11 @@ public class LocationShareReceiver extends BroadcastReceiver{
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
         am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * interval, pi); // Millisec * Second * Minute
         //am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 1000 * interval, pi);
+        app = Application.instance();
+        Log.v("application", app.toString());
+        if(app != null) {
+            app.setSharingStatus(true, context);
+        }
     }
 
     public void CancelAlarm(Context context)
@@ -103,5 +112,11 @@ public class LocationShareReceiver extends BroadcastReceiver{
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(sender);
         sender.cancel();
+        app = Application.instance();
+        Log.v("Application Context LSR", "" + app);
+        if(app != null) {
+            Log.v("setting sharing status", "to false");
+            app.setSharingStatus(false, context);
+        }
     }
 }

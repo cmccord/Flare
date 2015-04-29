@@ -49,8 +49,8 @@
         </activity>
 
         <receiver
-            android:name=".LocationShareReceiver"
-            android:process=":remote" >
+            android:name=".LocationShareReceiver">
+            <!--android:process=":remote" >-->
             <intent-filter>
                 <action android:name="sunglass.com.loco.LOCATION_SHARE" >
                 </action>

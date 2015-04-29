@@ -68,12 +68,24 @@ public class MapsActivity extends FragmentActivity {
     private DrawerLayout mLeftDrawer, mRightDrawer;
     private ListView mLeftDrawerList, mRightDrawerList;
     private Application app;
+    private static MapsActivity inst;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        inst = this;
+    }
+
+    public static MapsActivity instance() {
+        return inst;
+    }
 
     @Override
     protected void onPause() {
         if (mLocationManager != null){
             mLocationManager.removeUpdates(mLocationListener);
         }
+        //app.setInMapsActivity(null);
         super.onPause();
     }
 
@@ -88,6 +100,7 @@ public class MapsActivity extends FragmentActivity {
 //        mImei += System.currentTimeMillis() / 1000*60;
         // for now!
         app = (Application) this.getApplication();
+        Log.v("Application Context", "" + this.getApplicationContext());
         app.setmUserID(mImei);
         setUpMapIfNeeded();
         Log.v("GPS", "initializing GPS");
@@ -96,6 +109,13 @@ public class MapsActivity extends FragmentActivity {
         app.setUpFactory();
         app.setUpFirebase();
         app.setUpMarkers();
+        // check whether or not location is being shared
+        Intent intent = new Intent(MapsActivity.this, LocationShareReceiver.class);
+        intent.setAction("sunglass.com.loco.LOCATION_SHARE");
+        PendingIntent pi = PendingIntent.getBroadcast(MapsActivity.this, 0,
+                intent, PendingIntent.FLAG_NO_CREATE);
+        boolean alarmUp = (pi != null);
+        app.setSharingStatus(alarmUp, this);
 
 //        trackCircles();
         app.trackAll();
@@ -206,6 +226,10 @@ public class MapsActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+        app.setInMapsActivity(this);
+        Log.v("onResume", "executing");
+        Log.v("onResume", "" + this);
+        app.setShareButton(this);
     }
 
     /**

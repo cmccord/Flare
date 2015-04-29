@@ -1,5 +1,6 @@
 package sunglass.com.loco;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Criteria;
@@ -8,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -41,6 +43,19 @@ public class Application extends android.app.Application {
     private HashMap<String, Marker> mMarkers;
     private String mUserID;
     private Intent service = null;
+    private boolean sharingStatus;
+    private Activity inMapsActivity = null;
+    private static Application inst;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        inst = this;
+    }
+
+    public static Application instance() {
+        return inst;
+    }
 
     public void setUpFirebase() {
         Firebase.setAndroidContext(this);
@@ -65,6 +80,47 @@ public class Application extends android.app.Application {
 
     public Intent getService() {
         return service;
+    }
+
+    public void setSharingStatus(boolean b, Context context) {
+        sharingStatus = b;
+        //if(getInMapsActivity()) {
+            Log.v("cancelling share", "inside setSharingStatus");
+            //Activity activity = (Activity) context;
+            setShareButton(context);
+        //}
+    }
+
+    // sets color of share button in maps activity
+    public void setShareButton(Context context) {
+        Activity activity = MapsActivity.instance();
+        Log.v("cancelling share", "" + activity);
+        try {
+            //Activity activity = (Activity) context;
+            Button mainButton = (Button) activity.findViewById(R.id.topButton);
+            if (mainButton != null) {
+                Log.v("cancelling share", "inside setShareButton");
+                Log.v("cancelling share", "" + getSharingStatus());
+                if (getSharingStatus())
+                    mainButton.setBackgroundResource(R.drawable.button_green);
+                else
+                    mainButton.setBackgroundResource(R.drawable.button_red);
+            }
+        }
+        catch(Exception e){Log.v("cancelling share", "couldn't cast context as activity");}
+    }
+
+    public boolean getSharingStatus() {
+        return sharingStatus;
+    }
+
+    public void setInMapsActivity(Activity activity) {
+        inMapsActivity = activity;
+        Log.v("setInMapsActivity", activity + "");
+    }
+
+    public Activity getInMapsActivity() {
+        return inMapsActivity;
     }
 
 

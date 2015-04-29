@@ -1,14 +1,19 @@
 package sunglass.com.loco;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.PowerManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -27,6 +32,7 @@ import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -101,6 +107,11 @@ public class ShareActivity extends FragmentActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     private class durationBarListener implements SeekBar.OnSeekBarChangeListener {

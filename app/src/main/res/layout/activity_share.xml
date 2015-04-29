@@ -37,7 +37,7 @@
 
     </LinearLayout>
 
-    <!--android:imeOptions="actionDone"-->
+    android:imeOptions="actionDone"
 
     <RelativeLayout
         android:layout_width="match_parent"
