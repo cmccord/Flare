@@ -153,7 +153,7 @@ public class Application extends android.app.Application {
 //                for (DataSnapshot d: dataSnapshot.getChildren()){
 //                    String[] peeps = d.getValue().toString().split(",");
 //                    for (int i = 0; i < peeps.length; i++) {
-//                        Log.v("Firebase Test", mFirebaseRef.child("users").child(peeps[i]).toString());
+//                        Log.v("authData.getUid()", mFirebaseRef.child("users").child(peeps[i]).toString());
 //                        trackUser(peeps[i]);
 //                    }
 //                }

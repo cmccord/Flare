@@ -34,7 +34,7 @@
         android:gravity="center"
         android:ems="10"
         android:id="@+id/editEmail"
-        android:imeOptions="actionDone"
+        android:imeOptions="actionNext"
         android:layout_gravity="center_horizontal" />
 
     <EditText

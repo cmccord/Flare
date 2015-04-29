@@ -2,7 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffdcdcdc">
+    android:background="#ffdcdcdc"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:id="@+id/our_lin_layout">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -49,10 +52,24 @@
             android:background="@drawable/button_red"
             android:layout_gravity="left"/>
 
+        <Button
+            android:visibility="invisible"
+            android:id="@+id/cancel_edit_butt"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:textColor="#fff"
+            android:padding="15dp"
+            android:fontFamily="sans-serif-thin"
+            android:textStyle="bold"
+            android:textSize="34sp"
+            android:background="@drawable/button_red"
+            android:layout_gravity="left"/>
+
     </LinearLayout>
 
     <TextView
-        android:paddingTop="46dp"
+        android:paddingTop="37dp"
         android:paddingBottom="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,26 +91,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
-        android:hint="@string/exampleemail"
+        android:hint=""
         android:gravity="center"
         android:ems="10"
         android:id="@+id/editEmail"
         android:imeOptions="actionDone"
         android:layout_gravity="center_horizontal" />
+        <!--android:hint="@string/exampleemail"-->
+
 
     <EditText
-        android:paddingTop="20dp"
+        android:paddingTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:hint="@string/displayname"
+        android:hint=""
         android:gravity="center"
         android:ems="10"
         android:id="@+id/editDisplayName"
         android:imeOptions="actionDone"
         android:layout_gravity="center_horizontal" />
+        <!--android:hint="@string/displayname"-->
+
+    <EditText
+        android:visibility="invisible"
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="@string/password"
+        android:gravity="center"
+        android:ems="10"
+        android:id="@+id/editPassword"
+        android:imeOptions="actionDone"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text=""
+        android:id="@+id/fillerText"
+        android:layout_gravity="center_horizontal" />
 
     <Button
+        android:visibility="invisible"
         android:id="@+id/removeUser_butt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -104,20 +146,7 @@
         android:textStyle="bold"
         android:textSize="18sp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/button_red" />
-
-    <EditText
-        android:visibility="invisible"
-        android:paddingTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="@string/password"
-        android:gravity="center"
-        android:ems="10"
-        android:id="@+id/editPassword"
-        android:imeOptions="actionDone"
-        android:layout_gravity="center_horizontal" />
+        android:background="@drawable/button_blue" />
 
     <RelativeLayout
         android:layout_width="fill_parent"

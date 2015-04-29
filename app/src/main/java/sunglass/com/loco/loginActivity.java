@@ -51,14 +51,13 @@ public class loginActivity extends Activity {
 
                         if (authData != null) {
 
-                            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            ref.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot snapshot) {
-                                    Log.v("authData.getUid()", authData.getUid());
                                     for (DataSnapshot d : snapshot.getChildren()) {
-                                        Log.v("Firebase Test", d.getKey().toString());
+                                        Log.v("FireFire", d.getKey().toString() + " la" + authData.getUid());
                                         String curr = d.getKey().toString();
-                                        if (curr.equals(authData.getUid())) {
+                                        if (curr.equals((String)authData.getUid())) {
                                             Map<String, Object> value = (Map<String, Object>) d.getValue();
                                             Toast.makeText(getApplicationContext(), "Welcome, " + (String)value.get("name") + "!", Toast.LENGTH_SHORT).show();
                                         }
