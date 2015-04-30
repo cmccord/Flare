@@ -77,6 +77,14 @@
             android:label="@string/title_activity_new_user" >
         </activity>
         <activity
+            android:name=".addFriendsActivity"
+            android:label="@string/title_activity_addfriends" >
+        </activity>
+        <activity
+            android:name=".newFriendsActivity"
+            android:label="@string/title_activity_newfriends" >
+        </activity>
+        <activity
             android:name=".circlesActivity"
             android:label="@string/title_activity_circles" >
         </activity>

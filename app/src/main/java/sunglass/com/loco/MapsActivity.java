@@ -107,7 +107,6 @@ public class MapsActivity extends FragmentActivity {
         app.setUpGPS();
         setUpLeftDrawer();
         app.setUpFactory();
-        app.setUpFirebase();
         app.setUpMarkers();
         // check whether or not location is being shared
         Intent intent = new Intent(MapsActivity.this, LocationShareReceiver.class);
@@ -343,6 +342,10 @@ public class MapsActivity extends FragmentActivity {
                 startActivity(i);
                 break;
             case 1:
+                i = new Intent(this, addFriendsActivity.class);
+                startActivity(i);
+                break;
+            case 2:
                 i = new Intent(this, circlesActivity.class);
                 startActivity(i);
                 break;

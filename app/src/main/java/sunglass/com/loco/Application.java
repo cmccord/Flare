@@ -51,6 +51,7 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         inst = this;
+        setUpFirebase();
     }
 
     public static Application instance() {
@@ -60,6 +61,10 @@ public class Application extends android.app.Application {
     public void setUpFirebase() {
         Firebase.setAndroidContext(this);
         mFirebaseRef = new Firebase("https://loco-android.firebaseio.com/");
+    }
+
+    public Firebase getFirebaseRef() {
+        return mFirebaseRef;
     }
 
     public void setmUserID(String m) {

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffdcdcdc">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="@string/backarrow"
+            android:textColor="#fff"
+            android:padding="15dp"
+            android:fontFamily="sans-serif-thin"
+            android:textStyle="bold"
+            android:textSize="34sp"
+            android:background="@drawable/button_red"
+            android:layout_gravity="right"/>
+
+        <Button
+            android:id="@+id/editProfile_butt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Friends"
+            android:textColor="#fff"
+            android:padding="15dp"
+            android:fontFamily="sans-serif-thin"
+            android:textStyle="bold"
+            android:textSize="34sp"
+            android:background="@drawable/button_true_red"
+            android:layout_weight="0.5" />
+
+        <Button
+            android:id="@+id/rightButton"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textColor="#fff"
+            android:padding="15dp"
+            android:fontFamily="sans-serif-thin"
+            android:textStyle="bold"
+            android:textSize="34sp"
+            android:background="@drawable/button_red"
+            android:layout_gravity="left"/>
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>
