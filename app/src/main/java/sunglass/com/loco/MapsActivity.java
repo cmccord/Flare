@@ -117,7 +117,7 @@ public class MapsActivity extends FragmentActivity {
         app.setSharingStatus(alarmUp, this);
 
 //        trackCircles();
-        app.trackAll();
+        app.trackAll(this);
         mPingButton = (Button) findViewById(R.id.topButton);
 //        mPingButton.setLayoutParams(new LinearLayout.LayoutParams(mPingButton.getMeasuredHeight(), mPingButton.getMeasuredHeight()));
         mPingButton.setOnClickListener(new View.OnClickListener()
@@ -256,6 +256,10 @@ public class MapsActivity extends FragmentActivity {
             if (mMap != null) {
                 setUpMap();
                 ((Application) this.getApplication()).setmMap(mMap);
+                Location l = mMap.getMyLocation();
+                if (l != null) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(l.getLatitude(), l.getLongitude()), 14));
+                }
             }
         }
     }

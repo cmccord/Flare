@@ -1,15 +1,19 @@
 package sunglass.com.loco;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -26,6 +30,7 @@ import com.google.android.gms.plus.Plus;
 import com.google.maps.android.ui.IconGenerator;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by cmccord on 4/21/15.
@@ -194,25 +199,22 @@ public class Application extends android.app.Application {
                     LatLng l;
                     if (loc.length > 1) {
                         l = new LatLng(Double.parseDouble(loc[0]), Double.parseDouble(loc[1]));
-                    }
-                    else {
-                        l = new LatLng(0.0, 0.0);
-                    }
-                    if (mMarkers.containsKey(name)){
-                        mMarkers.get(name).setPosition(l);
-                    }
-                    else {
+                        if (mMarkers.containsKey(name)){
+                            mMarkers.get(name).setPosition(l);
+                        }
+                        else {
 
-                        Marker new_m = mMap.addMarker(new MarkerOptions().
-                                icon(BitmapDescriptorFactory.fromBitmap(mIconFactory.makeIcon(name))).
-                                position(l).
-                                anchor(mIconFactory.getAnchorU(), mIconFactory.getAnchorV()).
-                                title(name));
-                        mMarkers.put(name, new_m);
+                            Marker new_m = mMap.addMarker(new MarkerOptions().
+                                    icon(BitmapDescriptorFactory.fromBitmap(mIconFactory.makeIcon(name))).
+                                    position(l).
+                                    anchor(mIconFactory.getAnchorU(), mIconFactory.getAnchorV()).
+                                    title(name));
+                            mMarkers.put(name, new_m);
 
+                        }
+
+                        Log.v("Firebase Test", d2.getRef().getParent().getKey() + " moved to " + d2.getValue());
                     }
-
-                    Log.v("Firebase Test", d2.getRef().getParent().getKey() + " moved to " + d2.getValue());
                 }
 //                if (mMap.getMyLocation() != null) {
 //                    Location l = mMap.getMyLocation();
@@ -274,21 +276,41 @@ public class Application extends android.app.Application {
         mIconFactory.setContentRotation(-90);
         mIconFactory.setTextAppearance(R.style.marker);
     }
-    public void trackAll() {
+
+    public void trackAll(final Context context) {
         if (mFirebaseRef != null)
             mFirebaseRef.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    boolean mIsNew = true;
+                    boolean noFriends = false;
                     for (DataSnapshot d: dataSnapshot.getChildren()){
                         Log.v("Firebase Test", d.getKey().toString());
                         String curr = d.getKey().toString();
-                        if (curr.equals(mUserID))
-                            mIsNew = false;
                         trackUser(curr);
                     }
 //                    if (mIsNew)
 //                        createNewUser();
+                    if(noFriends) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle("Welcome to Flare! Would you like to add friends?");
+
+                        // Set up the buttons
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent i = new Intent(context, newFriendsActivity.class);
+                                startActivity(i);
+                            }
+                        });
+                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        builder.show();
+                    }
                 }
 
                 @Override

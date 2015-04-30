@@ -2,19 +2,33 @@ package sunglass.com.loco;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.tokenautocomplete.TokenCompleteTextView;
+
+import java.util.Map;
 
 /**
  * Created by cmccord on 4/29/15.
  */
 public class newFriendsActivity extends Activity {
     private boolean changesMade = false;
+    private Firebase ref;
+    private Application app;
+    private Person[] people;
+    private ArrayAdapter<Person> adapter;
+    private ContactsCompletionView completionView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,22 +45,33 @@ public class newFriendsActivity extends Activity {
                 }
             }
         });
-        saveButton.setText(R.string.backarrow);
+        app = (Application) this.getApplication();
+        ref = app.getFirebaseRef();
 
-        Person[] people = new Person[]{
-                new Person("Marshall Weir", "marshall@example.com"),
-                new Person("Margaret Smith", "margaret@example.com"),
-                new Person("Max Jordan", "max@example.com"),
-                new Person("Meg Peterson", "meg@example.com"),
-                new Person("Amanda Johnson", "amanda@example.com"),
-                new Person("Terry Anderson", "terry@example.com")
-        };
+        ref.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                people = new Person[(int) snapshot.getChildrenCount()];
+                int i = 0;
+                // MAKE SURE YOU CAN'T FRIEND YOURSELF
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    String email;
+                    try {email = d.child("email").getValue().toString();}catch(Exception e){email = "";}
+                    String name = d.child("name").getValue().toString();
+                    people[i] = new Person(name, email);
+                    Log.v("Getting users", people[i].toString());
+                    i++;
+                }
+                adapter = new ArrayAdapter<Person>(newFriendsActivity.this, android.R.layout.simple_list_item_1, people);
+                completionView = (ContactsCompletionView)findViewById(R.id.searchView);
+                completionView.setAdapter(adapter);
+            }
 
-        ArrayAdapter<Person> adapter = new ArrayAdapter<Person>(this, android.R.layout.simple_list_item_1, people);
-
-        ContactsCompletionView completionView = (ContactsCompletionView)findViewById(R.id.searchView);
-        completionView.setAdapter(adapter);
-        completionView.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Delete);
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                // Do nothing.
+            }
+        });
 
     }
 }

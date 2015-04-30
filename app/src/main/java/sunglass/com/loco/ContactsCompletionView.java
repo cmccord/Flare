@@ -15,9 +15,16 @@ import com.tokenautocomplete.TokenCompleteTextView;
 /**
  * Created by cmccord on 4/29/15.
  */
+
+/* Using TokenCompleteTextView
+ * Copyright (c) 2013, 2014 splitwise, Wouter Dullaert
+ */
+
 public class ContactsCompletionView extends TokenCompleteTextView {
     public ContactsCompletionView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        allowDuplicates(false);
+        setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Delete);
     }
 
     @Override
