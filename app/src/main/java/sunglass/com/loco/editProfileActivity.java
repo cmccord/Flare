@@ -22,6 +22,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +52,8 @@ public class editProfileActivity extends Activity {
     private Button mSaveChangesButton;
     private Button mEditButton;
     private Button mCancelEditButton;
+
+    private ImageButton mProPic;
 
     private String value;
     private String orig_display_name;
@@ -83,6 +86,7 @@ public class editProfileActivity extends Activity {
         mSaveChangesButton = (Button) findViewById(R.id.save_changes_butt);
         mEditButton = (Button) findViewById(R.id.edit_butt);
         mCancelEditButton = (Button) findViewById(R.id.cancel_edit_butt);
+        mProPic = (ImageButton) findViewById(R.id.editProPic);
 
 //        mEmail.setKeyListener(null);
         mEmail.setClickable(false);
@@ -112,6 +116,12 @@ public class editProfileActivity extends Activity {
                     Map<String, Object> value = (Map<String, Object>) snapshot.getValue();
                     orig_display_name = (String) value.get("name");
                     orig_email = (String) value.get("email");
+
+                    if (orig_email.equals("kwdougla@princeton.edu"))
+                        mProPic.setBackgroundResource(R.drawable.pro_pic);
+                    else if (orig_email.equals("cmccord@princeton.edu"))
+                        mProPic.setBackgroundResource(R.drawable.mccord);
+
                     mDisplayName.setHint(orig_display_name);
                     mEmail.setHint(orig_email);
                 }
@@ -127,6 +137,11 @@ public class editProfileActivity extends Activity {
             Intent i = new Intent(editProfileActivity.this, loginActivity.class);
             startActivity(i);
         }
+
+
+
+
+
 
         Button backButton = (Button) findViewById(R.id.back_butt);
         backButton.setOnClickListener(
