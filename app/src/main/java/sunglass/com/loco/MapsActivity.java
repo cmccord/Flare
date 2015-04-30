@@ -261,7 +261,8 @@ public class MapsActivity extends FragmentActivity {
                 criteria.setAccuracy(Criteria.ACCURACY_FINE);
                 String provider = locationManager.getBestProvider(criteria, true);
                 Location l = locationManager.getLastKnownLocation(provider);
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(l.getLatitude(), l.getLongitude()), 14));
+                if (l != null)
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(l.getLatitude(), l.getLongitude()), 14));
             }
         }
     }

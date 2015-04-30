@@ -54,7 +54,7 @@
         android:scaleType="fitXY"
         android:id="@+id/editProPic"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/circle_plus" />
+        android:src="@mipmap/unknownuser" />
 
     <EditText
         android:paddingTop="20dp"

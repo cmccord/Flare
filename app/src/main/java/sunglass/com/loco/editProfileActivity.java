@@ -18,10 +18,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.AuthData;
@@ -42,6 +44,8 @@ public class editProfileActivity extends Activity {
     private EditText mDisplayName;
     private EditText mPassword;
 
+    private TextView mDescripText;
+
     private Button mRemoveUser;
     private Button mLogoutButton;
     private Button mSaveChangesButton;
@@ -50,6 +54,7 @@ public class editProfileActivity extends Activity {
 
     private String value;
     private String orig_display_name;
+    private String orig_email;
 
     private AuthData authData;
 
@@ -71,6 +76,8 @@ public class editProfileActivity extends Activity {
         mEmail = (EditText)findViewById(R.id.editEmail);
         mDisplayName = (EditText)findViewById(R.id.editDisplayName);
         mPassword = (EditText)findViewById(R.id.editPassword);
+        mPassword.setVisibility(View.GONE);
+        mDescripText = (TextView)findViewById(R.id.descrip_text);
         mRemoveUser = (Button) findViewById(R.id.removeUser_butt);
         mLogoutButton = (Button) findViewById(R.id.logoutButton);
         mSaveChangesButton = (Button) findViewById(R.id.save_changes_butt);
@@ -97,21 +104,16 @@ public class editProfileActivity extends Activity {
         authData = ref.getAuth();
         if (authData != null) {
 
-            mEmail.setHint(""+authData.getProviderData().get("email"));
+//            mEmail.setHint(""+authData.getProviderData().get("email"));
 
             ref.child("users").child(authData.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
-//                    for (DataSnapshot d : snapshot.getChildren()) {
-////                        Log.v("FireFireFire", d.getKey().toString());
-//                        String curr = d.getKey().toString();
-//                        if (curr.equals((String) authData.getUid())) {
-                            Map<String, Object> value = (Map<String, Object>) snapshot.getValue();
-//                            Log.v("POOPYPOOP", (String) value.get("name"));
+                    Map<String, Object> value = (Map<String, Object>) snapshot.getValue();
                     orig_display_name = (String) value.get("name");
+                    orig_email = (String) value.get("email");
                     mDisplayName.setHint(orig_display_name);
-//                        }
-//                    }
+                    mEmail.setHint(orig_email);
                 }
 
                 @Override
@@ -149,6 +151,7 @@ public class editProfileActivity extends Activity {
                         input.setWidth(200);
                         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                         input.requestFocus();
+                        input.setImeOptions(EditorInfo.IME_ACTION_DONE);
                         imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 //                        alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -162,138 +165,216 @@ public class editProfileActivity extends Activity {
 
                                 if (authData != null) {
 
-                                    ref.changePassword(""+authData.getProviderData().get("email"), value, value, new Firebase.ResultHandler() {
-                                        @Override
-                                        public void onSuccess() {
+                                    authClient.changePassword(orig_email, value, value, new SimpleLoginCompletionHandler() {
+                                        public void completed(FirebaseSimpleLoginError error, boolean success) {
+                                            if(error != null) {
+                                                Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_SHORT).show();
 
-                                            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
-//                                            imm.hideSoftInputFromWindow(input.getWindowToken(),0);
+                                                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
+//                                                  imm.hideSoftInputFromWindow(input.getWindowToken(),0);
+                                            }
+                                            else if (success) {
 
-                                            Toast.makeText(getApplicationContext(), "Password Verified", Toast.LENGTH_SHORT).show();
+                                                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
+//                                                  imm.hideSoftInputFromWindow(input.getWindowToken(),0);
 
-                                            mEditButton.setVisibility(View.GONE);
-                                            mCancelEditButton.setVisibility(View.VISIBLE);
+                                                Toast.makeText(getApplicationContext(), "Password Verified", Toast.LENGTH_SHORT).show();
 
-                                            mPassword.setVisibility(View.VISIBLE);
+                                                mEditButton.setVisibility(View.GONE);
+                                                mCancelEditButton.setVisibility(View.VISIBLE);
 
-                                            mLogoutButton.setVisibility(View.GONE);
-                                            mSaveChangesButton.setVisibility(View.VISIBLE);
+                                                mDescripText.setVisibility(View.GONE);
 
-                                            mRemoveUser.setVisibility(View.VISIBLE);
+                                                mPassword.setVisibility(View.VISIBLE);
 
-//                                            mEmail.setKeyListener((KeyListener) mEmail.getTag());
-                                            mEmail.setClickable(true);
-                                            mEmail.setCursorVisible(true);
-                                            mEmail.setFocusable(true);
-                                            mEmail.setFocusableInTouchMode(true);
+                                                mLogoutButton.setVisibility(View.GONE);
+                                                mSaveChangesButton.setVisibility(View.VISIBLE);
 
-//                                            mDisplayName.setKeyListener((KeyListener) mDisplayName.getTag());
-                                            mDisplayName.setClickable(true);
-                                            mDisplayName.setCursorVisible(true);
-                                            mDisplayName.setFocusable(true);
-                                            mDisplayName.setFocusableInTouchMode(true);
+                                                mRemoveUser.setVisibility(View.VISIBLE);
 
-                                            mEmail.setHint("Update Email");
-                                            mDisplayName.setHint("Update Display Name");
-                                            mPassword.setHint("Update Password");
+//                                                  mEmail.setKeyListener((KeyListener) mEmail.getTag());
+                                                mEmail.setClickable(true);
+                                                mEmail.setCursorVisible(true);
+                                                mEmail.setFocusable(true);
+                                                mEmail.setFocusableInTouchMode(true);
 
-//                                            mEmail.clearFocus();
-//                                            mDisplayName.clearFocus();
-//                                            mPassword.clearFocus();
+//                                                  mDisplayName.setKeyListener((KeyListener) mDisplayName.getTag());
+                                                mDisplayName.setClickable(true);
+                                                mDisplayName.setCursorVisible(true);
+                                                mDisplayName.setFocusable(true);
+                                                mDisplayName.setFocusableInTouchMode(true);
 
-                                            LinearLayout our_layout = (LinearLayout) editProfileActivity.this.findViewById(R.id.our_lin_layout);
-                                            our_layout.requestFocus();
+                                                mEmail.setText("");
+                                                mDisplayName.setText("");
+                                                mPassword.setText("");
 
-                                            mRemoveUser.setOnClickListener(
-                                                    new Button.OnClickListener() {
-                                                        public void onClick(View v) {
+                                                mEmail.setHint("Update Email");
+                                                mDisplayName.setHint("Update Display Name");
+                                                mPassword.setHint("Update Password");
 
-                                                            AlertDialog.Builder remove_alert = new AlertDialog.Builder(editProfileActivity.this);
+//                                                  mEmail.clearFocus();
+//                                                  mDisplayName.clearFocus();
+//                                                  mPassword.clearFocus();
 
-                                                            remove_alert.setTitle("Are you sure?");
-                                                            remove_alert.setMessage("Deleting your profile will completely remove your profile from Flare. This cannot be undone.");
+                                                LinearLayout our_layout = (LinearLayout) editProfileActivity.this.findViewById(R.id.our_lin_layout);
+                                                our_layout.requestFocus();
 
-                                                            remove_alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int whichButton) {
+                                                mRemoveUser.setOnClickListener(
+                                                        new Button.OnClickListener() {
+                                                            public void onClick(View v) {
 
-                                                                    Intent intent = new Intent(editProfileActivity.this, LocationShareReceiver.class);
-                                                                    intent.setAction("sunglass.com.loco.LOCATION_SHARE");
-                                                                    PendingIntent pi = PendingIntent.getBroadcast(editProfileActivity.this, 0,
-                                                                            intent, PendingIntent.FLAG_NO_CREATE);
-                                                                    boolean alarmUp = (pi != null);
-                                                                    if(alarmUp) {
-                                                                        LocationShareReceiver alarm = new LocationShareReceiver();
-                                                                        alarm.CancelAlarm(editProfileActivity.this);
-                                                                        pi.cancel();
+                                                                AlertDialog.Builder remove_alert = new AlertDialog.Builder(editProfileActivity.this);
+
+                                                                remove_alert.setTitle("Are you sure?");
+                                                                remove_alert.setMessage("Deleting your profile will completely remove your profile from Flare. This cannot be undone.");
+
+                                                                remove_alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                                                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                                                                        Intent intent = new Intent(editProfileActivity.this, LocationShareReceiver.class);
+                                                                        intent.setAction("sunglass.com.loco.LOCATION_SHARE");
+                                                                        PendingIntent pi = PendingIntent.getBroadcast(editProfileActivity.this, 0,
+                                                                                intent, PendingIntent.FLAG_NO_CREATE);
+                                                                        boolean alarmUp = (pi != null);
+                                                                        if(alarmUp) {
+                                                                            LocationShareReceiver alarm = new LocationShareReceiver();
+                                                                            alarm.CancelAlarm(editProfileActivity.this);
+                                                                            pi.cancel();
+                                                                        }
+
+                                                                        authClient.removeUser(orig_email, value, new SimpleLoginCompletionHandler() {
+                                                                            public void completed(FirebaseSimpleLoginError error, boolean success) {
+                                                                                if (error != null) {
+                                                                                    Toast.makeText(getApplicationContext(), "You are not authenticated; log in again.", Toast.LENGTH_SHORT).show();
+                                                                                    Intent i = new Intent(editProfileActivity.this, loginActivity.class);
+                                                                                    startActivity(i);
+                                                                                }
+                                                                                else if (success) {
+
+                                                                                    authClient.logout();
+
+                                                                                    Toast.makeText(getApplicationContext(), "Profile deleted. Rejoin the fire soon!", Toast.LENGTH_SHORT).show();
+
+                                                                                    ref.child("users").child(authData.getUid()).removeValue();
+
+                                                                                    Intent i = new Intent(editProfileActivity.this, loginActivity.class);
+                                                                                    startActivity(i);
+                                                                                }
+                                                                            }
+                                                                        });
+
                                                                     }
-                                                                    authClient.removeUser(""+authData.getProviderData().get("email"), value, new SimpleLoginCompletionHandler() {
+                                                                });
+
+                                                                remove_alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                                                        // Do nothing.
+                                                                    }
+                                                                });
+
+                                                                remove_alert.show();
+
+                                                            }
+                                                        }
+                                                );
+
+                                                mSaveChangesButton.setOnClickListener(
+                                                        new Button.OnClickListener() {
+                                                            public void onClick(View v) {
+
+                                                                // ONLY DISPLAY NAME CHANGES.
+                                                                if (mEmail.getText().toString().equals("") && !mDisplayName.getText().toString().equals("") && mPassword.getText().toString().equals("")) {
+
+                                                                    ref.child("users").child(authData.getUid()).child("name").setValue(mDisplayName.getText().toString());
+
+                                                                    Toast.makeText(getApplicationContext(), "Success! Display Name Changed", Toast.LENGTH_SHORT).show();
+
+                                                                }
+
+                                                                // ONLY PASSWORD CHANGES.
+                                                                if (mEmail.getText().toString().equals("") && mDisplayName.getText().toString().equals("") && !mPassword.getText().toString().equals("")) {
+
+                                                                    authClient.changePassword(orig_email, value, mPassword.getText().toString(), new SimpleLoginCompletionHandler() {
                                                                         public void completed(FirebaseSimpleLoginError error, boolean success) {
                                                                             if (error != null) {
-                                                                                Toast.makeText(getApplicationContext(), "You are not authenticated; log in again.", Toast.LENGTH_SHORT).show();
-                                                                                Intent i = new Intent(editProfileActivity.this, loginActivity.class);
-                                                                                startActivity(i);
+                                                                                Toast.makeText(getApplicationContext(), "Failure; Password Not Changed", Toast.LENGTH_SHORT).show();
                                                                             }
                                                                             else if (success) {
-
-                                                                                // USE https://www.firebase.com/docs/android/api/#firebase_removeValue IF NEED BE
-
-                                                                                Toast.makeText(getApplicationContext(), "Profile deleted. Rejoin the fire soon!", Toast.LENGTH_SHORT).show();
-
-                                                                                ref.child("users").child(authData.getUid()).removeValue();
-
-                                                                                Intent i = new Intent(editProfileActivity.this, loginActivity.class);
-                                                                                startActivity(i);
+                                                                                Toast.makeText(getApplicationContext(), "Success! Password Changed", Toast.LENGTH_SHORT).show();
                                                                             }
                                                                         }
                                                                     });
 
                                                                 }
-                                                            });
 
-                                                            remove_alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int whichButton) {
-                                                                    // Do nothing.
+                                                                // BOTH DISPLAY NAME AND PASSWORD CHANGE.
+                                                                if (mEmail.getText().toString().equals("") && !mDisplayName.getText().toString().equals("") && !mPassword.getText().toString().equals("")) {
+
+                                                                    ref.child("users").child(authData.getUid()).child("name").setValue(mDisplayName.getText().toString());
+
+                                                                    Toast.makeText(getApplicationContext(), "Success! Display Name Changed", Toast.LENGTH_SHORT).show();
+
+                                                                    authClient.changePassword(orig_email, value, mPassword.getText().toString(), new SimpleLoginCompletionHandler() {
+                                                                        public void completed(FirebaseSimpleLoginError error, boolean success) {
+                                                                            if (error != null) {
+                                                                                Toast.makeText(getApplicationContext(), "Failure; Password Not Changed", Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                            else if (success) {
+                                                                                Toast.makeText(getApplicationContext(), "Success! Password Changed", Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                        }
+                                                                    });
+
                                                                 }
-                                                            });
 
-                                                            remove_alert.show();
+                                                                // Update display name and email and reset hints.
+                                                                ref.child("users").child(authData.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                    @Override
+                                                                    public void onDataChange(DataSnapshot snapshot) {
+                                                                        Map<String, Object> value = (Map<String, Object>) snapshot.getValue();
+                                                                        orig_display_name = (String) value.get("name");
+                                                                        orig_email = (String) value.get("email");
+                                                                        mDisplayName.setHint(orig_display_name);
+                                                                        mEmail.setHint(orig_email);
+                                                                    }
 
+                                                                    @Override
+                                                                    public void onCancelled(FirebaseError firebaseError) {
+                                                                        // Do nothing.
+                                                                    }
+                                                                });
+
+                                                                mEditButton.setVisibility(View.VISIBLE);
+                                                                mCancelEditButton.setVisibility(View.GONE);
+
+                                                                mDescripText.setVisibility(View.VISIBLE);
+
+                                                                mRemoveUser.setVisibility(View.GONE);
+                                                                mPassword.setVisibility(View.GONE);
+
+                                                                mLogoutButton.setVisibility(View.VISIBLE);
+                                                                mSaveChangesButton.setVisibility(View.GONE);
+
+                                                                mEmail.setText("");
+                                                                mDisplayName.setText("");
+                                                                mPassword.setText("");
+
+//                                                                  mEmail.setKeyListener(null);
+                                                                mEmail.setClickable(false);
+                                                                mEmail.setCursorVisible(false);
+                                                                mEmail.setFocusable(false);
+                                                                mEmail.setFocusableInTouchMode(false);
+
+//                                                                  mDisplayName.setKeyListener(null);
+                                                                mDisplayName.setClickable(false);
+                                                                mDisplayName.setCursorVisible(false);
+                                                                mDisplayName.setFocusable(false);
+                                                                mDisplayName.setFocusableInTouchMode(false);
+                                                            }
                                                         }
-                                                    }
-                                            );
+                                                );
 
-                                            mSaveChangesButton.setOnClickListener(
-                                                    new Button.OnClickListener() {
-                                                        public void onClick(View v) {
-                                                            mEditButton.setVisibility(View.VISIBLE);
-                                                            mCancelEditButton.setVisibility(View.GONE);
-
-                                                            mRemoveUser.setVisibility(View.GONE);
-                                                            mPassword.setVisibility(View.GONE);
-
-                                                            mLogoutButton.setVisibility(View.VISIBLE);
-                                                            mSaveChangesButton.setVisibility(View.GONE);
-
-//                                                            mEmail.setKeyListener(null);
-                                                            mEmail.setClickable(false);
-                                                            mEmail.setCursorVisible(false);
-                                                            mEmail.setFocusable(false);
-                                                            mEmail.setFocusableInTouchMode(false);
-
-//                                                            mDisplayName.setKeyListener(null);
-                                                            mDisplayName.setClickable(false);
-                                                            mDisplayName.setCursorVisible(false);
-                                                            mDisplayName.setFocusable(false);
-                                                            mDisplayName.setFocusableInTouchMode(false);
-                                                        }
-                                                    }
-                                            );
-
-                                        }
-
-                                        @Override
-                                        public void onError(FirebaseError firebaseError) {
-                                            Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_SHORT).show();
+                                            }
                                         }
                                     });
 
@@ -326,6 +407,8 @@ public class editProfileActivity extends Activity {
                         mEditButton.setVisibility(View.VISIBLE);
                         mCancelEditButton.setVisibility(View.GONE);
 
+                        mDescripText.setVisibility(View.VISIBLE);
+
                         mPassword.setVisibility(View.GONE);
 
                         mLogoutButton.setVisibility(View.VISIBLE);
@@ -333,7 +416,7 @@ public class editProfileActivity extends Activity {
 
                         mRemoveUser.setVisibility(View.GONE);
 
-                        mEmail.setHint(""+authData.getProviderData().get("email"));
+                        mEmail.setHint(orig_email);
                         mDisplayName.setHint(orig_display_name);
 
 //                                                            mEmail.setKeyListener(null);
@@ -364,6 +447,7 @@ public class editProfileActivity extends Activity {
                             alarm.CancelAlarm(editProfileActivity.this);
                             pi.cancel();
                         }
+
                         authClient.logout();
 
                         Toast.makeText(getApplicationContext(), "Come Back Soon!", Toast.LENGTH_SHORT).show();

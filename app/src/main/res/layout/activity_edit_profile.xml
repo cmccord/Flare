@@ -84,7 +84,8 @@
         android:scaleType="fitXY"
         android:id="@+id/editProPic"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/circle_plus" />
+        android:src="@drawable/pro_pic" />
+    <!--android:src="@mipmap/unknownuser"-->
 
     <EditText
         android:paddingTop="20dp"
@@ -114,7 +115,6 @@
         <!--android:hint="@string/displayname"-->
 
     <EditText
-        android:visibility="invisible"
         android:paddingTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -134,6 +134,16 @@
         android:id="@+id/fillerText"
         android:layout_gravity="center_horizontal" />
 
+    <TextView
+        android:paddingTop="45dp"
+        android:paddingBottom="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Click the Pencil to Make Changes"
+        android:id="@+id/descrip_text"
+        android:layout_gravity="center_horizontal" />
+
     <Button
         android:visibility="invisible"
         android:id="@+id/removeUser_butt"
@@ -144,7 +154,7 @@
         android:padding="15dp"
         android:fontFamily="sans-serif-thin"
         android:textStyle="bold"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/button_blue" />
 
