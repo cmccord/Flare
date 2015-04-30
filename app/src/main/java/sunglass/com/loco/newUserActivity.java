@@ -20,7 +20,9 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class newUserActivity extends Activity {
@@ -77,6 +79,8 @@ public class newUserActivity extends Activity {
                                             dets.put("name", mDisplayName.getText().toString());
                                             dets.put("timestamp", System.currentTimeMillis());
                                             dets.put("time_created", System.currentTimeMillis());
+                                            dets.put("email", mEmail.getText().toString());
+                                            dets.put("friends", new HashMap<String,String>());
                                             user.put(result.get("uid"), dets);
 
                                             ref.child("users").updateChildren(user);
@@ -88,6 +92,9 @@ public class newUserActivity extends Activity {
                                             @Override
                                             public void onAuthenticated(AuthData authData) {
                                                 Toast.makeText(getApplicationContext(), "User ID: " + authData.getUid() + ", Password: " + authData.getProvider(), Toast.LENGTH_SHORT).show();
+
+                                                Intent i = new Intent(newUserActivity.this, MapsActivity.class);
+                                                startActivity(i);
                                             }
 
                                             @Override
@@ -101,7 +108,7 @@ public class newUserActivity extends Activity {
                                     public void onError(FirebaseError firebaseError) {
                                         Log.v("ERRORERROR","ERRORERROR"+firebaseError.getCode());
                                         switch (firebaseError.getCode()) {
-                                            case FirebaseError.USER_DOES_NOT_EXIST:
+                                            case FirebaseError.EMAIL_TAKEN:
                                                 Toast.makeText(getApplicationContext(), "Email Already in Use", Toast.LENGTH_SHORT).show();
                                                 break;
                                             case FirebaseError.INVALID_EMAIL:
@@ -113,9 +120,6 @@ public class newUserActivity extends Activity {
                                         }
                                     }
                                 });
-
-                                Intent i = new Intent(newUserActivity.this, MapsActivity.class);
-                                startActivity(i);
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

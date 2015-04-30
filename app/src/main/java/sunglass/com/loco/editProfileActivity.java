@@ -53,7 +53,7 @@ public class editProfileActivity extends Activity {
 
     private Firebase ref;
 
-    private Application app;
+//    private Application app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class editProfileActivity extends Activity {
 
         Firebase.setAndroidContext(this);
 
-        app = (Application) this.getApplication();
+//        app = (Application) this.getApplication();
 
         mEmail = (EditText)findViewById(R.id.editEmail);
         mDisplayName = (EditText)findViewById(R.id.editDisplayName);
@@ -87,26 +87,26 @@ public class editProfileActivity extends Activity {
 
         mCancelEditButton.setVisibility(View.GONE);
 
-        ref = new Firebase("https://loco-android.firebaseio.com");
+        ref = ((Application) this.getApplication()).getFirebaseRef();
 
         authData = ref.getAuth();
         if (authData != null) {
 
             mEmail.setHint(""+authData.getProviderData().get("email"));
 
-            ref.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            ref.child("users").child(authData.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
-                    for (DataSnapshot d : snapshot.getChildren()) {
-//                        Log.v("FireFireFire", d.getKey().toString());
-                        String curr = d.getKey().toString();
-                        if (curr.equals((String) authData.getUid())) {
-                            Map<String, Object> value = (Map<String, Object>) d.getValue();
+//                    for (DataSnapshot d : snapshot.getChildren()) {
+////                        Log.v("FireFireFire", d.getKey().toString());
+//                        String curr = d.getKey().toString();
+//                        if (curr.equals((String) authData.getUid())) {
+                            Map<String, Object> value = (Map<String, Object>) snapshot.getValue();
 //                            Log.v("POOPYPOOP", (String) value.get("name"));
-                            orig_display_name = (String) value.get("name");
-                            mDisplayName.setHint(orig_display_name);
-                        }
-                    }
+                    orig_display_name = (String) value.get("name");
+                    mDisplayName.setHint(orig_display_name);
+//                        }
+//                    }
                 }
 
                 @Override
@@ -199,6 +199,53 @@ public class editProfileActivity extends Activity {
                                             LinearLayout our_layout = (LinearLayout) editProfileActivity.this.findViewById(R.id.our_lin_layout);
                                             our_layout.requestFocus();
 
+                                            mRemoveUser.setOnClickListener(
+                                                    new Button.OnClickListener() {
+                                                        public void onClick(View v) {
+
+                                                            AlertDialog.Builder remove_alert = new AlertDialog.Builder(editProfileActivity.this);
+
+                                                            remove_alert.setTitle("Are you sure?");
+                                                            remove_alert.setMessage("Dousing your profile will completely remove your profile from Flare. This cannot be undone.");
+
+                                                            remove_alert.setPositiveButton("Douse", new DialogInterface.OnClickListener() {
+                                                                public void onClick(DialogInterface dialog, int whichButton) {
+
+                                                                    ref.removeUser(""+authData.getProviderData().get("email"), value, new Firebase.ResultHandler() {
+                                                                        @Override
+                                                                        public void onSuccess() {
+
+                                                                            // USE https://www.firebase.com/docs/android/api/#firebase_removeValue!!!!!
+
+
+                                                                            Toast.makeText(getApplicationContext(), "Profile doused. Rejoin the fire soon!", Toast.LENGTH_SHORT).show();
+
+                                                                            Intent i = new Intent(editProfileActivity.this, loginActivity.class);
+                                                                            startActivity(i);
+                                                                        }
+
+                                                                        @Override
+                                                                        public void onError(FirebaseError firebaseError) {
+                                                                            Toast.makeText(getApplicationContext(), "You are not authenticated; log in again.", Toast.LENGTH_SHORT).show();
+                                                                            Intent i = new Intent(editProfileActivity.this, loginActivity.class);
+                                                                            startActivity(i);                                                                }
+                                                                    });
+
+                                                                }
+                                                            });
+
+                                                            remove_alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                                public void onClick(DialogInterface dialog, int whichButton) {
+                                                                    // Do nothing.
+                                                                }
+                                                            });
+
+                                                            remove_alert.show();
+
+                                                        }
+                                                    }
+                                            );
+
                                             mSaveChangesButton.setOnClickListener(
                                                     new Button.OnClickListener() {
                                                         public void onClick(View v) {
@@ -246,6 +293,9 @@ public class editProfileActivity extends Activity {
                         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 // Do nothing.
+
+                                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
+//                                  imm.hideSoftInputFromWindow(input.getWindowToken(),0);
                             }
                         });
 
