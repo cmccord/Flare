@@ -28,6 +28,7 @@ import com.firebase.simplelogin.FirebaseSimpleLoginError;
 import com.firebase.simplelogin.FirebaseSimpleLoginUser;
 import com.firebase.simplelogin.SimpleLogin;
 import com.firebase.simplelogin.SimpleLoginAuthenticatedHandler;
+import com.firebase.simplelogin.SimpleLoginCompletionHandler;
 import com.firebase.simplelogin.enums.FirebaseSimpleLoginErrorCode;
 
 import java.util.Map;
@@ -54,7 +55,9 @@ public class loginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.red_screen);
 
-        final SimpleLogin authClient = new SimpleLogin(ref, loginActivity.this);
+        final SimpleLogin authClient = new SimpleLogin(ref, getApplicationContext());
+        ((Application) this.getApplication()).setSimpleLogin(authClient);
+
         authClient.checkAuthStatus(new SimpleLoginAuthenticatedHandler() {
             @Override
             public void authenticated(FirebaseSimpleLoginError error, FirebaseSimpleLoginUser user) {
@@ -184,15 +187,15 @@ public class loginActivity extends Activity {
 
                             final EditText input = new EditText(loginActivity.this);
                             input.setGravity(Gravity.CENTER);
-//                        input.setHint("Password");
+//                          input.setHint("Password");
                             input.setWidth(200);
                             input.requestFocus();
                             input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-//                if (mEmail.getText() != null)
-//                    input.setText(mEmail.getText().toString());
+//                          if (mEmail.getText() != null)
+//                          input.setText(mEmail.getText().toString());
                             imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-//                        alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+//                          alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
                             alert.setView(input);
 
@@ -201,24 +204,26 @@ public class loginActivity extends Activity {
 
                                     email_to_send = input.getText().toString();
 
-                                    ref.resetPassword(email_to_send, new Firebase.ResultHandler() {
+                                    authClient.sendPasswordResetEmail(email_to_send, new SimpleLoginCompletionHandler() {
                                         @Override
-                                        public void onSuccess() {
-                                            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
-//                                imm.hideSoftInputFromWindow(input.getWindowToken(),0);
+                                        public void completed(FirebaseSimpleLoginError error, boolean success) {
 
-                                            Toast.makeText(getApplicationContext(), "Success! Please check your email.", Toast.LENGTH_SHORT).show();
+                                            if (error != null) {
 
-                                            LinearLayout our_layout = (LinearLayout) loginActivity.this.findViewById(R.id.the_lin_layout);
-                                            our_layout.requestFocus();
-                                        }
+                                                Toast.makeText(getApplicationContext(), "User Does Not Exist", Toast.LENGTH_SHORT).show();
 
-                                        @Override
-                                        public void onError(FirebaseError firebaseError) {
-                                            Toast.makeText(getApplicationContext(), "User Does Not Exist", Toast.LENGTH_SHORT).show();
+                                                LinearLayout our_layout = (LinearLayout) loginActivity.this.findViewById(R.id.the_lin_layout);
+                                                our_layout.requestFocus();
 
-                                            LinearLayout our_layout = (LinearLayout) loginActivity.this.findViewById(R.id.the_lin_layout);
-                                            our_layout.requestFocus();
+                                            } else if (success) {
+                                                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+//                                              imm.hideSoftInputFromWindow(input.getWindowToken(),0);
+
+                                                Toast.makeText(getApplicationContext(), "Success! Please check your email.", Toast.LENGTH_SHORT).show();
+
+                                                LinearLayout our_layout = (LinearLayout) loginActivity.this.findViewById(R.id.the_lin_layout);
+                                                our_layout.requestFocus();
+                                            }
                                         }
                                     });
 
@@ -230,7 +235,7 @@ public class loginActivity extends Activity {
                                     // Do nothing.
 
                                     imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
-//                        imm.hideSoftInputFromWindow(input.getWindowToken(),0);
+//                                  imm.hideSoftInputFromWindow(input.getWindowToken(),0);
 
                                     LinearLayout our_layout = (LinearLayout) loginActivity.this.findViewById(R.id.the_lin_layout);
                                     our_layout.requestFocus();

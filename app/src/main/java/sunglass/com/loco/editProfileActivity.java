@@ -28,6 +28,9 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.firebase.simplelogin.FirebaseSimpleLoginError;
+import com.firebase.simplelogin.SimpleLogin;
+import com.firebase.simplelogin.SimpleLoginCompletionHandler;
 
 import java.util.Map;
 
@@ -53,14 +56,14 @@ public class editProfileActivity extends Activity {
 
     private Firebase ref;
 
+    private SimpleLogin authClient;
+
 //    private Application app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-
-        Firebase.setAndroidContext(this);
 
 //        app = (Application) this.getApplication();
 
@@ -88,6 +91,7 @@ public class editProfileActivity extends Activity {
         mCancelEditButton.setVisibility(View.GONE);
 
         ref = ((Application) this.getApplication()).getFirebaseRef();
+        authClient = ((Application) this.getApplication()).getSimpleLoginRef();
 
         authData = ref.getAuth();
         if (authData != null) {
@@ -206,29 +210,30 @@ public class editProfileActivity extends Activity {
                                                             AlertDialog.Builder remove_alert = new AlertDialog.Builder(editProfileActivity.this);
 
                                                             remove_alert.setTitle("Are you sure?");
-                                                            remove_alert.setMessage("Dousing your profile will completely remove your profile from Flare. This cannot be undone.");
+                                                            remove_alert.setMessage("Deleting your profile will completely remove your profile from Flare. This cannot be undone.");
 
-                                                            remove_alert.setPositiveButton("Douse", new DialogInterface.OnClickListener() {
+                                                            remove_alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                                                 public void onClick(DialogInterface dialog, int whichButton) {
 
-                                                                    ref.removeUser(""+authData.getProviderData().get("email"), value, new Firebase.ResultHandler() {
-                                                                        @Override
-                                                                        public void onSuccess() {
+                                                                    authClient.removeUser(""+authData.getProviderData().get("email"), value, new SimpleLoginCompletionHandler() {
+                                                                        public void completed(FirebaseSimpleLoginError error, boolean success) {
+                                                                            if (error != null) {
+                                                                                Toast.makeText(getApplicationContext(), "You are not authenticated; log in again.", Toast.LENGTH_SHORT).show();
+                                                                                Intent i = new Intent(editProfileActivity.this, loginActivity.class);
+                                                                                startActivity(i);
+                                                                            }
+                                                                            else if (success) {
 
-                                                                            // USE https://www.firebase.com/docs/android/api/#firebase_removeValue!!!!!
+                                                                                // USE https://www.firebase.com/docs/android/api/#firebase_removeValue IF NEED BE
 
+                                                                                Toast.makeText(getApplicationContext(), "Profile deleted. Rejoin the fire soon!", Toast.LENGTH_SHORT).show();
 
-                                                                            Toast.makeText(getApplicationContext(), "Profile doused. Rejoin the fire soon!", Toast.LENGTH_SHORT).show();
+                                                                                ref.child("users").child(authData.getUid()).removeValue();
 
-                                                                            Intent i = new Intent(editProfileActivity.this, loginActivity.class);
-                                                                            startActivity(i);
+                                                                                Intent i = new Intent(editProfileActivity.this, loginActivity.class);
+                                                                                startActivity(i);
+                                                                            }
                                                                         }
-
-                                                                        @Override
-                                                                        public void onError(FirebaseError firebaseError) {
-                                                                            Toast.makeText(getApplicationContext(), "You are not authenticated; log in again.", Toast.LENGTH_SHORT).show();
-                                                                            Intent i = new Intent(editProfileActivity.this, loginActivity.class);
-                                                                            startActivity(i);                                                                }
                                                                     });
 
                                                                 }
@@ -338,6 +343,8 @@ public class editProfileActivity extends Activity {
         mLogoutButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
+                        authClient.logout();
+
                         Toast.makeText(getApplicationContext(), "Come Back Soon!", Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(editProfileActivity.this, loginActivity.class);
                         startActivity(i);

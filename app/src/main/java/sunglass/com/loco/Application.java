@@ -19,6 +19,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.firebase.simplelogin.SimpleLogin;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -51,6 +52,7 @@ public class Application extends android.app.Application {
     private boolean sharingStatus;
     private Activity inMapsActivity = null;
     private static Application inst;
+    private SimpleLogin authClient;
 
     @Override
     public void onCreate() {
@@ -70,6 +72,14 @@ public class Application extends android.app.Application {
 
     public Firebase getFirebaseRef() {
         return mFirebaseRef;
+    }
+
+    public void setSimpleLogin(SimpleLogin simpleLogin) {
+        authClient = simpleLogin;
+    }
+
+    public SimpleLogin getSimpleLoginRef() {
+        return authClient;
     }
 
     public void setmUserID(String m) {

@@ -139,7 +139,7 @@
         android:id="@+id/removeUser_butt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Douse Profile"
+        android:text="Delete Profile"
         android:textColor="#fff"
         android:padding="15dp"
         android:fontFamily="sans-serif-thin"

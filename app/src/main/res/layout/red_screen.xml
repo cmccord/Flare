@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="#a7ff0d00">
 
-</LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_centerInParent="true"
+        android:textColor="#fff"
+        android:text="@string/app_name"
+        android:id="@+id/textView4"
+        android:fontFamily="sans-serif-thin"
+        android:textStyle="bold"
+        android:textSize="72sp"
+        android:paddingBottom="150dp" />
+    <!--android:layout_gravity="center_vertical|center_horizontal"-->
+
+    <ImageView
+        android:paddingTop="100dp"
+        android:layout_width="115dp"
+        android:layout_height="215dp"
+        android:scaleType="fitXY"
+        android:layout_centerInParent="true"
+        android:id="@+id/flareLogo"
+        android:src="@drawable/fire_icon" />
+    <!--android:layout_gravity="center_horizontal"-->
+
+</RelativeLayout>
