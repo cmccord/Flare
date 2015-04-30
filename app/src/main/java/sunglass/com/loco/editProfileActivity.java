@@ -2,6 +2,7 @@ package sunglass.com.loco;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -215,6 +216,16 @@ public class editProfileActivity extends Activity {
                                                             remove_alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                                                 public void onClick(DialogInterface dialog, int whichButton) {
 
+                                                                    Intent intent = new Intent(editProfileActivity.this, LocationShareReceiver.class);
+                                                                    intent.setAction("sunglass.com.loco.LOCATION_SHARE");
+                                                                    PendingIntent pi = PendingIntent.getBroadcast(editProfileActivity.this, 0,
+                                                                            intent, PendingIntent.FLAG_NO_CREATE);
+                                                                    boolean alarmUp = (pi != null);
+                                                                    if(alarmUp) {
+                                                                        LocationShareReceiver alarm = new LocationShareReceiver();
+                                                                        alarm.CancelAlarm(editProfileActivity.this);
+                                                                        pi.cancel();
+                                                                    }
                                                                     authClient.removeUser(""+authData.getProviderData().get("email"), value, new SimpleLoginCompletionHandler() {
                                                                         public void completed(FirebaseSimpleLoginError error, boolean success) {
                                                                             if (error != null) {
@@ -343,6 +354,16 @@ public class editProfileActivity extends Activity {
         mLogoutButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
+                        Intent intent = new Intent(editProfileActivity.this, LocationShareReceiver.class);
+                        intent.setAction("sunglass.com.loco.LOCATION_SHARE");
+                        PendingIntent pi = PendingIntent.getBroadcast(editProfileActivity.this, 0,
+                                intent, PendingIntent.FLAG_NO_CREATE);
+                        boolean alarmUp = (pi != null);
+                        if(alarmUp) {
+                            LocationShareReceiver alarm = new LocationShareReceiver();
+                            alarm.CancelAlarm(editProfileActivity.this);
+                            pi.cancel();
+                        }
                         authClient.logout();
 
                         Toast.makeText(getApplicationContext(), "Come Back Soon!", Toast.LENGTH_SHORT).show();

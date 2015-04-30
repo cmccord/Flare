@@ -256,10 +256,12 @@ public class MapsActivity extends FragmentActivity {
             if (mMap != null) {
                 setUpMap();
                 ((Application) this.getApplication()).setmMap(mMap);
-                Location l = mMap.getMyLocation();
-                if (l != null) {
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(l.getLatitude(), l.getLongitude()), 14));
-                }
+                LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+                Criteria criteria = new Criteria();
+                criteria.setAccuracy(Criteria.ACCURACY_FINE);
+                String provider = locationManager.getBestProvider(criteria, true);
+                Location l = locationManager.getLastKnownLocation(provider);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(l.getLatitude(), l.getLongitude()), 14));
             }
         }
     }
@@ -297,8 +299,8 @@ public class MapsActivity extends FragmentActivity {
             LatLngBounds bounds = builder.build();
             int padding = 400; // offset from edges of the map in pixels
             CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-//        mMap.moveCamera(cu);
-            mMap.animateCamera(cu);
+            mMap.moveCamera(cu);
+            //mMap.animateCamera(cu);
         }
     }
 

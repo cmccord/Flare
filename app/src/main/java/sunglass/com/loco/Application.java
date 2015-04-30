@@ -70,6 +70,10 @@ public class Application extends android.app.Application {
         mFirebaseRef = new Firebase("https://loco-android.firebaseio.com/");
     }
 
+    public Location getmLocation() {
+        return mLocation;
+    }
+
     public Firebase getFirebaseRef() {
         return mFirebaseRef;
     }
@@ -224,6 +228,13 @@ public class Application extends android.app.Application {
                         }
 
                         Log.v("Firebase Test", d2.getRef().getParent().getKey() + " moved to " + d2.getValue());
+                    }
+                    else {
+                        // if location is gone, remove marker from map
+                        if(mMarkers.containsKey(name)) {
+                            mMarkers.get(name).remove();
+                            mMarkers.remove(name);
+                        }
                     }
                 }
 //                if (mMap.getMyLocation() != null) {

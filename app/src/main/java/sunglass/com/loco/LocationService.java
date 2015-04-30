@@ -19,8 +19,9 @@ public class LocationService extends Service {
     {
         int interval = Integer.parseInt(intent.getStringExtra("frequency"));
         int d = Integer.parseInt(intent.getStringExtra("duration"));
+        long expiration = System.currentTimeMillis() + 1000*60*d;
         Log.v("duration", d + "");
-        alarm.SetAlarm(LocationService.this, interval, d);
+        alarm.SetAlarm(LocationService.this, interval, expiration);
         return START_NOT_STICKY;
     }
 
