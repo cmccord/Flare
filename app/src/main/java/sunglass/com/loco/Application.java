@@ -14,7 +14,9 @@ import android.text.InputType;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -53,6 +55,7 @@ public class Application extends android.app.Application {
     private Activity inMapsActivity = null;
     private static Application inst;
     private SimpleLogin authClient;
+    private AuthData authData;
 
     @Override
     public void onCreate() {
@@ -118,13 +121,11 @@ public class Application extends android.app.Application {
     // sets color of share button in maps activity
     public void setShareButton(Context context) {
         Activity activity = MapsActivity.instance();
-        Log.v("cancelling share", "" + activity);
         try {
             //Activity activity = (Activity) context;
             Button mainButton = (Button) activity.findViewById(R.id.topButton);
             if (mainButton != null) {
-                Log.v("cancelling share", "inside setShareButton");
-                Log.v("cancelling share", "" + getSharingStatus());
+                Log.v("Sharing Status", "" + getSharingStatus());
                 if (getSharingStatus())
                     mainButton.setBackgroundResource(R.drawable.button_green);
                 else
@@ -299,38 +300,36 @@ public class Application extends android.app.Application {
     }
 
     public void trackAll(final Context context) {
-        if (mFirebaseRef != null)
+        if (mFirebaseRef != null) {
+            authData = mFirebaseRef.getAuth();
+            if(authData == null) {
+                Toast.makeText(context, "Please Log In", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(context, loginActivity.class);
+                startActivity(i);
+            }
+            mUserID = authData.getUid();
             mFirebaseRef.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    boolean noFriends = false;
-                    for (DataSnapshot d: dataSnapshot.getChildren()){
-                        Log.v("Firebase Test", d.getKey().toString());
-                        String curr = d.getKey().toString();
-                        trackUser(curr);
-                    }
+                    boolean noFriends = !dataSnapshot.child(mUserID).hasChild("friends");
+                    // track the current user
+                    trackUser(mUserID);
+//                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+//                        Log.v("Firebase Test", d.getKey().toString());
+//                        String curr = d.getKey().toString();
+//                        trackUser(curr);
+//                    }
 //                    if (mIsNew)
 //                        createNewUser();
-                    if(noFriends) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle("Welcome to Flare! Would you like to add friends?");
-
-                        // Set up the buttons
-                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent i = new Intent(context, newFriendsActivity.class);
-                                startActivity(i);
-                            }
-                        });
-                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-
-                        builder.show();
+                    if (noFriends) {
+                        ((MapsActivity) context).noFriendsDialog();
+                    }
+                    // track friends
+                    else {
+                        for(DataSnapshot d : dataSnapshot.child(mUserID).child("friends").getChildren()) {
+                            String curr = d.getKey();
+                            trackUser(curr);
+                        }
                     }
                 }
 
@@ -339,6 +338,7 @@ public class Application extends android.app.Application {
 
                 }
             });
+        }
     }
 
 }

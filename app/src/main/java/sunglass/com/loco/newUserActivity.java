@@ -85,10 +85,11 @@ public class newUserActivity extends Activity {
                                             Map dets = new HashMap<>();
                                             dets.put("pos", "");
                                             dets.put("name", mDisplayName.getText().toString());
-                                            dets.put("timestamp", System.currentTimeMillis());
+                                            dets.put("timestamp", "");
                                             dets.put("time_created", System.currentTimeMillis());
                                             dets.put("email", mEmail.getText().toString());
                                             dets.put("friends", new HashMap<String, String>());
+                                            dets.put("expiration", (long) 0);
                                             user.put(result.get("uid"), dets);
 
                                             ref.child("users").updateChildren(user);

@@ -44,7 +44,8 @@ public class LocationShareReceiver extends BroadcastReceiver{
         mFirebaseRef = new Firebase("https://loco-android.firebaseio.com/");
         if(mFirebaseRef != null) {
             authData = mFirebaseRef.getAuth();
-            mUserID = authData.getUid();
+            if(authData != null)
+                mUserID = authData.getUid();
         }
         long expiration = Long.parseLong(intent.getStringExtra("expiration"));
         if(System.currentTimeMillis() >= expiration) {
@@ -113,6 +114,16 @@ public class LocationShareReceiver extends BroadcastReceiver{
         if(app != null) {
             app.setSharingStatus(true, context);
         }
+        Firebase.setAndroidContext(context);
+        mFirebaseRef = new Firebase("https://loco-android.firebaseio.com/");
+        if(mFirebaseRef != null) {
+            authData = mFirebaseRef.getAuth();
+            if(authData != null)
+                mUserID = authData.getUid();
+        }
+        if(mFirebaseRef != null && authData != null) {
+            mFirebaseRef.child("users").child(mUserID).child("expiration").setValue(expiration);
+        }
     }
 
     public void CancelAlarm(Context context)
@@ -133,10 +144,13 @@ public class LocationShareReceiver extends BroadcastReceiver{
         mFirebaseRef = new Firebase("https://loco-android.firebaseio.com/");
         if(mFirebaseRef != null) {
             authData = mFirebaseRef.getAuth();
-            mUserID = authData.getUid();
+            if(authData != null)
+                mUserID = authData.getUid();
         }
-        if(mFirebaseRef != null) {
+        if(mFirebaseRef != null && authData != null) {
             mFirebaseRef.child("users").child(mUserID).child("pos").setValue("");
+            mFirebaseRef.child("users").child(mUserID).child("expiration").setValue((long) 0);
+
         }
     }
 }

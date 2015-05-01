@@ -1,6 +1,7 @@
 package sunglass.com.loco;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
@@ -25,7 +27,9 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -52,7 +56,7 @@ public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Firebase mFirebaseRef;
-    private String mUserID = "jabreezus";
+    private String mUserID;
 
     private Button mPingButton, mLeftButton, mRightButton;
     private LocationManager mLocationManager;
@@ -229,6 +233,29 @@ public class MapsActivity extends FragmentActivity {
         Log.v("onResume", "executing");
         Log.v("onResume", "" + this);
         app.setShareButton(this);
+        try {
+            mFirebaseRef = app.getFirebaseRef();
+            AuthData authData = mFirebaseRef.getAuth();
+            mUserID = authData.getUid();
+            mFirebaseRef.child("users").child(mUserID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.hasChild("requests")) {
+                        for(DataSnapshot d : dataSnapshot.child("requests").getChildren()) {
+                            String uid = d.getKey();
+                            Log.v("Friend Request", uid);
+                            friendRequestDialog(uid);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+        } catch(Exception e) {Log.v("onResume MapsActivity", "Error connecting to firebase");}
+
     }
 
     /**
@@ -357,6 +384,110 @@ public class MapsActivity extends FragmentActivity {
                 startActivity(i);
                 break;
         }
+    }
+
+    public void noFriendsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Welcome to Flare! Would you like to add friends now?");
+
+        // Set up the buttons
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent i = new Intent(MapsActivity.this, newFriendsActivity.class);
+                startActivity(i);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+
+    private void friendRequestDialog(final String uid) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View convertView = (View) inflater.inflate(R.layout.friend_request, null);
+        builder.setView(convertView);
+        builder.setTitle("New Friend Request");
+        final TextView txtName = (TextView) convertView.findViewById(R.id.txtName);
+        final TextView txtEmail = (TextView) convertView.findViewById(R.id.txtEmail);
+        Button accept = (Button) convertView.findViewById(R.id.acceptButton);
+        Button decline = (Button) convertView.findViewById(R.id.declineButton);
+        try {
+            mFirebaseRef.child("users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    try {
+                        String name = (String) dataSnapshot.child("name").getValue();
+                        String email = (String) dataSnapshot.child("email").getValue();
+                        txtName.setText(name);
+                        txtEmail.setText(email);
+                    } catch(Exception e) {Log.v("Friend Request", e.toString());}
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+            Log.v("Friend Request", "Created listener");
+            final AlertDialog dialog = builder.create();
+            Log.v("Friend Request", "Created dialog");
+            accept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        mFirebaseRef.child("users").child(mUserID).child("requests").child(uid).removeValue();
+                    } catch (Exception e) {
+                        Log.v("Friend Request", "Couldn't delete request");
+                    }
+                    try {
+                        mFirebaseRef.child("users").child(mUserID).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.hasChild("friends")) {
+                                    Map newFriend = new HashMap<>();
+                                    newFriend.put(uid, uid);
+                                    mFirebaseRef.child("users").child(mUserID).child("friends").updateChildren(newFriend);
+                                } else {
+                                    Map friends = new HashMap<>();
+                                    Map newFriend = new HashMap<>();
+                                    newFriend.put(uid, uid);
+                                    friends.put("friends", newFriend);
+                                    mFirebaseRef.child("users").child(mUserID).updateChildren(friends);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
+                    } catch (Exception e) {
+                        Log.v("Friend Request", "Couldn't accept request");
+                    }
+                    dialog.dismiss();
+                }
+            });
+            Log.v("Friend Request", "created accept button listener");
+            decline.setOnClickListener((new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        mFirebaseRef.child("users").child(mUserID).child("requests").child(uid).removeValue();
+                    } catch(Exception e) {Log.v("Friend Request", "Couldn't delete request");}
+                    dialog.dismiss();
+                }
+            }));
+
+            dialog.show();
+        } catch (Exception e) {Log.v("Friend Request", e.toString());}
     }
 
     @Override
