@@ -481,6 +481,18 @@ public class MapsActivity extends FragmentActivity {
                 public void onClick(View v) {
                     try {
                         mFirebaseRef.child("users").child(mUserID).child("requests").child(uid).removeValue();
+                        mFirebaseRef.child("users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.hasChild("friends") && dataSnapshot.child("friends").hasChild(mUserID))
+                                    mFirebaseRef.child("users").child(uid).child("friends").child(mUserID).removeValue();
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
                     } catch(Exception e) {Log.v("Friend Request", "Couldn't delete request");}
                     dialog.dismiss();
                 }

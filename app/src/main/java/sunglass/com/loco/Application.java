@@ -56,12 +56,17 @@ public class Application extends android.app.Application {
     private static Application inst;
     private SimpleLogin authClient;
     private AuthData authData;
+    private HashMap<String,ValueEventListener> listeners = new HashMap<>();
 
     @Override
     public void onCreate() {
         super.onCreate();
         inst = this;
         setUpFirebase();
+    }
+
+    public HashMap<String,Marker> getMarkers() {
+        return mMarkers;
     }
 
     public static Application instance() {
@@ -107,6 +112,10 @@ public class Application extends android.app.Application {
 
     public Intent getService() {
         return service;
+    }
+
+    public HashMap<String, ValueEventListener> getListeners() {
+        return listeners;
     }
 
     public void setSharingStatus(boolean b, Context context) {
@@ -191,7 +200,7 @@ public class Application extends android.app.Application {
 //    }
 //
     public void trackUser(String u){
-        mFirebaseRef.child("users").child(u).addValueEventListener(new ValueEventListener() {
+        listeners.put(u, new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot d2) {
                 if (d2.getValue() != null) {
@@ -248,6 +257,7 @@ public class Application extends android.app.Application {
             public void onCancelled(FirebaseError firebaseError) {
             }
         });
+        mFirebaseRef.child("users").child(u).addValueEventListener(listeners.get(u));
     }
 
     public boolean setUpGPS() {

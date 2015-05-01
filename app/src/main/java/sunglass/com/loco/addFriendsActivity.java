@@ -1,10 +1,13 @@
 package sunglass.com.loco;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -13,6 +16,10 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.maps.model.Marker;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -48,6 +55,10 @@ public class addFriendsActivity extends Activity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
         try {
             ref.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -66,6 +77,50 @@ public class addFriendsActivity extends Activity {
                     PersonAdapter friendsArrayAdapter = new PersonAdapter(addFriendsActivity.this, R.layout.listview_item_row, friends);
                     ListView listView = (ListView)findViewById(R.id.listView);
                     listView.setAdapter(friendsArrayAdapter);
+                    final DataSnapshot s = dataSnapshot;
+                    listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                        @Override
+                        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(addFriendsActivity.this);
+                            builder.setTitle("Would you like to remove " + friends[position].getName() + " as a friend?");
+                            final String uid = friends[position].getUid();
+                            // Set up the buttons
+                            builder.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Remove from friends list
+                                    try {
+                                        ref.child("users").child(userID).child("friends").child(uid).removeValue();
+                                    } catch(Exception e) {Log.v("Removing friend error", "Couldn't remove friend");}
+                                    // Remove from their friends list or cancel request
+                                    try {
+                                        if(s.child(uid).hasChild("friends") && s.child(uid).child("friends").hasChild(userID))
+                                            ref.child("users").child(uid).child("friends").child(userID).removeValue();
+                                        else if(s.child(uid).hasChild("requests") && s.child(uid).child("requests").hasChild(userID))
+                                            ref.child("users").child(uid).child("requests").child(userID).removeValue();
+                                    } catch(Exception e) {Log.v("Removing friends error", "Couldn't remove you from their list");}
+                                    try {
+                                        ref.child("users").child(uid).removeEventListener(app.getListeners().get(uid));
+                                    } catch(Exception e) {Log.v("Removing friends error", "Couldn't remove listener from friend");}
+                                    HashMap<String, Marker> markers = app.getMarkers();
+                                    if(markers.containsKey(uid)) {
+                                        markers.get(uid).remove();
+                                        markers.remove(uid);
+                                    }
+                                    dialog.cancel();
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                            builder.show();
+                            return true;
+                        }
+                    });
                 }
 
                 @Override
@@ -74,13 +129,5 @@ public class addFriendsActivity extends Activity {
                 }
             });
         } catch(Exception e) {Log.v("addFriendsActivity", e.toString());}
-
-        // get array of friend names
-        //String[] friends = {"Bob", "Kyle", "Joe", "Chris"};
-        //ArrayAdapter<String> friendsArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, friends);
-//        PersonAdapter friendsArrayAdapter = new PersonAdapter(this, R.layout.listview_item_row, friends);
-//        ListView listView = (ListView)findViewById(R.id.listView);
-//        listView.setAdapter(friendsArrayAdapter);
-
     }
 }
