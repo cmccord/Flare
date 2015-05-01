@@ -41,6 +41,8 @@ public class newUserActivity extends Activity {
     private EditText mDisplayName;
     private EditText mPassword;
 
+    private final int MAX_CHARACTERS = 15;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,93 +75,105 @@ public class newUserActivity extends Activity {
                                 mDisplayName = (EditText) findViewById(R.id.editDisplayName);
                                 mPassword = (EditText) findViewById(R.id.editPassword);
 
-                                ref.createUser(mEmail.getText().toString(), mPassword.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
-                                    @Override
-                                    public void onSuccess(Map<String, Object> result) {
+                                if (mDisplayName.getText().toString().matches("([0-9]|[a-z]|[A-Z]| |_)+")) {
+
+                                    if (mDisplayName.getText().toString().length() > MAX_CHARACTERS) {
+
+                                        ref.createUser(mEmail.getText().toString(), mPassword.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
+                                            @Override
+                                            public void onSuccess(Map<String, Object> result) {
 
 //                                        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 //                                        mImei = telephonyManager.getDeviceId();
 
-                                        if (ref != null) {
-                                            Map user = new HashMap<>();
-                                            Map dets = new HashMap<>();
-                                            dets.put("pos", "");
-                                            dets.put("name", mDisplayName.getText().toString());
-                                            dets.put("timestamp", "");
-                                            dets.put("time_created", System.currentTimeMillis());
-                                            dets.put("email", mEmail.getText().toString());
-                                            dets.put("friends", new HashMap<String, String>());
-                                            dets.put("expiration", (long) 0);
-                                            user.put(result.get("uid"), dets);
+                                                if (ref != null) {
+                                                    Map user = new HashMap<>();
+                                                    Map dets = new HashMap<>();
+                                                    dets.put("pos", "");
+                                                    dets.put("name", mDisplayName.getText().toString());
+                                                    dets.put("timestamp", "");
+                                                    dets.put("time_created", System.currentTimeMillis());
+                                                    dets.put("email", mEmail.getText().toString());
+                                                    dets.put("friends", new HashMap<String, String>());
+                                                    dets.put("expiration", (long) 0);
+                                                    user.put(result.get("uid"), dets);
 
-                                            ref.child("users").updateChildren(user);
-                                        }
+                                                    ref.child("users").updateChildren(user);
+                                                }
 
 //                                        Toast.makeText(getApplicationContext(), "Success! uid: " + result.get("uid"), Toast.LENGTH_SHORT).show();
 
-                                        authClient.loginWithEmail(mEmail.getText().toString(), mPassword.getText().toString(), new SimpleLoginAuthenticatedHandler() {
-                                            @Override
-                                            public void authenticated(FirebaseSimpleLoginError error, FirebaseSimpleLoginUser user) {
-                                                if (error != null) {
+                                                authClient.loginWithEmail(mEmail.getText().toString(), mPassword.getText().toString(), new SimpleLoginAuthenticatedHandler() {
+                                                    @Override
+                                                    public void authenticated(FirebaseSimpleLoginError error, FirebaseSimpleLoginUser user) {
+                                                        if (error != null) {
 
-                                                    switch (error.getCode()) {
-                                                        case InvalidEmail:
-                                                            Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_SHORT).show();
-                                                            break;
-                                                        case UserDoesNotExist:
-                                                            Toast.makeText(getApplicationContext(), "User Does Not Exist", Toast.LENGTH_SHORT).show();
-                                                            break;
-                                                        case InvalidPassword:
-                                                            Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_SHORT).show();
-                                                            break;
-                                                        default:
-                                                            Toast.makeText(getApplicationContext(), "Log In Failed", Toast.LENGTH_SHORT).show();
-                                                            break;
+                                                            switch (error.getCode()) {
+                                                                case InvalidEmail:
+                                                                    Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_SHORT).show();
+                                                                    break;
+                                                                case UserDoesNotExist:
+                                                                    Toast.makeText(getApplicationContext(), "User Does Not Exist", Toast.LENGTH_SHORT).show();
+                                                                    break;
+                                                                case InvalidPassword:
+                                                                    Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_SHORT).show();
+                                                                    break;
+                                                                default:
+                                                                    Toast.makeText(getApplicationContext(), "Log In Failed", Toast.LENGTH_SHORT).show();
+                                                                    break;
+                                                            }
+
+                                                        } else {
+
+                                                            Log.d("authenticated", "Log In Successful");
+
+                                                            authData = ref.getAuth();
+
+                                                            ref.child("users").child(authData.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                @Override
+                                                                public void onDataChange(DataSnapshot snapshot) {
+                                                                    Map<String, Object> value = (Map<String, Object>) snapshot.getValue();
+                                                                    Toast.makeText(getApplicationContext(), "Welcome to Flare, " + (String) value.get("name") + "!", Toast.LENGTH_SHORT).show();
+                                                                }
+
+                                                                @Override
+                                                                public void onCancelled(FirebaseError firebaseError) {
+                                                                    // Do nothing.
+                                                                }
+                                                            });
+
+                                                            Intent i = new Intent(newUserActivity.this, MapsActivity.class);
+                                                            startActivity(i);
+
+                                                        }
                                                     }
+                                                });
+                                            }
 
-                                                } else {
-
-                                                    Log.d("authenticated", "Log In Successful");
-
-                                                    authData = ref.getAuth();
-
-                                                    ref.child("users").child(authData.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(DataSnapshot snapshot) {
-                                                            Map<String, Object> value = (Map<String, Object>) snapshot.getValue();
-                                                            Toast.makeText(getApplicationContext(), "Welcome to Flare, " + (String) value.get("name") + "!", Toast.LENGTH_SHORT).show();
-                                                        }
-
-                                                        @Override
-                                                        public void onCancelled(FirebaseError firebaseError) {
-                                                            // Do nothing.
-                                                        }
-                                                    });
-
-                                                    Intent i = new Intent(newUserActivity.this, MapsActivity.class);
-                                                    startActivity(i);
-
+                                            @Override
+                                            public void onError(FirebaseError firebaseError) {
+                                                Log.v("ERRORERROR", "ERRORERROR" + firebaseError.getCode());
+                                                switch (firebaseError.getCode()) {
+                                                    case FirebaseError.EMAIL_TAKEN:
+                                                        Toast.makeText(getApplicationContext(), "Email Already in Use", Toast.LENGTH_SHORT).show();
+                                                        break;
+                                                    case FirebaseError.INVALID_EMAIL:
+                                                        Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_SHORT).show();
+                                                        break;
+                                                    default:
+                                                        Toast.makeText(getApplicationContext(), "Create New User Failed", Toast.LENGTH_SHORT).show();
+                                                        break;
                                                 }
                                             }
                                         });
+
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "Limit Display Name to " + MAX_CHARACTERS + " Characters", Toast.LENGTH_SHORT).show();
                                     }
 
-                                    @Override
-                                    public void onError(FirebaseError firebaseError) {
-                                        Log.v("ERRORERROR", "ERRORERROR" + firebaseError.getCode());
-                                        switch (firebaseError.getCode()) {
-                                            case FirebaseError.EMAIL_TAKEN:
-                                                Toast.makeText(getApplicationContext(), "Email Already in Use", Toast.LENGTH_SHORT).show();
-                                                break;
-                                            case FirebaseError.INVALID_EMAIL:
-                                                Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_SHORT).show();
-                                                break;
-                                            default:
-                                                Toast.makeText(getApplicationContext(), "Create New User Failed", Toast.LENGTH_SHORT).show();
-                                                break;
-                                        }
-                                    }
-                                });
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Invalid Character(s) in Display Name", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
