@@ -88,6 +88,10 @@
             android:name=".circlesActivity"
             android:label="@string/title_activity_circles" >
         </activity>
+        <activity
+            android:name=".NewCircleActivity"
+            android:label="@string/title_activity_newcircle" >
+        </activity>
     </application>
 
 </manifest>

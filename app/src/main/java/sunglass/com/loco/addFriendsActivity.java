@@ -59,6 +59,7 @@ public class addFriendsActivity extends Activity {
 
     @Override
     protected void onResume() {
+        super.onResume();
         try {
             ref.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -99,14 +100,8 @@ public class addFriendsActivity extends Activity {
                                         else if(s.child(uid).hasChild("requests") && s.child(uid).child("requests").hasChild(userID))
                                             ref.child("users").child(uid).child("requests").child(userID).removeValue();
                                     } catch(Exception e) {Log.v("Removing friends error", "Couldn't remove you from their list");}
-                                    try {
-                                        ref.child("users").child(uid).removeEventListener(app.getListeners().get(uid));
-                                    } catch(Exception e) {Log.v("Removing friends error", "Couldn't remove listener from friend");}
-                                    HashMap<String, Marker> markers = app.getMarkers();
-                                    if(markers.containsKey(uid)) {
-                                        markers.get(uid).remove();
-                                        markers.remove(uid);
-                                    }
+                                    app.cancelTracking(uid);
+                                    addFriendsActivity.this.onResume();
                                     dialog.cancel();
                                 }
                             });

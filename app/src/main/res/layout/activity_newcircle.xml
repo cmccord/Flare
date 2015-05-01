@@ -30,6 +30,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Name of new circle:"
+        android:padding="10dp"
+        android:id="@+id/textView6" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Type name of circle"
+        android:paddingLeft="10dp"
+        android:paddingTop="0dp"
+        android:id="@+id/circleName" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Search for friends by email:"
         android:padding="10dp"
         android:id="@+id/textView5" />

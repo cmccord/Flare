@@ -57,6 +57,7 @@ public class Application extends android.app.Application {
     private SimpleLogin authClient;
     private AuthData authData;
     private HashMap<String,ValueEventListener> listeners = new HashMap<>();
+    private String circleSelected = "All Friends";
 
     @Override
     public void onCreate() {
@@ -80,6 +81,14 @@ public class Application extends android.app.Application {
 
     public Location getmLocation() {
         return mLocation;
+    }
+
+    public String getCircleSelected() {
+        return circleSelected;
+    }
+
+    public void setCircleSelected(String s) {
+        circleSelected = s;
     }
 
     public Firebase getFirebaseRef() {
@@ -219,12 +228,13 @@ public class Application extends android.app.Application {
                     if (name.length() == 0){
                         name = d2.getKey();
                     }
+                    String uid = d2.getKey();
                     String[] loc = pos.split(",");
                     LatLng l;
                     if (loc.length > 1) {
                         l = new LatLng(Double.parseDouble(loc[0]), Double.parseDouble(loc[1]));
-                        if (mMarkers.containsKey(name)){
-                            mMarkers.get(name).setPosition(l);
+                        if (mMarkers.containsKey(uid)){
+                            mMarkers.get(uid).setPosition(l);
                         }
                         else {
 
@@ -233,7 +243,7 @@ public class Application extends android.app.Application {
                                     position(l).
                                     anchor(mIconFactory.getAnchorU(), mIconFactory.getAnchorV()).
                                     title(name));
-                            mMarkers.put(name, new_m);
+                            mMarkers.put(uid, new_m);
 
                         }
 
@@ -241,9 +251,9 @@ public class Application extends android.app.Application {
                     }
                     else {
                         // if location is gone, remove marker from map
-                        if(mMarkers.containsKey(name)) {
-                            mMarkers.get(name).remove();
-                            mMarkers.remove(name);
+                        if(mMarkers.containsKey(uid)) {
+                            mMarkers.get(uid).remove();
+                            mMarkers.remove(uid);
                         }
                     }
                 }
@@ -258,6 +268,17 @@ public class Application extends android.app.Application {
             }
         });
         mFirebaseRef.child("users").child(u).addValueEventListener(listeners.get(u));
+    }
+
+    public void cancelTracking(String uid) {
+        try {
+            mFirebaseRef.child("users").child(uid).removeEventListener(listeners.get(uid));
+        } catch(Exception e) {Log.v("Removing friends error", "Couldn't remove listener from friend");}
+        if(mMarkers.containsKey(uid)) {
+            Log.v("Removing marker", uid);
+            mMarkers.get(uid).remove();
+            mMarkers.remove(uid);
+        }
     }
 
     public boolean setUpGPS() {
