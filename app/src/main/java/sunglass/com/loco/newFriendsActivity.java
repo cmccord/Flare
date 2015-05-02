@@ -93,7 +93,8 @@ public class newFriendsActivity extends Activity {
                                     if (!s.hasChild(uid))
                                         continue;
                                     friends.put(uid, uid);
-                                    app.trackUser(uid);
+                                    if(app.getCircleSelected().equals("All Friends"))
+                                        app.trackUser(uid);
                                     if (!s.child(uid).hasChild("friends") || !s.child(uid).child("friends").hasChild(userID)) {
                                         Map requests;
                                         if (s.child(uid).hasChild("requests"))

@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.plus.Plus;
 import com.google.maps.android.ui.IconGenerator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,6 +59,7 @@ public class Application extends android.app.Application {
     private AuthData authData;
     private HashMap<String,ValueEventListener> listeners = new HashMap<>();
     private String circleSelected = "All Friends";
+    private ArrayList<String> friendsInCircle;
 
     @Override
     public void onCreate() {
@@ -88,7 +90,55 @@ public class Application extends android.app.Application {
     }
 
     public void setCircleSelected(String s) {
-        circleSelected = s;
+        if(!circleSelected.equals(s)) {
+            try {
+                circleSelected = s;
+                friendsInCircle = new ArrayList<>();
+                if (circleSelected.equals("All Friends")) {
+                    mFirebaseRef.child("users").child(mUserID).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot d : dataSnapshot.getChildren())
+                                friendsInCircle.add(d.getKey());
+                            updateMarkersToCircle();
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+                } else {
+                    mFirebaseRef.child("users").child(mUserID).child("circles").child(circleSelected).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot d : dataSnapshot.getChildren())
+                                friendsInCircle.add(d.getKey());
+                            updateMarkersToCircle();
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+                }
+                Log.v("friendsInCircle", friendsInCircle.toString());
+            } catch(Exception e) {Log.v("Error updating circle", e.toString());}
+        }
+    }
+
+    private void updateMarkersToCircle() {
+        for(String s : mMarkers.keySet()) {
+            if(!friendsInCircle.contains((s))) {
+                cancelTracking(s);
+            }
+        }
+        for(String s : friendsInCircle) {
+            if(!mMarkers.containsKey(s)) {
+                trackUser(s);
+            }
+        }
     }
 
     public Firebase getFirebaseRef() {
@@ -278,6 +328,9 @@ public class Application extends android.app.Application {
             Log.v("Removing marker", uid);
             mMarkers.get(uid).remove();
             mMarkers.remove(uid);
+        }
+        for(String key : mMarkers.keySet()) {
+            Log.v("Marker", key);
         }
     }
 

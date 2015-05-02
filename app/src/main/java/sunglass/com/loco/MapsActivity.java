@@ -469,6 +469,8 @@ public class MapsActivity extends FragmentActivity {
 
                             }
                         });
+                        if(app.getCircleSelected().equals("All Friends"))
+                            app.trackUser(uid);
                     } catch (Exception e) {
                         Log.v("Friend Request", "Couldn't accept request");
                     }
