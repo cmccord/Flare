@@ -117,10 +117,10 @@ public class editProfileActivity extends Activity {
                     orig_display_name = (String) value.get("name");
                     orig_email = (String) value.get("email");
 
-                    if (orig_email.equals("kwdougla@princeton.edu"))
-                        mProPic.setBackgroundResource(R.drawable.pro_pic);
-                    else if (orig_email.equals("cmccord@princeton.edu"))
-                        mProPic.setBackgroundResource(R.drawable.mccord);
+//                    if (orig_email.equals("kwdougla@princeton.edu"))
+//                        mProPic.setBackgroundResource(R.drawable.pro_pic);
+//                    else if (orig_email.equals("cmccord@princeton.edu"))
+//                        mProPic.setBackgroundResource(R.drawable.mccord);
 
                     mDisplayName.setHint(orig_display_name);
                     mEmail.setHint(orig_email);

@@ -77,7 +77,7 @@ public class newUserActivity extends Activity {
 
                                 if (mDisplayName.getText().toString().matches("([0-9]|[a-z]|[A-Z]| |_)+")) {
 
-                                    if (mDisplayName.getText().toString().length() > MAX_CHARACTERS) {
+                                    if (mDisplayName.getText().toString().length() <= MAX_CHARACTERS) {
 
                                         ref.createUser(mEmail.getText().toString(), mPassword.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
                                             @Override

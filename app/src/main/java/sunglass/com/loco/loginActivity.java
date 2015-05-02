@@ -38,7 +38,6 @@ public class loginActivity extends Activity {
     private Firebase ref;
 
     private EditText mEmail;
-    private EditText mDisplayName;
     private EditText mPassword;
 
     private String email_to_send;
@@ -71,19 +70,32 @@ public class loginActivity extends Activity {
 
                     setContentView(R.layout.activity_login);
 
+                    mEmail = (EditText)findViewById(R.id.editEmail);
+                    mPassword = (EditText)findViewById(R.id.editPassword);
 
-                    Button mLoginButton = (Button) findViewById(R.id.loginButton);
+                    final Button mForgotButton = (Button) findViewById(R.id.forgot_butt);
+                    final Button mLoginButton = (Button) findViewById(R.id.loginButton);
+                    final Button mNewUserButton = (Button) findViewById(R.id.newUserButton);
+
                     mLoginButton.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
 
-                            mEmail = (EditText)findViewById(R.id.editEmail);
-                            mDisplayName = (EditText)findViewById(R.id.editDisplayName);
-                            mPassword = (EditText)findViewById(R.id.editPassword);
+                            mEmail.setClickable(false);
+                            mPassword.setClickable(false);
+                            mForgotButton.setClickable(false);
+                            mLoginButton.setClickable(false);
+                            mNewUserButton.setClickable(false);
 
                             authClient.loginWithEmail(mEmail.getText().toString(), mPassword.getText().toString(), new SimpleLoginAuthenticatedHandler() {
                                 @Override
                                 public void authenticated(FirebaseSimpleLoginError error, FirebaseSimpleLoginUser user) {
                                     if (error != null) {
+
+                                        mEmail.setClickable(true);
+                                        mPassword.setClickable(true);
+                                        mForgotButton.setClickable(true);
+                                        mLoginButton.setClickable(true);
+                                        mNewUserButton.setClickable(true);
 
                                         switch (error.getCode()) {
                                             case InvalidEmail:
@@ -176,7 +188,6 @@ public class loginActivity extends Activity {
                         }
                     });
 
-                    Button mForgotButton = (Button) findViewById(R.id.forgot_butt);
                     mForgotButton.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
 
@@ -247,7 +258,6 @@ public class loginActivity extends Activity {
                         }
                     });
 
-                    Button mNewUserButton = (Button) findViewById(R.id.newUserButton);
                     mNewUserButton.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             Intent i = new Intent(loginActivity.this, newUserActivity.class);
