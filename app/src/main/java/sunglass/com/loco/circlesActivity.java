@@ -95,13 +95,11 @@ public class circlesActivity extends Activity {
                             for (int i = 0; i < listView.getCount(); i++) {
                                 textView= (CheckedTextView) listView.getChildAt(i);
                                 if (textView != null) {
-                                    textView.setTextColor(Color.BLACK);
                                     textView.setChecked(false);
                                 }
                             }
                             textView = (CheckedTextView) view;
                             if (textView != null) {
-                                textView.setTextColor(Color.BLUE);
                                 textView.setChecked(true);
                             }
                             app.setCircleSelected(circles.get(position));
@@ -145,11 +143,9 @@ public class circlesActivity extends Activity {
                     });
                     int mActivePosition = circles.indexOf(app.getCircleSelected());
                     if(mActivePosition == -1) mActivePosition = 0;
-                    listView.performItemClick(
-                            listView.getAdapter().getView(mActivePosition, null, null),
-                            mActivePosition,
-                            listView.getAdapter().getItemId(mActivePosition));
-
+                    Log.v("Active Position", mActivePosition + "");
+                    listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+                    listView.setItemChecked(mActivePosition, true);
                 }
 
                 @Override

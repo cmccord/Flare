@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -70,7 +71,12 @@ public class addFriendsActivity extends Activity {
                     for(DataSnapshot d : dataSnapshot.child(userID).child("friends").getChildren()) {
                         String name = (String) dataSnapshot.child(d.getKey()).child("name").getValue();
                         String email = (String) dataSnapshot.child(d.getKey()).child("email").getValue();
+                        Bitmap pic;
                         Person person = new Person(name, email);
+                        if(dataSnapshot.child(d.getKey()).hasChild("picture")) {
+                            pic = Application.decodeBase64(dataSnapshot.child(d.getKey()).child("picture").getValue().toString());
+                            person.setImage(pic);
+                        }
                         person.setUid(d.getKey());
                         friends[i] = person;
                         i++;
@@ -100,7 +106,7 @@ public class addFriendsActivity extends Activity {
                                         else if(s.child(uid).hasChild("requests") && s.child(uid).child("requests").hasChild(userID))
                                             ref.child("users").child(uid).child("requests").child(userID).removeValue();
                                     } catch(Exception e) {Log.v("Removing friends error", "Couldn't remove you from their list");}
-                                    app.cancelTracking(uid);
+                                    app.setCircleSelected(app.getCircleSelected());
                                     addFriendsActivity.this.onResume();
                                     dialog.cancel();
                                 }

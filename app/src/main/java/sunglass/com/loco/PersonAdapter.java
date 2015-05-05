@@ -46,10 +46,10 @@ public class PersonAdapter extends ArrayAdapter<Person> {
             holder = (PersonHolder)row.getTag();
         }
 
-        Person person = data[position];
+        Person person = getItem(position);
         holder.txtName.setText(person.getName());
         holder.txtEmail.setText(person.getEmail());
-        //holder.imgIcon.setImageResource(weather.icon);
+        holder.imgIcon.setImageBitmap(person.getImage(context));
 
         return row;
     }

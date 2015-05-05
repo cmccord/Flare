@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -228,8 +229,7 @@ public class MapsActivity extends FragmentActivity {
         super.onResume();
         setUpMapIfNeeded();
         app.setInMapsActivity(this);
-        Log.v("onResume", "executing");
-        Log.v("onResume", "" + this);
+        Log.v("Application", getApplication().toString());
         app.setShareButton(this);
         try {
             mFirebaseRef = app.getFirebaseRef();
@@ -415,6 +415,7 @@ public class MapsActivity extends FragmentActivity {
         builder.setTitle("New Friend Request");
         final TextView txtName = (TextView) convertView.findViewById(R.id.txtName);
         final TextView txtEmail = (TextView) convertView.findViewById(R.id.txtEmail);
+        final ImageView imageView = (ImageView) convertView.findViewById(R.id.imgIcon);
         Button accept = (Button) convertView.findViewById(R.id.acceptButton);
         Button decline = (Button) convertView.findViewById(R.id.declineButton);
         try {
@@ -424,6 +425,8 @@ public class MapsActivity extends FragmentActivity {
                     try {
                         String name = (String) dataSnapshot.child("name").getValue();
                         String email = (String) dataSnapshot.child("email").getValue();
+                        if(dataSnapshot.hasChild("picture"))
+                            imageView.setImageBitmap(Application.decodeBase64(dataSnapshot.child("picture").getValue().toString()));
                         txtName.setText(name);
                         txtEmail.setText(email);
                     } catch(Exception e) {Log.v("Friend Request", e.toString());}
