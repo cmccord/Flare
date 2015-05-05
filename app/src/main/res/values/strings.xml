@@ -17,6 +17,8 @@
     <string name="X">x</string>
     <string name="menu">\u2261</string>
     <string name="pencil">\u270E</string>
+    <!--<string name="person">\u263A</string>-->
+    <!--<string name="person">\u2388</string>-->
     <string name="person">\u2699</string>
     <!--<string name="person">\u26C4</string>-->
 
