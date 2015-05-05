@@ -28,6 +28,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.firebase.client.AuthData;
@@ -75,6 +76,7 @@ public class MapsActivity extends FragmentActivity {
     private ListView mLeftDrawerList, mRightDrawerList;
     private Application app;
     private static MapsActivity inst;
+    private Sharer mSharer;
 
     @Override
     public void onStart() {
@@ -88,7 +90,7 @@ public class MapsActivity extends FragmentActivity {
 
     @Override
     protected void onPause() {
-        if (mLocationManager != null){
+        if (mLocationManager != null) {
             mLocationManager.removeUpdates(mLocationListener);
         }
         //app.setInMapsActivity(null);
@@ -100,7 +102,7 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         mImei = telephonyManager.getDeviceId();
 
 //        mImei += System.currentTimeMillis() / 1000*60;
@@ -126,20 +128,17 @@ public class MapsActivity extends FragmentActivity {
         app.trackAll(this);
         mPingButton = (Button) findViewById(R.id.topButton);
 //        mPingButton.setLayoutParams(new LinearLayout.LayoutParams(mPingButton.getMeasuredHeight(), mPingButton.getMeasuredHeight()));
-        mPingButton.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
+        mPingButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 Intent intent = new Intent(MapsActivity.this, LocationShareReceiver.class);
                 intent.setAction("sunglass.com.loco.LOCATION_SHARE");
                 PendingIntent pi = PendingIntent.getBroadcast(MapsActivity.this, 0,
                         intent, PendingIntent.FLAG_NO_CREATE);
                 boolean alarmUp = (pi != null);
-                if(!alarmUp) {
-                    Intent i = new Intent(MapsActivity.this, ShareActivity.class);
-                    startActivity(i);
-                }
-                else {
+                if (!alarmUp) {
+//                    Intent i = new Intent(MapsActivity.this, ShareActivity.class);
+//                    startActivity(i);
+                } else {
                     LocationShareReceiver alarm = new LocationShareReceiver();
                     alarm.CancelAlarm(MapsActivity.this);
                     pi.cancel(); // see if this works, cancel the pending intent after cancelling alarm
@@ -167,10 +166,8 @@ public class MapsActivity extends FragmentActivity {
                 }
         );
         mRightButton = (Button) findViewById(R.id.rightButton);
-        mRightButton.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
+        mRightButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 //updateLocation();
                 Intent i = new Intent(MapsActivity.this, editProfileActivity.class);
                 startActivity(i);
@@ -179,9 +176,11 @@ public class MapsActivity extends FragmentActivity {
 
         mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         mLayout.setOverlayed(true);
+
+        mSharer = new Sharer(this);
     }
 
-    private void createNewUser(){
+    private void createNewUser() {
         Log.v("New User", "Creating new user " + mImei);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -242,8 +241,8 @@ public class MapsActivity extends FragmentActivity {
             mFirebaseRef.child("users").child(mUserID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.hasChild("requests")) {
-                        for(DataSnapshot d : dataSnapshot.child("requests").getChildren()) {
+                    if (dataSnapshot.hasChild("requests")) {
+                        for (DataSnapshot d : dataSnapshot.child("requests").getChildren()) {
                             String uid = d.getKey();
                             Log.v("Friend Request", uid);
                             friendRequestDialog(uid);
@@ -256,7 +255,9 @@ public class MapsActivity extends FragmentActivity {
 
                 }
             });
-        } catch(Exception e) {Log.v("onResume MapsActivity", "Error connecting to firebase");}
+        } catch (Exception e) {
+            Log.v("onResume MapsActivity", "Error connecting to firebase");
+        }
 
     }
 
@@ -314,14 +315,12 @@ public class MapsActivity extends FragmentActivity {
         return mMap;
     }
 
-    private void zoomToCoverAllMarkers()
-    {
+    private void zoomToCoverAllMarkers() {
         LatLngBounds existing = this.mMap.getProjection().getVisibleRegion().latLngBounds;
         boolean all = true;
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (String marker : mMarkers.keySet())
-        {
+        for (String marker : mMarkers.keySet()) {
             if (!existing.contains(mMarkers.get(marker).getPosition()))
                 all = false;
             builder.include(mMarkers.get(marker).getPosition());
@@ -355,7 +354,9 @@ public class MapsActivity extends FragmentActivity {
         }
     }
 
-    /** Swaps fragments in the main content view */
+    /**
+     * Swaps fragments in the main content view
+     */
     private void selectLeftItem(int position) {
         // Create a new fragment and specify the planet to show based on position
 //        Fragment fragment = new PlanetFragment();
@@ -374,10 +375,10 @@ public class MapsActivity extends FragmentActivity {
         setTitle(mMenuStrings[position]);
         mLeftDrawer.closeDrawer(mLeftDrawerList);
         Intent i;
-        switch(position){
+        switch (position) {
             case 0:
-                i = new Intent(this, ShareActivity.class);
-                startActivity(i);
+//                i = new Intent(this, ShareActivity.class);
+//                startActivity(i);
                 break;
             case 1:
                 i = new Intent(this, addFriendsActivity.class);
@@ -431,11 +432,13 @@ public class MapsActivity extends FragmentActivity {
                     try {
                         String name = (String) dataSnapshot.child("name").getValue();
                         String email = (String) dataSnapshot.child("email").getValue();
-                        if(dataSnapshot.hasChild("picture"))
+                        if (dataSnapshot.hasChild("picture"))
                             imageView.setImageBitmap(Application.decodeBase64(dataSnapshot.child("picture").getValue().toString()));
                         txtName.setText(name);
                         txtEmail.setText(email);
-                    } catch(Exception e) {Log.v("Friend Request", e.toString());}
+                    } catch (Exception e) {
+                        Log.v("Friend Request", e.toString());
+                    }
                 }
 
                 @Override
@@ -476,7 +479,7 @@ public class MapsActivity extends FragmentActivity {
 
                             }
                         });
-                        if(app.getCircleSelected().equals("All Friends"))
+                        if (app.getCircleSelected().equals("All Friends"))
                             app.trackUser(uid);
                     } catch (Exception e) {
                         Log.v("Friend Request", "Couldn't accept request");
@@ -493,7 +496,7 @@ public class MapsActivity extends FragmentActivity {
                         mFirebaseRef.child("users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                if(dataSnapshot.hasChild("friends") && dataSnapshot.child("friends").hasChild(mUserID))
+                                if (dataSnapshot.hasChild("friends") && dataSnapshot.child("friends").hasChild(mUserID))
                                     mFirebaseRef.child("users").child(uid).child("friends").child(mUserID).removeValue();
                             }
 
@@ -502,19 +505,16 @@ public class MapsActivity extends FragmentActivity {
 
                             }
                         });
-                    } catch(Exception e) {Log.v("Friend Request", "Couldn't delete request");}
+                    } catch (Exception e) {
+                        Log.v("Friend Request", "Couldn't delete request");
+                    }
                     dialog.dismiss();
                 }
             }));
 
             dialog.show();
-        } catch (Exception e) {Log.v("Friend Request", e.toString());}
+        } catch (Exception e) {
+            Log.v("Friend Request", e.toString());
+        }
     }
-
-    @Override
-    public void setTitle(CharSequence title) {
-//        mTitle = title;
-//        getActionBar().setTitle(mTitle);
-    }
-
 }
