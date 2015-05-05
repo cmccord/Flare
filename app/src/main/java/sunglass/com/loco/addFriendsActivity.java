@@ -52,6 +52,7 @@ public class addFriendsActivity extends Activity {
         newFriend.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(addFriendsActivity.this, newFriendsActivity.class);
+                app.notJustOpened();
                 startActivity(i);
             }
         });

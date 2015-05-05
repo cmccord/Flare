@@ -8,6 +8,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="50dp"
         android:layout_gravity="center_horizontal">
 
         <Button
@@ -52,7 +53,7 @@
             android:padding="15dp"
             android:fontFamily="sans-serif-thin"
             android:textStyle="bold"
-            android:textSize="34sp"
+            android:textSize="24sp"
             android:background="@drawable/button_red"
             android:layout_alignParentBottom="true" />
 

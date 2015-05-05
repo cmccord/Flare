@@ -124,7 +124,9 @@ public class NewCircleActivity extends Activity {
                                     }
                                     finish();
                                 }
-                                else {
+                                else if (circleName.getText().toString().length()==0) {
+                                    Toast.makeText(getApplicationContext(), "Circle Name Must Have At Least One Character", Toast.LENGTH_SHORT).show();
+                                } else {
                                     Toast.makeText(getApplicationContext(), "Invalid Circle Name", Toast.LENGTH_SHORT).show();
                                 }
                             }

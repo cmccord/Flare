@@ -137,6 +137,7 @@ public class MapsActivity extends FragmentActivity {
                 boolean alarmUp = (pi != null);
                 if(!alarmUp) {
                     Intent i = new Intent(MapsActivity.this, ShareActivity.class);
+//                    app.notJustOpened();
                     startActivity(i);
                 }
                 else {
@@ -173,6 +174,7 @@ public class MapsActivity extends FragmentActivity {
             {
                 //updateLocation();
                 Intent i = new Intent(MapsActivity.this, editProfileActivity.class);
+//                app.notJustOpened();
                 startActivity(i);
             }
         });
@@ -377,14 +379,17 @@ public class MapsActivity extends FragmentActivity {
         switch(position){
             case 0:
                 i = new Intent(this, ShareActivity.class);
+//                app.notJustOpened();
                 startActivity(i);
                 break;
             case 1:
                 i = new Intent(this, addFriendsActivity.class);
+//                app.notJustOpened();
                 startActivity(i);
                 break;
             case 2:
                 i = new Intent(this, circlesActivity.class);
+//                app.notJustOpened();
                 startActivity(i);
                 break;
         }
@@ -399,6 +404,7 @@ public class MapsActivity extends FragmentActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent i = new Intent(MapsActivity.this, newFriendsActivity.class);
+//                app.notJustOpened();
                 startActivity(i);
             }
         });
@@ -515,6 +521,23 @@ public class MapsActivity extends FragmentActivity {
     public void setTitle(CharSequence title) {
 //        mTitle = title;
 //        getActionBar().setTitle(mTitle);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Log.v("STATUSSS", ""+app.wasJustOpened());
+
+        if (app.wasJustOpened()) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        else {
+            super.onBackPressed();
+        }
+
     }
 
 }
