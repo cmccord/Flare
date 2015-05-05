@@ -17,7 +17,8 @@
     <string name="X">x</string>
     <string name="menu">\u2261</string>
     <string name="pencil">\u270E</string>
-    <string name="person">\u26C4</string>
+    <string name="person">\u2699</string>
+    <!--<string name="person">\u26C4</string>-->
 
     <string name="welcome">Welcome to Flare</string>
     <string name="login">Log In</string>
