@@ -45,7 +45,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
-
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +57,7 @@ public class MapsActivity extends FragmentActivity {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Firebase mFirebaseRef;
     private String mUserID;
+    private SlidingUpPanelLayout mLayout;
 
     private Button mPingButton, mLeftButton, mRightButton;
     private LocationManager mLocationManager;
@@ -174,6 +175,9 @@ public class MapsActivity extends FragmentActivity {
                 startActivity(i);
             }
         });
+
+        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        mLayout.setOverlayed(true);
     }
 
     private void createNewUser(){
@@ -277,6 +281,7 @@ public class MapsActivity extends FragmentActivity {
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
+
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
@@ -300,6 +305,7 @@ public class MapsActivity extends FragmentActivity {
      */
     private void setUpMap() {
         mMap.setMyLocationEnabled(true);
+        mMap.setPadding(10, 10, 10, 250);
 //        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
 

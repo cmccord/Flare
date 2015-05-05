@@ -11,8 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom"
-        sothree:umanoPanelHeight="68dp"
-        sothree:umanoShadowHeight="4dp">
+        sothree:umanoFadeColor="@android:color/transparent"
+        sothree:umanoClipPanel="true"
+        sothree:umanoPanelHeight="90dp"
+        sothree:umanoShadowHeight="0dp">
 
          <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
@@ -102,12 +104,105 @@
                 <!--android:background="@drawable/button_blue_green"-->
                 <!--android:layout_gravity="center"/>-->
         </LinearLayout>
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|top"
-            android:text="The Awesome Sliding Up Panel"
-            android:textSize="16sp" />
+            android:layout_height="200dp"
+            android:background="#a7ff0d00"
+            android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal|top">
+                    <ImageButton
+                        android:id="@+id/flare_button"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:gravity="center"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/flare"
+                        android:background="@drawable/button_flare"
+                        android:padding="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        />
+                </LinearLayout>
+                <TableLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/shareButton"
+                    android:layout_alignParentStart="true">
+
+                    <TableRow
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="@string/duration"
+                            android:textColor="#FFF"
+                            android:id="@+id/textView"
+                            android:layout_column="0" />
+
+                        <TextView
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/durationSetting"
+                            android:text="60 m"
+                            android:textColor="#FFF"
+                            android:gravity="right"
+                            android:layout_column="1" />
+
+                        <SeekBar
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/seekBarDuration"
+                            android:max="119"
+                            android:progress="59"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"
+                            android:layout_column="2" />
+
+                    </TableRow>
+                    <TableRow
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="@string/frequency"
+                            android:textColor="#FFF"
+                            android:id="@+id/textView2"
+                            android:layout_column="0" />
+
+                        <TextView
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/frequencySetting"
+                            android:text="1 m"
+                            android:textColor="#FFF"
+                            android:gravity="right"
+                            android:layout_column="1" />
+
+                        <SeekBar
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/seekBarFrequency"
+                            android:max="100"
+                            android:progress="40"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"
+                            android:layout_column="2" />
+                    </TableRow>
+
+                </TableLayout>
+
+        </LinearLayout>
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
     <ListView android:id="@+id/left_drawer"
         android:layout_width="240dp"

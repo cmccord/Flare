@@ -18,7 +18,7 @@
     <string name="menu">\u2261</string>
     <string name="pencil">\u270E</string>
     <string name="person">\u26C4</string>
-
+    <string name="caret_up">\u2038</string>
     <string name="welcome">Welcome to Flare</string>
     <string name="login">Log In</string>
     <string name="createnewaccount">New User? Get Flare</string>
