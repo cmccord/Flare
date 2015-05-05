@@ -27,7 +27,6 @@ public class NewCircleActivity extends Activity {
     private Firebase ref;
     private Application app;
     private Person[] people;
-    private ArrayAdapter<Person> adapter;
     private ContactsCompletionView completionView;
     private AuthData authData;
     private String userID;
@@ -83,43 +82,51 @@ public class NewCircleActivity extends Activity {
                             String name = snapshot.child(uid).child("name").getValue().toString();
                             people[i] = new Person(name, email);
                             people[i].setUid(uid);
+                            if(snapshot.child(uid).hasChild("picture"))
+                                people[i].setImage(Application.decodeBase64(snapshot.child(uid).child("picture").getValue().toString()));
                             Log.v("Getting friends", people[i].toString());
                             i++;
                         }
-                        adapter = new ArrayAdapter<Person>(NewCircleActivity.this, android.R.layout.simple_list_item_1, people);
+                        PersonAdapter adapter = new PersonAdapter(NewCircleActivity.this, R.layout.listview_item_row, people);
+                        //adapter = new ArrayAdapter<Person>(NewCircleActivity.this, android.R.layout.simple_list_item_1, people);
                         completionView = (ContactsCompletionView) findViewById(R.id.searchView);
                         completionView.setAdapter(adapter);
                         final DataSnapshot s1 = snapshot;
                         saveButton.setOnClickListener(new View.OnClickListener() {
                             public void onClick(View v) {
-                                try {
-                                    Map friends = new HashMap<>();
-                                    int numFriendsAdded = 0;
-                                    for (Object token : completionView.getObjects()) {
-                                        String uid = ((Person) token).getUid();
-                                        // make sure its a real user
-                                        if (!s1.hasChild(uid))
-                                            continue;
-                                        friends.put(uid, uid);
-                                        Log.v("Adding Friend to Circle", uid);
-                                        numFriendsAdded++;
+                                if(circleName.getText().toString().matches("([0-9]|[a-z]|[A-Z]| |_)+") && circleName.getText().toString().length() <= 15) {
+                                    try {
+                                        Map friends = new HashMap<>();
+                                        int numFriendsAdded = 0;
+                                        for (Object token : completionView.getObjects()) {
+                                            String uid = ((Person) token).getUid();
+                                            // make sure its a real user
+                                            if (!s1.hasChild(uid))
+                                                continue;
+                                            friends.put(uid, uid);
+                                            Log.v("Adding Friend to Circle", uid);
+                                            numFriendsAdded++;
+                                        }
+                                        Map circle = new HashMap<>();
+                                        circle.put(circleName.getText().toString(), friends);
+                                        if (s1.child(userID).hasChild("circles")) {
+                                            ref.child("users").child(userID).child("circles").updateChildren(circle);
+                                        } else {
+                                            Map update = new HashMap<>();
+                                            update.put("circles", circle);
+                                            ref.child("users").child(userID).updateChildren(update);
+                                        }
+                                        if (numFriendsAdded > 0)
+                                            Toast.makeText(getApplicationContext(), "New Circle Created!", Toast.LENGTH_SHORT).show();
+                                    } catch (Exception e) {
+                                        Log.v("Error creating circle", e.toString());
+                                        Toast.makeText(getApplicationContext(), "Could not create circle", Toast.LENGTH_SHORT).show();
                                     }
-                                    Map circle = new HashMap<>();
-                                    circle.put(circleName.getText().toString(), friends);
-                                    if (s1.child(userID).hasChild("circles")) {
-                                        ref.child("users").child(userID).child("circles").updateChildren(circle);
-                                    } else {
-                                        Map update = new HashMap<>();
-                                        update.put("circles", circle);
-                                        ref.child("users").child(userID).updateChildren(update);
-                                    }
-                                    if (numFriendsAdded > 0)
-                                        Toast.makeText(getApplicationContext(), "New Circle Created!", Toast.LENGTH_SHORT).show();
-                                } catch (Exception e) {
-                                    Log.v("Error creating circle", e.toString());
-                                    Toast.makeText(getApplicationContext(), "Could not create circle", Toast.LENGTH_SHORT).show();
+                                    finish();
                                 }
-                                finish();
+                                else {
+                                    Toast.makeText(getApplicationContext(), "Invalid Circle Name", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
                     }

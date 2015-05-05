@@ -14,7 +14,7 @@
             android:id="@+id/editProfile_butt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add Friends"
+            android:text="Add Circle"
             android:textColor="#fff"
             android:padding="15dp"
             android:fontFamily="sans-serif-thin"
@@ -26,21 +26,32 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Name of new circle:"
-        android:padding="10dp"
-        android:id="@+id/textView6" />
-
-    <EditText
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Type name of circle"
-        android:paddingLeft="10dp"
-        android:paddingTop="0dp"
-        android:id="@+id/circleName" />
+        android:paddingTop="50dp"
+        android:paddingBottom="50dp"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Name of new circle:"
+            android:padding="10dp"
+            android:id="@+id/textView6" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:paddingLeft="10dp"
+            android:paddingTop="0dp"
+            android:id="@+id/circleName" />
+
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,7 +79,7 @@
             android:padding="15dp"
             android:fontFamily="sans-serif-thin"
             android:textStyle="bold"
-            android:textSize="34sp"
+            android:textSize="24sp"
             android:background="@drawable/button_red"
             android:layout_alignParentBottom="true" />
 

@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -36,6 +38,7 @@ import com.firebase.simplelogin.FirebaseSimpleLoginError;
 import com.firebase.simplelogin.SimpleLogin;
 import com.firebase.simplelogin.SimpleLoginCompletionHandler;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -54,6 +57,7 @@ public class editProfileActivity extends Activity {
     private Button mCancelEditButton;
 
     private ImageButton mProPic;
+    private Bitmap proPic;
 
     private String value;
     private String orig_display_name;
@@ -116,6 +120,8 @@ public class editProfileActivity extends Activity {
                     Map<String, Object> value = (Map<String, Object>) snapshot.getValue();
                     orig_display_name = (String) value.get("name");
                     orig_email = (String) value.get("email");
+                    if(snapshot.hasChild("picture"))
+                        mProPic.setImageBitmap(Application.decodeBase64(snapshot.child("picture").getValue().toString()));
 
 //                    if (orig_email.equals("kwdougla@princeton.edu"))
 //                        mProPic.setBackgroundResource(R.drawable.pro_pic);
@@ -140,7 +146,15 @@ public class editProfileActivity extends Activity {
 
 
 
-
+        mProPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    editProfileActivity.this.startActivityForResult(takePictureIntent, 1);
+                }
+            }
+        });
 
 
         Button backButton = (Button) findViewById(R.id.back_butt);
@@ -151,6 +165,8 @@ public class editProfileActivity extends Activity {
                     }
                 }
         );
+
+
 
         mEditButton.setOnClickListener(
                 new Button.OnClickListener() {
@@ -471,6 +487,38 @@ public class editProfileActivity extends Activity {
                     }
                 }
         );
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            proPic = (Bitmap) extras.get("data");
+            if (proPic.getWidth() >= proPic.getHeight()){
+
+                proPic = Bitmap.createBitmap(
+                        proPic,
+                        proPic.getWidth()/2 - proPic.getHeight()/2,
+                        0,
+                        proPic.getHeight(),
+                        proPic.getHeight()
+                );
+
+            }else{
+
+                proPic = Bitmap.createBitmap(
+                        proPic,
+                        0,
+                        proPic.getHeight()/2 - proPic.getWidth()/2,
+                        proPic.getWidth(),
+                        proPic.getWidth()
+                );
+            }
+            mProPic.setImageBitmap(proPic);
+            Map pic = new HashMap<>();
+            pic.put("picture", Application.encodeTobase64(proPic));
+            ref.child("users").child(authData.getUid()).updateChildren(pic);
+        }
     }
 
 }

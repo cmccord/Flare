@@ -28,7 +28,7 @@ public class newFriendsActivity extends Activity {
     private Firebase ref;
     private Application app;
     private Person[] people;
-    private ArrayAdapter<Person> adapter;
+    //private ArrayAdapter<Person> adapter;
     private ContactsCompletionView completionView;
     private AuthData authData;
     private String userID;
@@ -74,10 +74,13 @@ public class newFriendsActivity extends Activity {
                         String uid = d.getKey();
                         people[i] = new Person(name, email);
                         people[i].setUid(uid);
+                        if(d.hasChild("picture"))
+                            people[i].setImage(Application.decodeBase64(d.child("picture").getValue().toString()));
                         Log.v("Getting users", people[i].toString());
                         i++;
                     }
-                    adapter = new ArrayAdapter<Person>(newFriendsActivity.this, android.R.layout.simple_list_item_1, people);
+                    PersonAdapter adapter = new PersonAdapter(newFriendsActivity.this, R.layout.listview_item_row, people);
+                    //adapter = new ArrayAdapter<Person>(newFriendsActivity.this, android.R.layout.simple_list_item_1, people);
                     completionView = (ContactsCompletionView) findViewById(R.id.searchView);
                     completionView.setAdapter(adapter);
                     final DataSnapshot s = snapshot;

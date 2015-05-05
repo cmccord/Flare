@@ -60,11 +60,7 @@ public class loginActivity extends Activity {
         authClient.checkAuthStatus(new SimpleLoginAuthenticatedHandler() {
             @Override
             public void authenticated(FirebaseSimpleLoginError error, FirebaseSimpleLoginUser user) {
-                if (error != null) {
-
-                    Log.v("authenticated", "Check performance error: " + error);
-
-                } else if (user == null) {
+                if (user == null || error != null) {
 
                     Log.v("authenticated", "No user logged in. the user may log in.");
 

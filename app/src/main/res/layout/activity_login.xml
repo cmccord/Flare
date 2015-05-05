@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#a7ff0d00"
+    android:background="#ffdcdcdc"
     android:id="@+id/the_lin_layout">
 
     <Button

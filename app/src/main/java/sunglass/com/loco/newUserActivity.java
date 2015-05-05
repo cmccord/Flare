@@ -5,6 +5,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -14,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.firebase.client.AuthData;
@@ -40,6 +44,8 @@ public class newUserActivity extends Activity {
     private EditText mEmail;
     private EditText mDisplayName;
     private EditText mPassword;
+    private ImageButton editProPic;
+    private Bitmap proPic = null;
 
     private final int MAX_CHARACTERS = 15;
 
@@ -59,6 +65,19 @@ public class newUserActivity extends Activity {
                 startActivity(i);
             }
         });
+
+        // start edits by cmccord
+        editProPic = (ImageButton) findViewById(R.id.editProPic);
+        editProPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    newUserActivity.this.startActivityForResult(takePictureIntent, 1);
+                }
+            }
+        });
+        // end edits by cmccord
 
         Button mFinishNewUserButton = (Button) findViewById(R.id.finishNewUser);
         mFinishNewUserButton.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +115,9 @@ public class newUserActivity extends Activity {
                                                     dets.put("email", mEmail.getText().toString());
                                                     dets.put("friends", new HashMap<String, String>());
                                                     dets.put("expiration", (long) 0);
+                                                    // edit by cmccord
+                                                    if(proPic != null)
+                                                        dets.put("picture", Application.encodeTobase64(proPic));
                                                     user.put(result.get("uid"), dets);
 
                                                     ref.child("users").updateChildren(user);
@@ -187,6 +209,36 @@ public class newUserActivity extends Activity {
             }
         });
 
+    }
+
+    // added by cmccord
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            proPic = (Bitmap) extras.get("data");
+            if (proPic.getWidth() >= proPic.getHeight()){
+
+                proPic = Bitmap.createBitmap(
+                        proPic,
+                        proPic.getWidth()/2 - proPic.getHeight()/2,
+                        0,
+                        proPic.getHeight(),
+                        proPic.getHeight()
+                );
+
+            }else{
+
+                proPic = Bitmap.createBitmap(
+                        proPic,
+                        0,
+                        proPic.getHeight()/2 - proPic.getWidth()/2,
+                        proPic.getWidth(),
+                        proPic.getWidth()
+                );
+            }
+            editProPic.setImageBitmap(proPic);
+        }
     }
 
 }
