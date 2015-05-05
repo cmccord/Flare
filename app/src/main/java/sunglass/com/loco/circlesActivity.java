@@ -60,6 +60,7 @@ public class circlesActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(circlesActivity.this, NewCircleActivity.class);
+                app.notJustOpened();
                 startActivity(i);
             }
         });

@@ -183,7 +183,10 @@ public class newUserActivity extends Activity {
                                                         Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_SHORT).show();
                                                         break;
                                                     default:
-                                                        Toast.makeText(getApplicationContext(), "Create New User Failed", Toast.LENGTH_SHORT).show();
+                                                        if (mPassword.getText().toString().length()==0)
+                                                            Toast.makeText(getApplicationContext(), "Password Must Have At Least One Character", Toast.LENGTH_SHORT).show();
+                                                        else
+                                                            Toast.makeText(getApplicationContext(), "Create New User Failed", Toast.LENGTH_SHORT).show();
                                                         break;
                                                 }
                                             }
@@ -193,7 +196,10 @@ public class newUserActivity extends Activity {
                                         Toast.makeText(getApplicationContext(), "Limit Display Name to " + MAX_CHARACTERS + " Characters", Toast.LENGTH_SHORT).show();
                                     }
 
-                                } else {
+                                } else if (mDisplayName.getText().toString().length() == 0) {
+                                    Toast.makeText(getApplicationContext(), "Display Name Must Have At Least One Character", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
                                     Toast.makeText(getApplicationContext(), "Invalid Character(s) in Display Name", Toast.LENGTH_SHORT).show();
                                 }
                             }

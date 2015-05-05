@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -64,12 +65,19 @@ public class Application extends android.app.Application {
     private HashMap<String,ValueEventListener> listeners = new HashMap<>();
     private String circleSelected = "All Friends";
     private ArrayList<String> friendsInCircle;
+    private boolean justOpened = true;
 
     @Override
     public void onCreate() {
         super.onCreate();
         inst = this;
         setUpFirebase();
+    }
+
+    public void notJustOpened() { justOpened = false; }
+
+    public boolean wasJustOpened() {
+        return justOpened;
     }
 
     public HashMap<String,Marker> getMarkers() {
@@ -270,13 +278,17 @@ public class Application extends android.app.Application {
                     Log.v("Track", d2.toString());
                     String name = "";
                     String pos = "";
-                    for (DataSnapshot deets : d2.getChildren()){
+                    String pic_string = "";
+                    for (DataSnapshot deets : d2.getChildren()) {
                         Log.v("Track", deets.toString());
                         if (deets.getKey().equals("name")){
                             name = deets.getValue().toString();
                         }
                         else if (deets.getKey().equals("pos")){
                             pos = deets.getValue().toString();
+                        }
+                        else if (deets.getKey().equals("picture")) {
+                            pic_string = deets.getValue().toString();
                         }
                     }
                     if (name.length() == 0){
@@ -292,20 +304,61 @@ public class Application extends android.app.Application {
                         }
                         else {
 
-                            Marker new_m = mMap.addMarker(new MarkerOptions().
-                                    icon(BitmapDescriptorFactory.fromBitmap(mIconFactory.makeIcon(name))).
-                                    position(l).
-                                    anchor(mIconFactory.getAnchorU(), mIconFactory.getAnchorV()).
-                                    title(name));
+                            Marker new_m;
+
+                            if (pic_string.equals("")) {
+                                new_m = mMap.addMarker(new MarkerOptions().
+                                        icon(BitmapDescriptorFactory.fromBitmap(mIconFactory.makeIcon(name))).
+                                        position(l).
+                                        anchor(mIconFactory.getAnchorU(), mIconFactory.getAnchorV()).
+                                        title(name));
+                            }
+                            else {
+                                mIconFactory.setRotation(0);
+                                mIconFactory.setContentRotation(0);
+                                new_m = mMap.addMarker(new MarkerOptions().
+                                        icon(BitmapDescriptorFactory.fromBitmap(mIconFactory.makeIcon(name))).
+                                        position(l).
+                                        anchor(mIconFactory.getAnchorU(), mIconFactory.getAnchorV()).
+                                        title(name).
+                                        anchor(0.5f,0.5f).
+                                        icon(BitmapDescriptorFactory.fromBitmap(Application.decodeBase64(pic_string))));
+                                mIconFactory.setRotation(90);
+                                mIconFactory.setContentRotation(-90);
+                            }
                             mMarkers.put(uid, new_m);
 
                         }
+
+//                        class Yourcustominfowindowadpater implements GoogleMap.InfoWindowAdapter {
+//                            private final View mymarkerview;
+//
+//                            Yourcustominfowindowadpater() {
+//                                mymarkerview = getLayoutInflater().inflate(R.layout.custominfowindow, null);
+//                            }
+//
+//                            public View getInfoWindow(Marker marker) {
+//                                render(marker, mymarkerview);
+//                                return mymarkerview;
+//                            }
+//
+//                            public View getInfoContents(Marker marker) {
+//                                return null;
+//                            }
+//
+//                            private void render(Marker marker, View view) {
+//                                // Add the code to set the required values
+//                                // for each element in your custominfowindow layout file
+//                            }
+//                        }
+//
+//                        GoogleMap.setInfoWindowAdapter(Yourcustominfowindowadpater);
 
                         Log.v("Firebase Test", d2.getRef().getParent().getKey() + " moved to " + d2.getValue());
                     }
                     else {
                         // if location is gone, remove marker from map
-                        if(mMarkers.containsKey(uid)) {
+                        if (mMarkers.containsKey(uid)) {
                             mMarkers.get(uid).remove();
                             mMarkers.remove(uid);
                         }
