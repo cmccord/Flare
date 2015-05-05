@@ -221,8 +221,6 @@ public class MapsActivity extends FragmentActivity {
         });
 
         builder.show();
-
-        //trackUser(mImei);
     }
 
     @Override

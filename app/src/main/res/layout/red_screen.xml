@@ -15,17 +15,16 @@
         android:fontFamily="sans-serif-thin"
         android:textStyle="bold"
         android:textSize="72sp"
-        android:paddingBottom="175dp" />
+        android:paddingBottom="205dp" />
     <!--android:layout_gravity="center_vertical|center_horizontal"-->
 
     <ImageView
         android:paddingTop="100dp"
         android:layout_width="115dp"
-        android:layout_height="215dp"
-        android:scaleType="fitXY"
+        android:layout_height="275dp"
         android:layout_centerInParent="true"
         android:id="@+id/flareLogo"
-        android:src="@drawable/fire_icon" />
+        android:src="@drawable/flare" />
     <!--android:layout_gravity="center_horizontal"-->
 
 </RelativeLayout>

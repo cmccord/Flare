@@ -4,95 +4,111 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <!-- The main content view -->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:background="#ffdcdcdc">
 
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sliding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        sothree:umanoPanelHeight="68dp"
+        sothree:umanoShadowHeight="4dp">
 
-        <LinearLayout
+         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:background="#ffdcdcdc">
 
-            <Button
-                android:id="@+id/leftButton"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:text="@string/menu"
-                android:textColor="#fff"
-                android:padding="15dp"
-                android:fontFamily="sans-serif-thin"
-                android:textStyle="bold"
-                android:textSize="34sp"
-                android:background="@drawable/button_red"
-                android:layout_gravity="right"/>
 
-            <Button
-                android:id="@+id/topButton"
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/leftButton"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/menu"
+                    android:textColor="#fff"
+                    android:padding="15dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:textStyle="bold"
+                    android:textSize="34sp"
+                    android:background="@drawable/button_red"
+                    android:layout_gravity="right"/>
+
+                <Button
+                    android:id="@+id/topButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textColor="#fff"
+                    android:padding="15dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:textStyle="bold"
+                    android:textSize="34sp"
+                    android:background="@drawable/button_red"
+                    android:layout_weight="0.5" />
+
+                <Button
+                    android:id="@+id/rightButton"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/person"
+                    android:textColor="#fff"
+                    android:padding="15dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:textStyle="bold"
+                    android:textSize="34sp"
+                    android:background="@drawable/button_red"
+                    android:layout_gravity="left"/>
+
+            </LinearLayout>
+            <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:textColor="#fff"
-                android:padding="15dp"
-                android:fontFamily="sans-serif-thin"
-                android:textStyle="bold"
-                android:textSize="34sp"
-                android:background="@drawable/button_red"
-                android:layout_weight="0.5" />
+                tools:context=".®MapActivity"
+                android:layout_weight="0.7">
 
-            <Button
-                android:id="@+id/rightButton"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:text="@string/person"
-                android:textColor="#fff"
-                android:padding="15dp"
-                android:fontFamily="sans-serif-thin"
-                android:textStyle="bold"
-                android:textSize="34sp"
-                android:background="@drawable/button_red"
-                android:layout_gravity="left"/>
+                <!--<fragment xmlns:map="http://schemas.android.com/apk/res-auto"-->
+                <!--android:id="@+id/map"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:scrollbars="vertical"-->
+                <!--class="com.google.android.gms.maps.SupportMapFragment"/>-->
 
+                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/map"
+                    tools:context=".MapsActivity"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"/>
+            </FrameLayout>
+
+            <!--<Button-->
+                <!--android:id="@+id/pingButton"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/app_name"-->
+                <!--android:textColor="#fff"-->
+                <!--android:layout_margin="10dp"-->
+                <!--android:padding="0dp"-->
+                <!--android:fontFamily="sans-serif-light"-->
+                <!--android:textStyle="bold"-->
+                <!--android:background="@drawable/button_blue_green"-->
+                <!--android:layout_gravity="center"/>-->
         </LinearLayout>
-        <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            tools:context=".®MapActivity"
-            android:layout_weight="0.7">
-
-            <!--<fragment xmlns:map="http://schemas.android.com/apk/res-auto"-->
-            <!--android:id="@+id/map"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:scrollbars="vertical"-->
-            <!--class="com.google.android.gms.maps.SupportMapFragment"/>-->
-
-            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/map"
-                tools:context=".MapsActivity"
-                android:name="com.google.android.gms.maps.SupportMapFragment"/>
-        </FrameLayout>
-
-        <!--<Button-->
-            <!--android:id="@+id/pingButton"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/app_name"-->
-            <!--android:textColor="#fff"-->
-            <!--android:layout_margin="10dp"-->
-            <!--android:padding="0dp"-->
-            <!--android:fontFamily="sans-serif-light"-->
-            <!--android:textStyle="bold"-->
-            <!--android:background="@drawable/button_blue_green"-->
-            <!--android:layout_gravity="center"/>-->
-    </LinearLayout>
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|top"
+            android:text="The Awesome Sliding Up Panel"
+            android:textSize="16sp" />
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
     <ListView android:id="@+id/left_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"

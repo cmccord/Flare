@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffdcdcdc"
+    android:background="#a7ff0d00"
     android:id="@+id/the_lin_layout">
 
     <Button
@@ -21,10 +21,9 @@
         android:paddingTop="50dp"
         android:layout_width="115dp"
         android:layout_height="165dp"
-        android:scaleType="fitXY"
         android:id="@+id/editProPic"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/fire_icon" />
+        android:src="@drawable/flare" />
 
     <EditText
         android:paddingTop="35dp"
