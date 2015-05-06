@@ -24,7 +24,7 @@
     <!--<string name="person">\u2699</string>-->
     <!--<string name="person">\u229B</string>-->
     <string name="person">\u25C9</string>
-
+    <string name="gear">⚙</string>
     <string name="welcome">Welcome to Flare</string>
     <string name="login">Log In</string>
     <string name="createnewaccount">New User? Get Flare</string>

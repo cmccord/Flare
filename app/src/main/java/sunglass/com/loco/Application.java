@@ -247,12 +247,12 @@ public class Application extends android.app.Application {
                 Log.v("Sharing Status", "" + getSharingStatus());
                 if (getSharingStatus()) {
                     mainButton.setBackgroundResource(R.drawable.button_green);
-                    bottomButton.setBackgroundResource(R.drawable.button_green);
+                    bottomButton.setBackgroundResource(R.drawable.share_button_green);
                     bottomButton.setText("Cancel");
                 }
                 else {
                     mainButton.setBackgroundResource(R.drawable.button_red);
-                    bottomButton.setBackgroundResource(R.drawable.button_red);
+                    bottomButton.setBackgroundResource(R.drawable.share_button_red);
                     bottomButton.setText("Share");
                 }
             }

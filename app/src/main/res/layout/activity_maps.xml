@@ -36,7 +36,6 @@
                     android:text="@string/menu"
                     android:textColor="#fff"
                     android:padding="15dp"
-                    android:fontFamily="sans-serif-thin"
                     android:textStyle="bold"
                     android:textSize="34sp"
                     android:background="@drawable/button_red"
@@ -50,7 +49,6 @@
                     android:text="@string/app_name"
                     android:textColor="#fff"
                     android:padding="15dp"
-                    android:fontFamily="sans-serif-thin"
                     android:textSize="34sp"
                     android:background="@drawable/button_red"
                     android:layout_weight="0.5" />
@@ -128,22 +126,24 @@
                         <!--android:layout_marginTop="10dp"-->
                         <!--android:layout_marginBottom="10dp"-->
                         <!--/>-->
+
                     <Button
                         android:id="@+id/shareButton"
+                        android:background="@drawable/share_button_green"
                         android:layout_width="100dp"
                         android:layout_height="70dp"
                         android:text="Share"
                         android:textAllCaps="false"
                         android:textColor="#fff"
-                        android:fontFamily="sans-serif-thin"
                         android:textSize="24sp"
-                        android:background="@drawable/share_button" />
+                        />
                 </LinearLayout>
                 <TableLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
+                    android:layout_marginTop="15dp"
                     android:background="#FFF"
                     android:fontFamily="sans-serif-thin"
                     >
