@@ -25,23 +25,27 @@ import java.util.Map;
 
 public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
-        private final View mymarkerview;
+        private View mymarkerview;
         private Bitmap image;
-//        private long time;
+        private boolean isPerson;
+        private Context context;
 
-        public CustomInfoWindowAdapter(Context context, Bitmap image_to_display) {
+        public CustomInfoWindowAdapter(Context context_given, Bitmap image_to_display, boolean isPerson_given) {
 
-//            LayoutInflater inflater = getLayoutInflater();
-            LayoutInflater inflater = LayoutInflater.from(context);
-//            LayoutInflater inflater = (LayoutInflater) Context.getApplicationContext().getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-            mymarkerview = inflater.inflate(R.layout.custom_info_window, null);
             image = image_to_display;
-//            time = time_to_display;
+            isPerson = isPerson_given;
+            context = context_given;
 
-//            mymarkerview = getLayoutInflater().inflate(R.layout.custom_info_window, null);
         }
 
         public View getInfoWindow(Marker marker) {
+
+            // If a pin, return null for default.
+            if (!isPerson) { return null; }
+
+            // If a person:
+            LayoutInflater inflater = LayoutInflater.from(context);
+            mymarkerview = inflater.inflate(R.layout.custom_info_window, null);
             render(marker, mymarkerview);
             return mymarkerview;
         }
