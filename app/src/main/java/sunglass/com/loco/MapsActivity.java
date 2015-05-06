@@ -438,52 +438,68 @@ public class MapsActivity extends FragmentActivity {
                 alarm.CancelAlarm(MapsActivity.this);
                 pi2.cancel();
             }
-            Toast.makeText(getApplicationContext(), "Click and Hold to Drop Pin", Toast.LENGTH_LONG).show();
-            mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                @Override
-                public void onMapLongClick(LatLng latLng) {
-                    final double lat = latLng.latitude;
-                    final double lon = latLng.longitude;
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
-                    LayoutInflater inflater = getLayoutInflater();
-                    View convertView = (View) inflater.inflate(R.layout.drop_pin, null);
-                    builder.setView(convertView);
-                    builder.setTitle("Drop Pin");
-                    Button accept = (Button) convertView.findViewById(R.id.acceptButton);
-                    Button decline = (Button) convertView.findViewById(R.id.declineButton);
-                    final TextView setting = (TextView) convertView.findViewById(R.id.pinSetting);
-                    final SeekBar slider = (SeekBar) convertView.findViewById(R.id.pinSlider);
-                    final TextView description = (TextView) convertView.findViewById(R.id.description);
-                    final AlertDialog dialog = builder.create();
-                    slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                        @Override
-                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                            setting.setText(progress + 1 + " m");
-                        }
+            else {
+                Toast.makeText(getApplicationContext(), "Click and Hold to Drop Pin", Toast.LENGTH_LONG).show();
+                mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                    @Override
+                    public void onMapLongClick(LatLng latLng) {
+                        final double lat = latLng.latitude;
+                        final double lon = latLng.longitude;
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+                        LayoutInflater inflater = getLayoutInflater();
+                        View convertView = (View) inflater.inflate(R.layout.drop_pin, null);
+                        builder.setView(convertView);
+                        builder.setTitle("Drop Pin");
+                        Button accept = (Button) convertView.findViewById(R.id.acceptButton);
+                        Button decline = (Button) convertView.findViewById(R.id.declineButton);
+                        final TextView setting = (TextView) convertView.findViewById(R.id.pinSetting);
+                        final SeekBar slider = (SeekBar) convertView.findViewById(R.id.pinSlider);
+                        final TextView description = (TextView) convertView.findViewById(R.id.description);
+                        final AlertDialog dialog = builder.create();
+                        slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                setting.setText(progress + 1 + " m");
+                            }
 
-                        @Override
-                        public void onStartTrackingTouch(SeekBar seekBar) {
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onStopTrackingTouch(SeekBar seekBar) {
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
 
-                        }
-                    });
-                    accept.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if(description.getText().toString().matches("([0-9]|[a-z]|[A-Z]| |_)+") && description.getText().toString().length() <= 15) {
-                                try {
-                                    mFirebaseRef.child("users").child(mUserID).child("pin").setValue(lat + "," + lon);
-                                    mFirebaseRef.child("users").child(mUserID).child("pin_description").setValue(description.getText().toString());
-                                    Intent i = new Intent(MapsActivity.this, PinService.class);
-                                    i.putExtra("duration", (slider.getProgress() + 1) + "");
-                                    startService(i);
-                                } catch (Exception e) {
-                                    Log.v("Drop Pin", "Could not drop pin");
-                                }
+                            }
+                        });
+                        accept.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (description.getText().toString().matches("([0-9]|[a-z]|[A-Z]| |_)+") && description.getText().toString().length() <= 15) {
+                                    try {
+                                        mFirebaseRef.child("users").child(mUserID).child("pin").setValue(lat + "," + lon);
+                                        mFirebaseRef.child("users").child(mUserID).child("pin_description").setValue(description.getText().toString());
+                                        Intent i = new Intent(MapsActivity.this, PinService.class);
+                                        i.putExtra("duration", (slider.getProgress() + 1) + "");
+                                        startService(i);
+                                    } catch (Exception e) {
+                                        Log.v("Drop Pin", "Could not drop pin");
+                                    }
+                                    mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                                        @Override
+                                        public void onMapLongClick(LatLng latLng) {
+
+                                        }
+                                    });
+                                    droppingPin = false;
+                                    dialog.cancel();
+                                } else
+                                    Toast.makeText(getApplicationContext(), "Invalid Pin Description", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        decline.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
                                 mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                                     @Override
                                     public void onMapLongClick(LatLng latLng) {
@@ -493,26 +509,11 @@ public class MapsActivity extends FragmentActivity {
                                 droppingPin = false;
                                 dialog.cancel();
                             }
-                            else
-                                Toast.makeText(getApplicationContext(), "Invalid Pin Description", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    decline.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                                @Override
-                                public void onMapLongClick(LatLng latLng) {
-
-                                }
-                            });
-                            droppingPin = false;
-                            dialog.cancel();
-                        }
-                    });
-                    dialog.show();
-                }
-            });
+                        });
+                        dialog.show();
+                    }
+                });
+            }
         }
         else {
             mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
