@@ -1,12 +1,15 @@
 package sunglass.com.loco;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class Sharer{
 
@@ -20,21 +23,31 @@ public class Sharer{
         durationBar.setOnSeekBarChangeListener(new durationBarListener());
         frequencyBar.setOnSeekBarChangeListener(new frequencyBarListener());
 
-        String[] str={"Andoid","Jelly Bean","Froyo",
-                "Ginger Bread","Eclipse Indigo","Eclipse Juno"};
-
-        ImageButton shareLocation = (ImageButton) parent.findViewById(R.id.shareButton);
+        Button shareLocation = (Button) parent.findViewById(R.id.shareButton);
         final Application app = (Application) parent.getApplication();
         shareLocation.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
             {
-                //app.updateLocation();
-                Intent i = new Intent(parent, LocationService.class);
-                i.putExtra("duration", duration + "");
-                i.putExtra("frequency", frequency + "");
-                app.setService(i);
-                parent.startService(i);
+                Intent intent = new Intent(parent, LocationShareReceiver.class);
+                intent.setAction("sunglass.com.loco.LOCATION_SHARE");
+                PendingIntent pi = PendingIntent.getBroadcast(parent, 0,
+                        intent, PendingIntent.FLAG_NO_CREATE);
+                boolean alarmUp = (pi != null);
+                if(!alarmUp) {
+                    Intent i = new Intent(parent, LocationService.class);
+                    i.putExtra("duration", duration + "");
+                    i.putExtra("frequency", frequency + "");
+                    app.setService(i);
+                    parent.startService(i);
+                    ((SlidingUpPanelLayout) parent.findViewById(R.id.sliding_layout)).setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                } else {
+                    LocationShareReceiver alarm = new LocationShareReceiver();
+                    alarm.CancelAlarm(parent);
+                    pi.cancel(); // see if this works, cancel the pending intent after cancelling alarm
+//                    stopService(app.getService());
+//                    app.setService(null);
+                }
             }
         });
 

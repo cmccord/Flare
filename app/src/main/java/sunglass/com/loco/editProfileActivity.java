@@ -279,6 +279,15 @@ public class editProfileActivity extends Activity {
                                                                             alarm.CancelAlarm(editProfileActivity.this);
                                                                             pi.cancel();
                                                                         }
+                                                                        Intent intent2 = new Intent(editProfileActivity.this, PinShareReceiver.class);
+                                                                        intent2.setAction("sunglass.com.loco.PIN_SHARE");
+                                                                        PendingIntent pi2 = PendingIntent.getBroadcast(editProfileActivity.this, 0,
+                                                                                intent2, PendingIntent.FLAG_NO_CREATE);
+                                                                        if(pi2 != null) {
+                                                                            PinShareReceiver alarm = new PinShareReceiver();
+                                                                            alarm.CancelAlarm(editProfileActivity.this);
+                                                                            pi2.cancel();
+                                                                        }
 
                                                                         authClient.removeUser(orig_email, value, new SimpleLoginCompletionHandler() {
                                                                             public void completed(FirebaseSimpleLoginError error, boolean success) {
@@ -391,7 +400,7 @@ public class editProfileActivity extends Activity {
                                                                 }
 
                                                                 // ONLY PASSWORD CHANGES.
-                                                                if (mEmail.getText().toString().equals("") && mDisplayName.getText().toString().equals("") && !mPassword.getText().toString().equals("")) {
+                                                                else if (mEmail.getText().toString().equals("") && mDisplayName.getText().toString().equals("") && !mPassword.getText().toString().equals("")) {
 
                                                                     authClient.changePassword(orig_email, value, mPassword.getText().toString(), new SimpleLoginCompletionHandler() {
                                                                         public void completed(FirebaseSimpleLoginError error, boolean success) {
@@ -454,7 +463,7 @@ public class editProfileActivity extends Activity {
                                                                 }
 
                                                                 // BOTH DISPLAY NAME AND PASSWORD CHANGE.
-                                                                if (mEmail.getText().toString().equals("") && !mDisplayName.getText().toString().equals("") && !mPassword.getText().toString().equals("")) {
+                                                                else if (mEmail.getText().toString().equals("") && !mDisplayName.getText().toString().equals("") && !mPassword.getText().toString().equals("")) {
 
                                                                     if (mDisplayName.getText().toString().matches("([0-9]|[a-z]|[A-Z]| |_)+")) {
 
@@ -532,6 +541,40 @@ public class editProfileActivity extends Activity {
                                                                     else {
                                                                         Toast.makeText(getApplicationContext(), "Invalid Character(s) in Display Name", Toast.LENGTH_SHORT).show();
                                                                     }
+
+                                                                }
+
+                                                                else {
+
+                                                                    mDisplayName.setHint(orig_display_name);
+                                                                    mEmail.setHint(orig_email);
+
+                                                                    mEmail.setVisibility(View.VISIBLE);
+
+                                                                    mEditButton.setVisibility(View.VISIBLE);
+                                                                    mCancelEditButton.setVisibility(View.GONE);
+
+                                                                    mDescripText.setVisibility(View.VISIBLE);
+
+                                                                    mRemoveUser.setVisibility(View.GONE);
+                                                                    mPassword.setVisibility(View.GONE);
+
+                                                                    mLogoutButton.setVisibility(View.VISIBLE);
+                                                                    mSaveChangesButton.setVisibility(View.GONE);
+
+                                                                    mEmail.setText("");
+                                                                    mDisplayName.setText("");
+                                                                    mPassword.setText("");
+
+                                                                    mEmail.setClickable(false);
+                                                                    mEmail.setCursorVisible(false);
+                                                                    mEmail.setFocusable(false);
+                                                                    mEmail.setFocusableInTouchMode(false);
+
+                                                                    mDisplayName.setClickable(false);
+                                                                    mDisplayName.setCursorVisible(false);
+                                                                    mDisplayName.setFocusable(false);
+                                                                    mDisplayName.setFocusableInTouchMode(false);
 
                                                                 }
 
@@ -618,6 +661,15 @@ public class editProfileActivity extends Activity {
                             LocationShareReceiver alarm = new LocationShareReceiver();
                             alarm.CancelAlarm(editProfileActivity.this);
                             pi.cancel();
+                        }
+                        Intent intent2 = new Intent(editProfileActivity.this, PinShareReceiver.class);
+                        intent2.setAction("sunglass.com.loco.PIN_SHARE");
+                        PendingIntent pi2 = PendingIntent.getBroadcast(editProfileActivity.this, 0,
+                                intent2, PendingIntent.FLAG_NO_CREATE);
+                        if(pi2 != null) {
+                            PinShareReceiver alarm = new PinShareReceiver();
+                            alarm.CancelAlarm(editProfileActivity.this);
+                            pi2.cancel();
                         }
 
                         authClient.logout();

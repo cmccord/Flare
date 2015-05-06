@@ -66,6 +66,7 @@ public class Application extends android.app.Application {
     private String circleSelected = "All Friends";
     private ArrayList<String> friendsInCircle;
     private boolean justOpened = true;
+    private HashMap<String, Marker> pinMarkers;
 
     @Override
     public void onCreate() {
@@ -142,7 +143,7 @@ public class Application extends android.app.Application {
 
     private void updateMarkersToCircle() {
         for(String s : mMarkers.keySet()) {
-            if(!friendsInCircle.contains((s))) {
+            if(!friendsInCircle.contains((s)) && !mUserID.equals(s)) {
                 cancelTracking(s);
             }
         }
@@ -151,6 +152,42 @@ public class Application extends android.app.Application {
                 trackUser(s);
             }
         }
+    }
+
+    public void refreshCircleSelected() {
+        try {
+            friendsInCircle = new ArrayList<>();
+            if (circleSelected.equals("All Friends")) {
+                mFirebaseRef.child("users").child(mUserID).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot d : dataSnapshot.getChildren())
+                            friendsInCircle.add(d.getKey());
+                        updateMarkersToCircle();
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+            } else {
+                mFirebaseRef.child("users").child(mUserID).child("circles").child(circleSelected).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot d : dataSnapshot.getChildren())
+                            friendsInCircle.add(d.getKey());
+                        updateMarkersToCircle();
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+            }
+            Log.v("friendsInCircle", friendsInCircle.toString());
+        } catch(Exception e) {Log.v("Error updating circle", e.toString());}
     }
 
     public Firebase getFirebaseRef() {
@@ -171,6 +208,7 @@ public class Application extends android.app.Application {
 
     public void setUpMarkers() {
         mMarkers = new HashMap<String, Marker>();
+        pinMarkers = new HashMap<String, Marker>();
     }
 
     public void setmMap(GoogleMap m){
@@ -204,12 +242,19 @@ public class Application extends android.app.Application {
         try {
             //Activity activity = (Activity) context;
             Button mainButton = (Button) activity.findViewById(R.id.topButton);
+            Button bottomButton = (Button) activity.findViewById(R.id.shareButton);
             if (mainButton != null) {
                 Log.v("Sharing Status", "" + getSharingStatus());
-                if (getSharingStatus())
+                if (getSharingStatus()) {
                     mainButton.setBackgroundResource(R.drawable.button_green);
-                else
+                    bottomButton.setBackgroundResource(R.drawable.button_green);
+                    bottomButton.setText("Cancel");
+                }
+                else {
                     mainButton.setBackgroundResource(R.drawable.button_red);
+                    bottomButton.setBackgroundResource(R.drawable.button_red);
+                    bottomButton.setText("Share");
+                }
             }
         }
         catch(Exception e){Log.v("cancelling share", "couldn't cast context as activity");}
@@ -279,6 +324,8 @@ public class Application extends android.app.Application {
                     String name = "";
                     String pos = "";
                     String pic_string = "";
+                    String pin = "";
+                    String pin_description = "";
                     for (DataSnapshot deets : d2.getChildren()) {
                         Log.v("Track", deets.toString());
                         if (deets.getKey().equals("name")){
@@ -289,6 +336,12 @@ public class Application extends android.app.Application {
                         }
                         else if (deets.getKey().equals("picture")) {
                             pic_string = deets.getValue().toString();
+                        }
+                        else if(deets.getKey().equals("pin")) {
+                            pin = deets.getValue().toString();
+                        }
+                        else if(deets.getKey().equals("pin_description")) {
+                            pin_description = deets.getValue().toString();
                         }
                     }
                     if (name.length() == 0){
@@ -306,26 +359,14 @@ public class Application extends android.app.Application {
 
                             Marker new_m;
 
-                            if (pic_string.equals("")) {
-                                new_m = mMap.addMarker(new MarkerOptions().
-                                        icon(BitmapDescriptorFactory.fromBitmap(mIconFactory.makeIcon(name))).
-                                        position(l).
-                                        anchor(mIconFactory.getAnchorU(), mIconFactory.getAnchorV()).
-                                        title(name));
-                            }
-                            else {
-                                mIconFactory.setRotation(0);
-                                mIconFactory.setContentRotation(0);
-                                new_m = mMap.addMarker(new MarkerOptions().
-                                        icon(BitmapDescriptorFactory.fromBitmap(mIconFactory.makeIcon(name))).
-                                        position(l).
-                                        anchor(mIconFactory.getAnchorU(), mIconFactory.getAnchorV()).
-                                        title(name).
-                                        anchor(0.5f,0.5f).
-                                        icon(BitmapDescriptorFactory.fromBitmap(Application.decodeBase64(pic_string))));
-                                mIconFactory.setRotation(90);
-                                mIconFactory.setContentRotation(-90);
-                            }
+                            new_m = mMap.addMarker(new MarkerOptions().
+                                    icon(BitmapDescriptorFactory.fromBitmap(mIconFactory.makeIcon(name))).
+                                    position(l).
+                                    anchor(mIconFactory.getAnchorU(), mIconFactory.getAnchorV()).
+                                    title(name));
+
+                            mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(getApplicationContext(), Application.decodeBase64(pic_string)));
+
                             mMarkers.put(uid, new_m);
 
                         }
@@ -363,6 +404,25 @@ public class Application extends android.app.Application {
                             mMarkers.remove(uid);
                         }
                     }
+                    String[] pinLoc = pin.split(",");
+                    LatLng pinL;
+                    if(pinLoc.length > 1) {
+                        pinL = new LatLng(Double.parseDouble(pinLoc[0]), Double.parseDouble(pinLoc[1]));
+                        if(pinMarkers.containsKey(uid)) {
+                            pinMarkers.get(uid).remove();
+                            pinMarkers.remove(uid);
+                        }
+                        Marker marker = mMap.addMarker(new MarkerOptions().position(
+                                new LatLng(pinL.latitude, pinL.longitude)).title(name).snippet(pin_description));
+                        marker.setAlpha((float) .99);
+                        pinMarkers.put(uid, marker);
+                    }
+                    else {
+                        if(pinMarkers.containsKey(uid)) {
+                            pinMarkers.get(uid).remove();
+                            pinMarkers.remove(uid);
+                        }
+                    }
                 }
 //                if (mMap.getMyLocation() != null) {
 //                    Location l = mMap.getMyLocation();
@@ -381,7 +441,7 @@ public class Application extends android.app.Application {
         try {
             mFirebaseRef.child("users").child(uid).removeEventListener(listeners.get(uid));
         } catch(Exception e) {Log.v("Removing friends error", "Couldn't remove listener from friend");}
-        if(mMarkers.containsKey(uid)) {
+        if(!uid.equals(mUserID) && mMarkers.containsKey(uid)) {
             Log.v("Removing marker", uid);
             mMarkers.get(uid).remove();
             mMarkers.remove(uid);
