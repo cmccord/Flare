@@ -107,7 +107,7 @@ public class addFriendsActivity extends Activity {
                                         else if(s.child(uid).hasChild("requests") && s.child(uid).child("requests").hasChild(userID))
                                             ref.child("users").child(uid).child("requests").child(userID).removeValue();
                                     } catch(Exception e) {Log.v("Removing friends error", "Couldn't remove you from their list");}
-                                    app.setCircleSelected(app.getCircleSelected());
+                                    app.refreshCircleSelected();
                                     addFriendsActivity.this.onResume();
                                     dialog.cancel();
                                 }

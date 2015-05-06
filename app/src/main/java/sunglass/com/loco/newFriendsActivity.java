@@ -47,6 +47,8 @@ public class newFriendsActivity extends Activity {
         }
 
         saveButton = (Button) findViewById(R.id.save_button);
+        completionView = (ContactsCompletionView) findViewById(R.id.searchView);
+        completionView.setVisibility(View.INVISIBLE);
 
         if(ref != null && authData != null) {
             ref.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -81,8 +83,8 @@ public class newFriendsActivity extends Activity {
                     }
                     PersonAdapter adapter = new PersonAdapter(newFriendsActivity.this, R.layout.listview_item_row, people);
                     //adapter = new ArrayAdapter<Person>(newFriendsActivity.this, android.R.layout.simple_list_item_1, people);
-                    completionView = (ContactsCompletionView) findViewById(R.id.searchView);
                     completionView.setAdapter(adapter);
+                    completionView.setVisibility(View.VISIBLE);
                     final DataSnapshot s = snapshot;
 
                     saveButton.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +135,7 @@ public class newFriendsActivity extends Activity {
                             finish();
                         }
                     });
+
                 }
 
                 @Override

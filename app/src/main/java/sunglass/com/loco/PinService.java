@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-public class LocationService extends Service {
+public class PinService extends Service {
 
-    LocationShareReceiver alarm = new LocationShareReceiver();
+    PinShareReceiver alarm = new PinShareReceiver();
     public void onCreate()
     {
         super.onCreate();
@@ -17,20 +17,18 @@ public class LocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
-        int interval = Integer.parseInt(intent.getStringExtra("frequency"));
         int d = Integer.parseInt(intent.getStringExtra("duration"));
         long expiration = System.currentTimeMillis() + 1000*60*d;
         Log.v("duration", d + "");
-        alarm.SetAlarm(LocationService.this, interval, expiration);
+        alarm.SetAlarm(PinService.this, expiration);
         return START_NOT_STICKY;
     }
 
     public void onStart(Context context,Intent intent, int startId)
     {
-        int interval = Integer.parseInt(intent.getStringExtra("frequency"));
         int d = Integer.parseInt(intent.getStringExtra("duration"));
         long expiration = System.currentTimeMillis() + 1000*60*d;
-        alarm.SetAlarm(context, interval, expiration);
+        alarm.SetAlarm(context, expiration);
     }
 
     @Override

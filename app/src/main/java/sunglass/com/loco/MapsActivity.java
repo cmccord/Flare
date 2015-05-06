@@ -28,7 +28,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.ChildEventListener;
@@ -66,7 +68,6 @@ public class MapsActivity extends FragmentActivity {
     private String mProvider;
     private LocationListener mLocationListener;
     private Location mLocation;
-    private HashMap<String, Marker> mMarkers;
     private String mImei;
     private boolean mIsNew = true;
     private String mInputText;
@@ -74,6 +75,7 @@ public class MapsActivity extends FragmentActivity {
     private DrawerLayout mLeftDrawer, mRightDrawer;
     private ListView mLeftDrawerList, mRightDrawerList;
     private Application app;
+    private boolean droppingPin = false;
     private static MapsActivity inst;
     private Sharer mSharer;
 
@@ -91,6 +93,9 @@ public class MapsActivity extends FragmentActivity {
     protected void onPause() {
         if (mLocationManager != null) {
             mLocationManager.removeUpdates(mLocationListener);
+        }
+        if(droppingPin) {
+
         }
         //app.setInMapsActivity(null);
         super.onPause();
@@ -296,7 +301,7 @@ public class MapsActivity extends FragmentActivity {
                 String provider = locationManager.getBestProvider(criteria, true);
                 Location l = locationManager.getLastKnownLocation(provider);
                 if (l != null)
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(l.getLatitude(), l.getLongitude()), 14));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(l.getLatitude(), l.getLongitude()), 16));
             }
         }
     }
@@ -318,27 +323,27 @@ public class MapsActivity extends FragmentActivity {
         return mMap;
     }
 
-    private void zoomToCoverAllMarkers()
-    {
-        LatLngBounds existing = this.mMap.getProjection().getVisibleRegion().latLngBounds;
-        boolean all = true;
-
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (String marker : mMarkers.keySet())
-        {
-            if (!existing.contains(mMarkers.get(marker).getPosition()))
-                all = false;
-            builder.include(mMarkers.get(marker).getPosition());
-        }
-
-        if (!all) {
-            LatLngBounds bounds = builder.build();
-            int padding = 400; // offset from edges of the map in pixels
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-            mMap.moveCamera(cu);
-            //mMap.animateCamera(cu);
-        }
-    }
+//    private void zoomToCoverAllMarkers()
+//    {
+//        LatLngBounds existing = this.mMap.getProjection().getVisibleRegion().latLngBounds;
+//        boolean all = true;
+//
+//        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+//        for (String marker : mMarkers.keySet())
+//        {
+//            if (!existing.contains(mMarkers.get(marker).getPosition()))
+//                all = false;
+//            builder.include(mMarkers.get(marker).getPosition());
+//        }
+//
+//        if (!all) {
+//            LatLngBounds bounds = builder.build();
+//            int padding = 400; // offset from edges of the map in pixels
+//            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+//            mMap.moveCamera(cu);
+//            //mMap.animateCamera(cu);
+//        }
+//    }
 
     private void setUpLeftDrawer() {
         mMenuStrings = getResources().getStringArray(R.array.leftmenu);
@@ -394,6 +399,108 @@ public class MapsActivity extends FragmentActivity {
 //                app.notJustOpened();
                 startActivity(i);
                 break;
+            case 3:
+                dropPin();
+                break;
+        }
+    }
+
+    public void dropPin() {
+        if(!droppingPin) {
+            droppingPin = true;
+            Intent intent2 = new Intent(MapsActivity.this, PinShareReceiver.class);
+            intent2.setAction("sunglass.com.loco.PIN_SHARE");
+            PendingIntent pi2 = PendingIntent.getBroadcast(MapsActivity.this, 0,
+                    intent2, PendingIntent.FLAG_NO_CREATE);
+            if(pi2 != null) {
+                PinShareReceiver alarm = new PinShareReceiver();
+                alarm.CancelAlarm(MapsActivity.this);
+                pi2.cancel();
+            }
+            Toast.makeText(getApplicationContext(), "Click and Hold to Drop Pin", Toast.LENGTH_LONG).show();
+            mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(LatLng latLng) {
+                    final double lat = latLng.latitude;
+                    final double lon = latLng.longitude;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+                    LayoutInflater inflater = getLayoutInflater();
+                    View convertView = (View) inflater.inflate(R.layout.drop_pin, null);
+                    builder.setView(convertView);
+                    builder.setTitle("Drop Pin");
+                    Button accept = (Button) convertView.findViewById(R.id.acceptButton);
+                    Button decline = (Button) convertView.findViewById(R.id.declineButton);
+                    final TextView setting = (TextView) convertView.findViewById(R.id.pinSetting);
+                    final SeekBar slider = (SeekBar) convertView.findViewById(R.id.pinSlider);
+                    final TextView description = (TextView) convertView.findViewById(R.id.description);
+                    final AlertDialog dialog = builder.create();
+                    slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                        @Override
+                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                            setting.setText(progress + 1 + " m");
+                        }
+
+                        @Override
+                        public void onStartTrackingTouch(SeekBar seekBar) {
+
+                        }
+
+                        @Override
+                        public void onStopTrackingTouch(SeekBar seekBar) {
+
+                        }
+                    });
+                    accept.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(description.getText().toString().matches("([0-9]|[a-z]|[A-Z]| |_)+") && description.getText().toString().length() <= 15) {
+                                try {
+                                    mFirebaseRef.child("users").child(mUserID).child("pin").setValue(lat + "," + lon);
+                                    mFirebaseRef.child("users").child(mUserID).child("pin_description").setValue(description.getText().toString());
+                                    Intent i = new Intent(MapsActivity.this, PinService.class);
+                                    i.putExtra("duration", (slider.getProgress() + 1) + "");
+                                    startService(i);
+                                } catch (Exception e) {
+                                    Log.v("Drop Pin", "Could not drop pin");
+                                }
+                                mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                                    @Override
+                                    public void onMapLongClick(LatLng latLng) {
+
+                                    }
+                                });
+                                droppingPin = false;
+                                dialog.cancel();
+                            }
+                            else
+                                Toast.makeText(getApplicationContext(), "Invalid Pin Description", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    decline.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                                @Override
+                                public void onMapLongClick(LatLng latLng) {
+
+                                }
+                            });
+                            droppingPin = false;
+                            dialog.cancel();
+                        }
+                    });
+                    dialog.show();
+                }
+            });
+        }
+        else {
+            mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(LatLng latLng) {
+
+                }
+            });
+            droppingPin = false;
         }
     }
 

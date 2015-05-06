@@ -279,6 +279,15 @@ public class editProfileActivity extends Activity {
                                                                             alarm.CancelAlarm(editProfileActivity.this);
                                                                             pi.cancel();
                                                                         }
+                                                                        Intent intent2 = new Intent(editProfileActivity.this, PinShareReceiver.class);
+                                                                        intent2.setAction("sunglass.com.loco.PIN_SHARE");
+                                                                        PendingIntent pi2 = PendingIntent.getBroadcast(editProfileActivity.this, 0,
+                                                                                intent2, PendingIntent.FLAG_NO_CREATE);
+                                                                        if(pi2 != null) {
+                                                                            PinShareReceiver alarm = new PinShareReceiver();
+                                                                            alarm.CancelAlarm(editProfileActivity.this);
+                                                                            pi2.cancel();
+                                                                        }
 
                                                                         authClient.removeUser(orig_email, value, new SimpleLoginCompletionHandler() {
                                                                             public void completed(FirebaseSimpleLoginError error, boolean success) {
@@ -652,6 +661,15 @@ public class editProfileActivity extends Activity {
                             LocationShareReceiver alarm = new LocationShareReceiver();
                             alarm.CancelAlarm(editProfileActivity.this);
                             pi.cancel();
+                        }
+                        Intent intent2 = new Intent(editProfileActivity.this, PinShareReceiver.class);
+                        intent2.setAction("sunglass.com.loco.PIN_SHARE");
+                        PendingIntent pi2 = PendingIntent.getBroadcast(editProfileActivity.this, 0,
+                                intent2, PendingIntent.FLAG_NO_CREATE);
+                        if(pi2 != null) {
+                            PinShareReceiver alarm = new PinShareReceiver();
+                            alarm.CancelAlarm(editProfileActivity.this);
+                            pi2.cancel();
                         }
 
                         authClient.logout();
