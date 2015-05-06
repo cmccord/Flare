@@ -108,7 +108,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#00ff0d00"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:textAllCaps="false">
 
                 <LinearLayout
                     android:layout_height="wrap_content"
@@ -131,11 +132,12 @@
                         android:layout_width="100dp"
                         android:layout_height="70dp"
                         android:text="Share"
+                        android:textAllCaps="false"
                         android:textColor="#fff"
                         android:fontFamily="sans-serif-thin"
                         android:textStyle="bold"
                         android:textSize="24sp"
-                        android:background="@drawable/button_red" />
+                        android:background="@drawable/circle_button" />
                 </LinearLayout>
                 <TableLayout
                     android:orientation="vertical"
