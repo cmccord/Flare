@@ -57,7 +57,9 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
             ImageView image_disp = (ImageView) mymarkerview.findViewById(R.id.indiv_pro_pic);
 //            TextView time_disp = (TextView) mymarkerview.findViewById(R.id.time_to_exp_textview);
 
-            image_disp.setImageBitmap(image);
+            Bitmap newImage = Bitmap.createBitmap(image);
+
+            image_disp.setImageBitmap(newImage);
 //            time_disp.setText("Time Remaining: " + time + " s");
 
         }
