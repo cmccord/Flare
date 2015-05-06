@@ -75,6 +75,7 @@ public class MapsActivity extends FragmentActivity {
     private ListView mLeftDrawerList, mRightDrawerList;
     private Application app;
     private static MapsActivity inst;
+    private Sharer mSharer;
 
     @Override
     public void onStart() {
@@ -88,7 +89,7 @@ public class MapsActivity extends FragmentActivity {
 
     @Override
     protected void onPause() {
-        if (mLocationManager != null){
+        if (mLocationManager != null) {
             mLocationManager.removeUpdates(mLocationListener);
         }
         //app.setInMapsActivity(null);
@@ -136,11 +137,10 @@ public class MapsActivity extends FragmentActivity {
                         intent, PendingIntent.FLAG_NO_CREATE);
                 boolean alarmUp = (pi != null);
                 if(!alarmUp) {
-                    Intent i = new Intent(MapsActivity.this, ShareActivity.class);
+//                    Intent i = new Intent(MapsActivity.this, ShareActivity.class);
 //                    app.notJustOpened();
-                    startActivity(i);
-                }
-                else {
+//                    startActivity(i);
+                } else {
                     LocationShareReceiver alarm = new LocationShareReceiver();
                     alarm.CancelAlarm(MapsActivity.this);
                     pi.cancel(); // see if this works, cancel the pending intent after cancelling alarm
@@ -181,9 +181,11 @@ public class MapsActivity extends FragmentActivity {
 
         mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         mLayout.setOverlayed(true);
+
+        mSharer = new Sharer(this);
     }
 
-    private void createNewUser(){
+    private void createNewUser() {
         Log.v("New User", "Creating new user " + mImei);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -378,9 +380,9 @@ public class MapsActivity extends FragmentActivity {
         Intent i;
         switch(position){
             case 0:
-                i = new Intent(this, ShareActivity.class);
+//                i = new Intent(this, ShareActivity.class);
 //                app.notJustOpened();
-                startActivity(i);
+//                startActivity(i);
                 break;
             case 1:
                 i = new Intent(this, addFriendsActivity.class);
