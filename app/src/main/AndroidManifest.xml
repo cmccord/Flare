@@ -59,8 +59,23 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".PinShareReceiver">
+            <!--android:process=":remote" >-->
+            <intent-filter>
+                <action android:name="sunglass.com.loco.PIN_SHARE" >
+                </action>
+            </intent-filter>
+        </receiver>
+
         <service
             android:name=".LocationService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <service
+            android:name=".PinService"
             android:enabled="true"
             android:exported="true" >
         </service>

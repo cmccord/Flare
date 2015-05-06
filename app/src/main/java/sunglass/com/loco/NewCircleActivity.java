@@ -47,6 +47,8 @@ public class NewCircleActivity extends Activity {
 
         saveButton = (Button) findViewById(R.id.save_button);
         circleName = (EditText) findViewById(R.id.circleName);
+        completionView = (ContactsCompletionView) findViewById(R.id.searchView);
+        completionView.setVisibility(View.INVISIBLE);
 
         if(ref != null && authData != null) {
             ref.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -89,8 +91,9 @@ public class NewCircleActivity extends Activity {
                         }
                         PersonAdapter adapter = new PersonAdapter(NewCircleActivity.this, R.layout.listview_item_row, people);
                         //adapter = new ArrayAdapter<Person>(NewCircleActivity.this, android.R.layout.simple_list_item_1, people);
-                        completionView = (ContactsCompletionView) findViewById(R.id.searchView);
+
                         completionView.setAdapter(adapter);
+                        completionView.setVisibility(View.VISIBLE);
                         final DataSnapshot s1 = snapshot;
                         saveButton.setOnClickListener(new View.OnClickListener() {
                             public void onClick(View v) {
