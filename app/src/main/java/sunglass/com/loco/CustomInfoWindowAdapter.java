@@ -27,13 +27,11 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
         private View mymarkerview;
         private Bitmap image;
-        private boolean isPerson;
         private Context context;
 
-        public CustomInfoWindowAdapter(Context context_given, Bitmap image_to_display, boolean isPerson_given) {
+        public CustomInfoWindowAdapter(Context context_given, Bitmap image_to_display) {
 
             image = image_to_display;
-            isPerson = isPerson_given;
             context = context_given;
 
         }
@@ -41,7 +39,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         public View getInfoWindow(Marker marker) {
 
             // If a pin, return null for default.
-            if (!isPerson) { return null; }
+            if (marker.getAlpha() == (float) .99) { return null; }
 
             // If a person:
             LayoutInflater inflater = LayoutInflater.from(context);

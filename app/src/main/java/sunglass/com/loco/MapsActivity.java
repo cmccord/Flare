@@ -18,6 +18,7 @@ import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
@@ -129,6 +130,8 @@ public class MapsActivity extends FragmentActivity {
         app.setSharingStatus(alarmUp, this);
 
 //        trackCircles();
+        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        mLayout.setOverlayed(true);
         app.trackAll(this);
         mPingButton = (Button) findViewById(R.id.topButton);
 //        mPingButton.setLayoutParams(new LinearLayout.LayoutParams(mPingButton.getMeasuredHeight(), mPingButton.getMeasuredHeight()));
@@ -145,6 +148,10 @@ public class MapsActivity extends FragmentActivity {
 //                    Intent i = new Intent(MapsActivity.this, ShareActivity.class);
 //                    app.notJustOpened();
 //                    startActivity(i);
+                    if(mLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED))
+                        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                    else
+                        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 } else {
                     LocationShareReceiver alarm = new LocationShareReceiver();
                     alarm.CancelAlarm(MapsActivity.this);
@@ -183,9 +190,6 @@ public class MapsActivity extends FragmentActivity {
                 startActivity(i);
             }
         });
-
-        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-        mLayout.setOverlayed(true);
 
         mSharer = new Sharer(this);
     }
@@ -385,9 +389,26 @@ public class MapsActivity extends FragmentActivity {
         Intent i;
         switch(position){
             case 0:
-//                i = new Intent(this, ShareActivity.class);
-//                app.notJustOpened();
-//                startActivity(i);
+                Intent intent = new Intent(MapsActivity.this, LocationShareReceiver.class);
+                intent.setAction("sunglass.com.loco.LOCATION_SHARE");
+                PendingIntent pi = PendingIntent.getBroadcast(MapsActivity.this, 0,
+                        intent, PendingIntent.FLAG_NO_CREATE);
+                boolean alarmUp = (pi != null);
+                if(!alarmUp) {
+//                    Intent i = new Intent(MapsActivity.this, ShareActivity.class);
+//                    app.notJustOpened();
+//                    startActivity(i);
+                    if(mLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED))
+                        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                    else
+                        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                } else {
+                    LocationShareReceiver alarm = new LocationShareReceiver();
+                    alarm.CancelAlarm(MapsActivity.this);
+                    pi.cancel(); // see if this works, cancel the pending intent after cancelling alarm
+//                    stopService(app.getService());
+//                    app.setService(null);
+                }
                 break;
             case 1:
                 i = new Intent(this, addFriendsActivity.class);

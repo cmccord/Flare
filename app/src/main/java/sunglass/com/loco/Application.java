@@ -242,12 +242,19 @@ public class Application extends android.app.Application {
         try {
             //Activity activity = (Activity) context;
             Button mainButton = (Button) activity.findViewById(R.id.topButton);
+            Button bottomButton = (Button) activity.findViewById(R.id.shareButton);
             if (mainButton != null) {
                 Log.v("Sharing Status", "" + getSharingStatus());
-                if (getSharingStatus())
+                if (getSharingStatus()) {
                     mainButton.setBackgroundResource(R.drawable.button_green);
-                else
+                    bottomButton.setBackgroundResource(R.drawable.button_green);
+                    bottomButton.setText("Cancel");
+                }
+                else {
                     mainButton.setBackgroundResource(R.drawable.button_red);
+                    bottomButton.setBackgroundResource(R.drawable.button_red);
+                    bottomButton.setText("Share");
+                }
             }
         }
         catch(Exception e){Log.v("cancelling share", "couldn't cast context as activity");}
@@ -407,6 +414,7 @@ public class Application extends android.app.Application {
                         }
                         Marker marker = mMap.addMarker(new MarkerOptions().position(
                                 new LatLng(pinL.latitude, pinL.longitude)).title(name).snippet(pin_description));
+                        marker.setAlpha((float) .99);
                         pinMarkers.put(uid, marker);
                     }
                     else {

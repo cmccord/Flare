@@ -23,7 +23,7 @@
         android:layout_height="165dp"
         android:id="@+id/editProPic"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/flare" />
+        android:src="@drawable/flare_white" />
 
     <EditText
         android:paddingTop="35dp"
