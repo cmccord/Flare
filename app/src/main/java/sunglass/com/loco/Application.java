@@ -279,6 +279,7 @@ public class Application extends android.app.Application {
                     String name = "";
                     String pos = "";
                     String pic_string = "";
+//                    long expiration = 0;
                     for (DataSnapshot deets : d2.getChildren()) {
                         Log.v("Track", deets.toString());
                         if (deets.getKey().equals("name")){
@@ -290,6 +291,9 @@ public class Application extends android.app.Application {
                         else if (deets.getKey().equals("picture")) {
                             pic_string = deets.getValue().toString();
                         }
+//                        else if (deets.getKey().equals("expiration")){
+//                            expiration = (long) deets.getValue();
+//                        }
                     }
                     if (name.length() == 0){
                         name = d2.getKey();
@@ -306,53 +310,41 @@ public class Application extends android.app.Application {
 
                             Marker new_m;
 
-                            if (pic_string.equals("")) {
-                                new_m = mMap.addMarker(new MarkerOptions().
-                                        icon(BitmapDescriptorFactory.fromBitmap(mIconFactory.makeIcon(name))).
-                                        position(l).
-                                        anchor(mIconFactory.getAnchorU(), mIconFactory.getAnchorV()).
-                                        title(name));
-                            }
-                            else {
-                                mIconFactory.setRotation(0);
-                                mIconFactory.setContentRotation(0);
-                                new_m = mMap.addMarker(new MarkerOptions().
-                                        icon(BitmapDescriptorFactory.fromBitmap(mIconFactory.makeIcon(name))).
-                                        position(l).
-                                        anchor(mIconFactory.getAnchorU(), mIconFactory.getAnchorV()).
-                                        title(name).
-                                        anchor(0.5f,0.5f).
-                                        icon(BitmapDescriptorFactory.fromBitmap(Application.decodeBase64(pic_string))));
-                                mIconFactory.setRotation(90);
-                                mIconFactory.setContentRotation(-90);
-                            }
+//                            if (pic_string.equals("")) {
+//                                new_m = mMap.addMarker(new MarkerOptions().
+//                                        icon(BitmapDescriptorFactory.fromBitmap(mIconFactory.makeIcon(name))).
+//                                        position(l).
+//                                        anchor(mIconFactory.getAnchorU(), mIconFactory.getAnchorV()).
+//                                        title(name));
+//                            }
+//                            else {
+//                                mIconFactory.setRotation(0);
+//                                mIconFactory.setContentRotation(0);
+//                                new_m = mMap.addMarker(new MarkerOptions().
+//                                        icon(BitmapDescriptorFactory.fromBitmap(mIconFactory.makeIcon(name))).
+//                                        position(l).
+//                                        anchor(mIconFactory.getAnchorU(), mIconFactory.getAnchorV()).
+//                                        title(name).
+//                                        anchor(0.5f,0.5f).
+//                                        icon(BitmapDescriptorFactory.fromBitmap(Application.decodeBase64(pic_string))));
+//                                mIconFactory.setRotation(90);
+//                                mIconFactory.setContentRotation(-90);
+//                            }
+
+                            new_m = mMap.addMarker(new MarkerOptions().
+                                    icon(BitmapDescriptorFactory.fromBitmap(mIconFactory.makeIcon(name))).
+                                    position(l).
+                                    anchor(mIconFactory.getAnchorU(), mIconFactory.getAnchorV()).
+                                    title(name));
+
+//                            long time_to_disp = expiration - System.currentTimeMillis();
+
+//                            mMap.setInfoWindowAdapter(CustomInfoWindowAdapter);
+                            mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(getApplicationContext(), Application.decodeBase64(pic_string)));
+
                             mMarkers.put(uid, new_m);
 
                         }
-
-//                        class Yourcustominfowindowadpater implements GoogleMap.InfoWindowAdapter {
-//                            private final View mymarkerview;
-//
-//                            Yourcustominfowindowadpater() {
-//                                mymarkerview = getLayoutInflater().inflate(R.layout.custominfowindow, null);
-//                            }
-//
-//                            public View getInfoWindow(Marker marker) {
-//                                render(marker, mymarkerview);
-//                                return mymarkerview;
-//                            }
-//
-//                            public View getInfoContents(Marker marker) {
-//                                return null;
-//                            }
-//
-//                            private void render(Marker marker, View view) {
-//                                // Add the code to set the required values
-//                                // for each element in your custominfowindow layout file
-//                            }
-//                        }
-//
-//                        GoogleMap.setInfoWindowAdapter(Yourcustominfowindowadpater);
 
                         Log.v("Firebase Test", d2.getRef().getParent().getKey() + " moved to " + d2.getValue());
                     }
