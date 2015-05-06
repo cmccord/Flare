@@ -2,25 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffdcdcdc"
-    android:id="@+id/the_lin_layout">
+    android:background="#FF6965"
+    android:id="@+id/the_lin_layout"
+    android:textAllCaps="false">
 
-    <Button
+    <TextView
         android:id="@+id/welcomeButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/welcome"
-        android:padding="15dp"
+        android:padding="25dp"
+        android:gravity="center"
         android:textColor="#fff"
         android:fontFamily="sans-serif-thin"
-        android:textStyle="bold"
-        android:textSize="34sp"
-        android:background="@drawable/button_true_red" />
+        android:textSize="40sp"/>
 
     <ImageView
-        android:paddingTop="50dp"
+        android:paddingTop="10dp"
         android:layout_width="115dp"
-        android:layout_height="165dp"
+        android:layout_height="145dp"
         android:id="@+id/editProPic"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/flare_white" />
@@ -33,14 +33,25 @@
         android:hint="@string/sampleemail"
         android:gravity="center"
         android:ems="10"
+        android:background="@drawable/edit_text_background"
+        android:fontFamily="sans-serif-thin"
+        android:textColor="#ffffff"
+        android:textColorHint="#ffffff"
+        android:textStyle="bold"
         android:id="@+id/editEmail"
         android:imeOptions="actionNext"
         android:layout_gravity="center_horizontal" />
 
     <EditText
         android:paddingTop="20dp"
+        android:paddingBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_background"
+        android:fontFamily="sans-serif-thin"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:textColorHint="#ffffff"
         android:inputType="textPassword"
         android:hint="@string/password"
         android:gravity="center"
@@ -49,35 +60,38 @@
         android:imeOptions="actionDone"
         android:layout_gravity="center_horizontal" />
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
     <Button
         android:id="@+id/loginButton"
+        android:textAllCaps="false"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/login"
         android:textColor="#fff"
-        android:padding="15dp"
-        android:fontFamily="sans-serif-thin"
+        android:layout_marginTop="20dp"
+        android:padding="25dp"
         android:textStyle="bold"
+        android:fontFamily="sans-serif-thin"
         android:textSize="24sp"
-        android:background="@drawable/button_red" />
+        android:background="#FE6AB6FF"
+        android:layout_gravity="bottom" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text=""
-        android:id="@+id/textView3"
-        android:layout_gravity="center_horizontal" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+        android:textAllCaps="false"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:padding="0dp"
         android:text="   Forgot Password?   "
-        android:textColor="#fff"
+        android:textColor="#6AB6FF"
         android:id="@+id/forgot_butt"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/button_blue"/>
+        android:layout_gravity="center|bottom"
+        android:background="#FFF"/>
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -87,17 +101,116 @@
             android:id="@+id/newUserButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAllCaps="false"
             android:text="@string/createnewaccount"
             android:textColor="#fff"
             android:padding="15dp"
             android:fontFamily="sans-serif-thin"
-            android:textStyle="bold"
             android:textSize="24sp"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/button_red" />
+            android:textStyle="bold"
+            android:layout_gravity="bottom"
+            android:background="#FE8EEE5A" />
 
 
 
     </RelativeLayout>
-
+    </LinearLayout>
 </LinearLayout>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--android:layout_width="match_parent" android:layout_height="match_parent"-->
+<!--android:orientation="vertical"-->
+<!--android:background="#ffdcdcdc"-->
+<!--android:id="@+id/the_lin_layout">-->
+<!--<Button-->
+    <!--android:id="@+id/welcomeButton"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/welcome"-->
+    <!--android:padding="15dp"-->
+    <!--android:textColor="#fff"-->
+    <!--android:fontFamily="sans-serif-thin"-->
+    <!--android:textStyle="bold"-->
+    <!--android:textSize="34sp"-->
+    <!--android:background="@drawable/button_true_red" />-->
+<!--<ImageView-->
+    <!--android:paddingTop="45dp"-->
+    <!--android:layout_width="115dp"-->
+    <!--android:layout_height="160dp"-->
+    <!--android:id="@+id/editProPic"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:src="@drawable/flare_white" />-->
+<!--<EditText-->
+    <!--android:paddingTop="30dp"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:inputType="textEmailAddress"-->
+    <!--android:hint="@string/sampleemail"-->
+    <!--android:gravity="center"-->
+    <!--android:ems="10"-->
+    <!--android:id="@+id/editEmail"-->
+    <!--android:imeOptions="actionNext"-->
+    <!--android:layout_gravity="center_horizontal" />-->
+<!--<EditText-->
+    <!--android:paddingTop="20dp"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:inputType="textPassword"-->
+    <!--android:hint="@string/password"-->
+    <!--android:gravity="center"-->
+    <!--android:ems="10"-->
+    <!--android:id="@+id/editPassword"-->
+    <!--android:imeOptions="actionDone"-->
+    <!--android:layout_gravity="center_horizontal" />-->
+<!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+    <!--android:text=""-->
+    <!--android:id="@+id/textView4"-->
+    <!--android:layout_gravity="center_horizontal" />-->
+<!--<Button-->
+    <!--android:id="@+id/loginButton"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/login"-->
+    <!--android:textColor="#fff"-->
+    <!--android:padding="15dp"-->
+    <!--android:fontFamily="sans-serif-thin"-->
+    <!--android:textStyle="bold"-->
+    <!--android:textSize="24sp"-->
+    <!--android:background="@drawable/button_red" />-->
+<!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+    <!--android:text=""-->
+    <!--android:id="@+id/textView3"-->
+    <!--android:layout_gravity="center_horizontal" />-->
+<!--<Button-->
+    <!--style="?android:attr/buttonStyleSmall"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="   Forgot Password?   "-->
+    <!--android:textColor="#fff"-->
+    <!--android:id="@+id/forgot_butt"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:background="@drawable/button_blue"/>-->
+<!--<RelativeLayout-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="fill_parent">-->
+    <!--<Button-->
+        <!--android:id="@+id/newUserButton"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/createnewaccount"-->
+        <!--android:textColor="#fff"-->
+        <!--android:padding="15dp"-->
+        <!--android:fontFamily="sans-serif-thin"-->
+        <!--android:textStyle="bold"-->
+        <!--android:textSize="24sp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:background="@drawable/button_red" />-->
+<!--</RelativeLayout>-->
+<!--</LinearLayout>-->

@@ -10,5 +10,5 @@
     <item android:state_focused="true" android:state_selected="true" android:state_pressed="false" android:drawable="@drawable/button_true_red" />
     <!--  Pressed
      -->
-    <item android:state_pressed="true" android:drawable="@drawable/button_depressed_red"/>
+    <!--<item android:state_pressed="true" android:drawable="@drawable/button_depressed_red"/>-->
 </selector>
