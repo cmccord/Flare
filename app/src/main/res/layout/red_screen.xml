@@ -19,12 +19,12 @@
     <!--android:layout_gravity="center_vertical|center_horizontal"-->
 
     <ImageView
-        android:paddingTop="100dp"
+        android:paddingTop="120dp"
         android:layout_width="115dp"
-        android:layout_height="275dp"
+        android:layout_height="305dp"
         android:layout_centerInParent="true"
         android:id="@+id/flareLogo"
-        android:src="@drawable/flare" />
+        android:src="@drawable/flare_white" />
     <!--android:layout_gravity="center_horizontal"-->
 
 </RelativeLayout>
