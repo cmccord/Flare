@@ -33,7 +33,7 @@
     <!--<string name="person">\u26F9</string>-->
     <string name="circle">o</string>
     <string name="share">Share Location</string>
-    <string name="duration">Duration:</string>
+    <string name="duration">Duration: </string>
     <string name="frequency">Interval:</string>
     <string name="logout">Log Out</string>
     <string-array
