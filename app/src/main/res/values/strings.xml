@@ -28,7 +28,7 @@
     <string name="welcome">Welcome to Flare</string>
     <string name="login">Log In</string>
     <string name="createnewaccount">New User? Get Flare</string>
-    <string name="sampleemail">example@cooldomain.com</string>
+    <string name="sampleemail">your@email.com</string>
 
     <!--<string name="person">\u26F9</string>-->
     <string name="circle">o</string>

@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffdcdcdc">
+    android:background="#fff"
+    android:textColor="#FFF">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -17,21 +18,19 @@
             android:text="@string/backarrow"
             android:textColor="#fff"
             android:padding="15dp"
-            android:fontFamily="sans-serif-thin"
-            android:textStyle="bold"
             android:textSize="34sp"
             android:background="@drawable/button_red"
             android:layout_gravity="right"/>
 
-        <Button
+        <TextView
             android:id="@+id/makeProfile_butt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAllCaps="false"
             android:text="Make a Spark"
             android:textColor="#fff"
+            android:gravity="center"
             android:padding="15dp"
-            android:fontFamily="sans-serif-thin"
-            android:textStyle="bold"
             android:textSize="34sp"
             android:background="@drawable/button_true_red"
             android:layout_weight="0.5" />
@@ -40,12 +39,13 @@
 
     <TextView
         android:paddingTop="46dp"
-        android:paddingBottom="5dp"
+        android:paddingBottom="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Select Profile Picture"
+        android:text="Take a Selfie"
         android:id="@+id/editProPicText"
+        android:textColor="#55F"
         android:layout_gravity="center_horizontal" />
 
     <ImageButton
@@ -62,6 +62,9 @@
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:hint="@string/sampleemail"
+        android:textColor="#55F"
+        android:textColorHint="#55F"
+        android:background="@drawable/edit_text_background"
         android:gravity="center"
         android:ems="10"
         android:id="@+id/editEmail"
@@ -73,6 +76,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
+        android:textColor="#55F"
+        android:textColorHint="#55F"
+        android:background="@drawable/edit_text_background"
         android:hint="@string/displayname"
         android:gravity="center"
         android:ems="10"
@@ -84,7 +90,10 @@
         android:paddingTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#55F"
+        android:textColorHint="#55F"
         android:inputType="textPassword"
+        android:background="@drawable/edit_text_background"
         android:hint="@string/password"
         android:gravity="center"
         android:ems="10"
@@ -103,8 +112,6 @@
             android:text="Join the Fire"
             android:textColor="#fff"
             android:padding="15dp"
-            android:fontFamily="sans-serif-thin"
-            android:textStyle="bold"
             android:textSize="24sp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/button_red" />

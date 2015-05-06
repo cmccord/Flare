@@ -14,7 +14,6 @@
         android:padding="25dp"
         android:gravity="center"
         android:textColor="#fff"
-        android:fontFamily="sans-serif-thin"
         android:textSize="40sp"/>
 
     <ImageView
@@ -34,10 +33,8 @@
         android:gravity="center"
         android:ems="10"
         android:background="@drawable/edit_text_background"
-        android:fontFamily="sans-serif-thin"
         android:textColor="#ffffff"
         android:textColorHint="#ffffff"
-        android:textStyle="bold"
         android:id="@+id/editEmail"
         android:imeOptions="actionNext"
         android:layout_gravity="center_horizontal" />
@@ -48,9 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_text_background"
-        android:fontFamily="sans-serif-thin"
         android:textColor="#ffffff"
-        android:textStyle="bold"
         android:textColorHint="#ffffff"
         android:inputType="textPassword"
         android:hint="@string/password"
@@ -74,10 +69,8 @@
         android:textColor="#fff"
         android:layout_marginTop="20dp"
         android:padding="25dp"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-thin"
         android:textSize="24sp"
-        android:background="#FE6AB6FF"
+        android:background="#FE5AA6FA"
         android:layout_gravity="bottom" />
 
 
@@ -105,11 +98,9 @@
             android:text="@string/createnewaccount"
             android:textColor="#fff"
             android:padding="15dp"
-            android:fontFamily="sans-serif-thin"
             android:textSize="24sp"
-            android:textStyle="bold"
             android:layout_gravity="bottom"
-            android:background="#FE8EEE5A" />
+            android:background="#FE7EDD4A" />
 
 
 

@@ -26,7 +26,8 @@
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:textAllCaps="false">
 
                 <Button
                     android:id="@+id/leftButton"
@@ -45,11 +46,11 @@
                     android:id="@+id/topButton"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:textAllCaps="false"
                     android:text="@string/app_name"
                     android:textColor="#fff"
                     android:padding="15dp"
                     android:fontFamily="sans-serif-thin"
-                    android:textStyle="bold"
                     android:textSize="34sp"
                     android:background="@drawable/button_red"
                     android:layout_weight="0.5" />
@@ -135,16 +136,17 @@
                         android:textAllCaps="false"
                         android:textColor="#fff"
                         android:fontFamily="sans-serif-thin"
-                        android:textStyle="bold"
                         android:textSize="24sp"
-                        android:background="@drawable/circle_button" />
+                        android:background="@drawable/share_button" />
                 </LinearLayout>
                 <TableLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:background="#a7ff0d00">
+                    android:background="#FFF"
+                    android:fontFamily="sans-serif-thin"
+                    >
 
                     <TableRow
                         android:padding="10dp">
@@ -154,8 +156,9 @@
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:text="@string/duration"
-                            android:textColor="#FFF"
+                            android:textColor="#00A"
                             android:id="@+id/textView"
+                            android:fontFamily="sans-serif-thin"
                             android:layout_column="0" />
 
                         <TextView
@@ -164,7 +167,8 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:id="@+id/durationSetting"
                             android:text="60 m"
-                            android:textColor="#FFF"
+                            android:textColor="#00A"
+                            android:fontFamily="sans-serif-thin"
                             android:gravity="right"
                             android:layout_column="1" />
 
@@ -187,7 +191,8 @@
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:text="@string/frequency"
-                            android:textColor="#FFF"
+                            android:textColor="#00A"
+                            android:fontFamily="sans-serif-thin"
                             android:id="@+id/textView2"
                             android:layout_column="0" />
 
@@ -197,7 +202,8 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:id="@+id/frequencySetting"
                             android:text="1 m"
-                            android:textColor="#FFF"
+                            android:fontFamily="sans-serif-thin"
+                            android:textColor="#00A"
                             android:gravity="right"
                             android:layout_column="1" />
 
