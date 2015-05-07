@@ -41,7 +41,7 @@
         <item>Share Location</item>
         <item>Friends</item>
         <item>Circles</item>
-        <item>Drop Pin</item>
+        <item>Drop/Remove Pin</item>
     </string-array>
     <string name="title_activity_edit_profile">editProfileActivity</string>
 

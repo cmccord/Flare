@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -438,6 +439,7 @@ public class MapsActivity extends FragmentActivity {
                 PinShareReceiver alarm = new PinShareReceiver();
                 alarm.CancelAlarm(MapsActivity.this);
                 pi2.cancel();
+                droppingPin = false;
             }
             else {
                 Toast.makeText(getApplicationContext(), "Click and Hold to Drop Pin", Toast.LENGTH_LONG).show();
@@ -476,7 +478,7 @@ public class MapsActivity extends FragmentActivity {
                         accept.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if (description.getText().toString().matches("([0-9]|[a-z]|[A-Z]| |_)+") && description.getText().toString().length() <= 15) {
+                                if (description.getText().toString().matches("([0-9]|[a-z]|[A-Z]| |_)*") && description.getText().toString().length() <= 100) {
                                     try {
                                         mFirebaseRef.child("users").child(mUserID).child("pin").setValue(lat + "," + lon);
                                         mFirebaseRef.child("users").child(mUserID).child("pin_description").setValue(description.getText().toString());

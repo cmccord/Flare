@@ -199,7 +199,7 @@ public class editProfileActivity extends Activity {
 
                                 value = input.getText().toString();
 
-                                if (authData != null) {
+                                if (authClient != null) {
 
                                     authClient.changePassword(orig_email, value, value, new SimpleLoginCompletionHandler() {
                                         public void completed(FirebaseSimpleLoginError error, boolean success) {
@@ -672,7 +672,9 @@ public class editProfileActivity extends Activity {
                             pi2.cancel();
                         }
 
-                        authClient.logout();
+                        try {
+                            authClient.logout();
+                        } catch(Exception e) {Log.v("Error Logging Out", "Not authenticated");}
 
                         Toast.makeText(getApplicationContext(), "Come Back Soon!", Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(editProfileActivity.this, loginActivity.class);
@@ -712,6 +714,7 @@ public class editProfileActivity extends Activity {
             Map pic = new HashMap<>();
             pic.put("picture", Application.encodeTobase64(proPic));
             ref.child("users").child(authData.getUid()).updateChildren(pic);
+            Toast.makeText(getApplicationContext(), "Profile Picture Updated!", Toast.LENGTH_SHORT).show();
         }
     }
 

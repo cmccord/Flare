@@ -81,7 +81,12 @@ public class NewCircleActivity extends Activity {
                             } catch (Exception e) {
                                 email = "";
                             }
-                            String name = snapshot.child(uid).child("name").getValue().toString();
+                            String name;
+                            try {
+                                name = snapshot.child(uid).child("name").getValue().toString();
+                            } catch(Exception e) {
+                                name = "";
+                            }
                             people[i] = new Person(name, email);
                             people[i].setUid(uid);
                             if(snapshot.child(uid).hasChild("picture"))

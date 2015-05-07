@@ -72,7 +72,10 @@ public class newFriendsActivity extends Activity {
                         } catch (Exception e) {
                             email = "";
                         }
-                        String name = d.child("name").getValue().toString();
+                        String name;
+                        try {
+                            name = d.child("name").getValue().toString();
+                        } catch(Exception e) {name = "";}
                         String uid = d.getKey();
                         people[i] = new Person(name, email);
                         people[i].setUid(uid);
