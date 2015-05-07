@@ -39,6 +39,7 @@ import com.google.maps.android.ui.IconGenerator;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -142,9 +143,17 @@ public class Application extends android.app.Application {
     }
 
     private void updateMarkersToCircle() {
-        for(String s : mMarkers.keySet()) {
-            if(!friendsInCircle.contains((s)) && !mUserID.equals(s)) {
-                cancelTracking(s);
+        Iterator<Map.Entry<String,Marker>> iter = mMarkers.entrySet().iterator();
+        while(iter.hasNext()) {
+            Map.Entry item = iter.next();
+            String next = (String) item.getKey();
+            if(!friendsInCircle.contains(next) && !mUserID.equals(next)) {
+                try {
+                    mFirebaseRef.child("users").child(next).removeEventListener(listeners.get(next));
+                } catch(Exception e) {Log.v("Removing friends error", "Couldn't remove listener from friend");}
+                Log.v("Removing marker", next);
+                mMarkers.get(next).remove();
+                iter.remove();
             }
         }
         for(String s : friendsInCircle) {
