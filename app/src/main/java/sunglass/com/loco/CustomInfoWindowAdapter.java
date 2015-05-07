@@ -30,8 +30,6 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         private View mymarkerview;
         private Context context;
 
-        private Firebase ref;
-
         private Application app;
         private Marker marker;
 
@@ -39,7 +37,6 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
             context = context_given;
             app = (Application) context;
-            ref = app.getFirebaseRef();
 
     }
 
@@ -61,27 +58,6 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         }
 
         private void render() {
-
-//            Log.v("NAME", marker.getTitle());
-//
-////            final ImageView image_disp = (ImageView) mymarkerview.findViewById(R.id.indiv_pro_pic);
-//
-//            ref.child("users").child(marker.getTitle()).addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
-//
-//                    Log.v("NAME",value.get("picture").toString());
-//
-//
-//
-//
-//                }
-//
-//                @Override
-//                public void onCancelled(FirebaseError firebaseError) {
-//                }
-//            });
 
             if (!marker.getTitle().equals("")) {
                 ImageView image_disp = (ImageView) mymarkerview.findViewById(R.id.indiv_pro_pic);
