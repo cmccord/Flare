@@ -9,7 +9,7 @@
         android:id="@+id/indiv_pro_pic"
         android:layout_gravity="center_horizontal"
         android:scaleType="fitXY"
-        android:background="@mipmap/unknownuser" />
+        android:src="@mipmap/unknownuser" />
 
     <!--<TextView-->
         <!--android:layout_width="wrap_content"-->

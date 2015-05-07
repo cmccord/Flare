@@ -1,8 +1,10 @@
 package sunglass.com.loco;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,15 +28,20 @@ import java.util.Map;
 public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
         private View mymarkerview;
-        private Bitmap image;
         private Context context;
 
-        public CustomInfoWindowAdapter(Context context_given, Bitmap image_to_display) {
+        private Firebase ref;
 
-            image = image_to_display;
+        private Application app;
+        private Marker marker;
+
+    public CustomInfoWindowAdapter(Context context_given) {
+
             context = context_given;
+            app = (Application) context;
+            ref = app.getFirebaseRef();
 
-        }
+    }
 
         public View getInfoWindow(Marker marker) {
 
@@ -44,7 +51,8 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
             // If a person:
             LayoutInflater inflater = LayoutInflater.from(context);
             mymarkerview = inflater.inflate(R.layout.custom_info_window, null);
-            render(marker, mymarkerview);
+            this.marker = marker;
+            render();
             return mymarkerview;
         }
 
@@ -52,15 +60,33 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
             return null;
         }
 
-        private void render(Marker marker, View view) {
+        private void render() {
 
-            ImageView image_disp = (ImageView) mymarkerview.findViewById(R.id.indiv_pro_pic);
-//            TextView time_disp = (TextView) mymarkerview.findViewById(R.id.time_to_exp_textview);
+//            Log.v("NAME", marker.getTitle());
+//
+////            final ImageView image_disp = (ImageView) mymarkerview.findViewById(R.id.indiv_pro_pic);
+//
+//            ref.child("users").child(marker.getTitle()).addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+//
+//                    Log.v("NAME",value.get("picture").toString());
+//
+//
+//
+//
+//                }
+//
+//                @Override
+//                public void onCancelled(FirebaseError firebaseError) {
+//                }
+//            });
 
-            Bitmap newImage = Bitmap.createBitmap(image);
-
-            image_disp.setImageBitmap(newImage);
-//            time_disp.setText("Time Remaining: " + time + " s");
+            if (!marker.getTitle().equals("")) {
+                ImageView image_disp = (ImageView) mymarkerview.findViewById(R.id.indiv_pro_pic);
+                image_disp.setImageBitmap(Application.decodeBase64(marker.getTitle()));
+            }
 
         }
 

@@ -306,6 +306,7 @@ public class MapsActivity extends FragmentActivity {
                 Location l = locationManager.getLastKnownLocation(provider);
                 if (l != null)
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(l.getLatitude(), l.getLongitude()), 16));
+                mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(getApplicationContext()));
             }
         }
     }
@@ -659,15 +660,15 @@ public class MapsActivity extends FragmentActivity {
 
         Log.v("STATUSSS", ""+app.wasJustOpened());
 
-        if (app.wasJustOpened()) {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
-        else {
-            super.onBackPressed();
-        }
+//        if (app.wasJustOpened()) {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+//        }
+//        else {
+//            super.onBackPressed();
+//        }
 
     }
 

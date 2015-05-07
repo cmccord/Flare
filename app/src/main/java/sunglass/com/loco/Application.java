@@ -363,9 +363,7 @@ public class Application extends android.app.Application {
                                     icon(BitmapDescriptorFactory.fromBitmap(mIconFactory.makeIcon(name))).
                                     position(l).
                                     anchor(mIconFactory.getAnchorU(), mIconFactory.getAnchorV()).
-                                    title(name));
-
-                            mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(getApplicationContext(), Application.decodeBase64(pic_string)));
+                                    title(pic_string));
 
                             mMarkers.put(uid, new_m);
 
