@@ -43,7 +43,7 @@
             android:layout_column="0" />
 
         <TextView
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/pinSetting"

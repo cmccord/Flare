@@ -155,18 +155,18 @@
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:text="@string/duration"
-                            android:textColor="#00A"
+                            android:textColor="#ff000000"
                             android:id="@+id/textView"
                             android:fontFamily="sans-serif-thin"
                             android:layout_column="0" />
 
                         <TextView
-                            android:layout_width="50dp"
+                            android:layout_width="60dp"
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:id="@+id/durationSetting"
                             android:text="60 m"
-                            android:textColor="#00A"
+                            android:textColor="#ff000000"
                             android:fontFamily="sans-serif-thin"
                             android:gravity="right"
                             android:layout_column="1" />
@@ -190,7 +190,7 @@
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:text="@string/frequency"
-                            android:textColor="#00A"
+                            android:textColor="#ff000000"
                             android:fontFamily="sans-serif-thin"
                             android:id="@+id/textView2"
                             android:layout_column="0" />
@@ -202,7 +202,7 @@
                             android:id="@+id/frequencySetting"
                             android:text="1 m"
                             android:fontFamily="sans-serif-thin"
-                            android:textColor="#00A"
+                            android:textColor="#ff000000"
                             android:gravity="right"
                             android:layout_column="1" />
 
@@ -210,8 +210,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/seekBarFrequency"
-                            android:max="100"
-                            android:progress="40"
+                            android:max="115"
+                            android:progress="55"
                             android:layout_weight="1"
                             android:layout_gravity="center"
                             android:layout_column="2" />
