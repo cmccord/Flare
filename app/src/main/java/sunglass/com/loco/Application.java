@@ -304,26 +304,7 @@ public class Application extends android.app.Application {
             Log.v("GPS", "Firebase GPS updated.");
         }
     }
-//
-//    public void trackCircles() {
-//        mFirebaseRef.child("users").child(mUserID).child("circles").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot d: dataSnapshot.getChildren()){
-//                    String[] peeps = d.getValue().toString().split(",");
-//                    for (int i = 0; i < peeps.length; i++) {
-//                        Log.v("authData.getUid()", mFirebaseRef.child("users").child(peeps[i]).toString());
-//                        trackUser(peeps[i]);
-//                    }
-//                }
-//            }
-//            @Override
-//            public void onCancelled(FirebaseError firebaseError) {
-//
-//            }
-//        });
-//    }
-//
+
     public void trackUser(String u){
         listeners.put(u, new ValueEventListener() {
             @Override
@@ -378,29 +359,6 @@ public class Application extends android.app.Application {
 
                         }
 
-//                        class Yourcustominfowindowadpater implements GoogleMap.InfoWindowAdapter {
-//                            private final View mymarkerview;
-//
-//                            Yourcustominfowindowadpater() {
-//                                mymarkerview = getLayoutInflater().inflate(R.layout.custominfowindow, null);
-//                            }
-//
-//                            public View getInfoWindow(Marker marker) {
-//                                render(marker, mymarkerview);
-//                                return mymarkerview;
-//                            }
-//
-//                            public View getInfoContents(Marker marker) {
-//                                return null;
-//                            }
-//
-//                            private void render(Marker marker, View view) {
-//                                // Add the code to set the required values
-//                                // for each element in your custominfowindow layout file
-//                            }
-//                        }
-//
-//                        GoogleMap.setInfoWindowAdapter(Yourcustominfowindowadpater);
 
                         Log.v("Firebase Test", d2.getRef().getParent().getKey() + " moved to " + d2.getValue());
                     }
@@ -431,11 +389,7 @@ public class Application extends android.app.Application {
                         }
                     }
                 }
-//                if (mMap.getMyLocation() != null) {
-//                    Location l = mMap.getMyLocation();
-//                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(l.getLatitude(), l.getLongitude()), 14));
-//                }
-//                zoomToCoverAllMarkers();
+
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {

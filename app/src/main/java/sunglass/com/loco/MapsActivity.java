@@ -97,7 +97,13 @@ public class MapsActivity extends FragmentActivity {
             mLocationManager.removeUpdates(mLocationListener);
         }
         if(droppingPin) {
+            droppingPin = false;
+            mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(LatLng latLng) {
 
+                }
+            });
         }
         //app.setInMapsActivity(null);
         super.onPause();
@@ -111,8 +117,6 @@ public class MapsActivity extends FragmentActivity {
         TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         mImei = telephonyManager.getDeviceId();
 
-//        mImei += System.currentTimeMillis() / 1000*60;
-        // for now!
         app = (Application) this.getApplication();
         Log.v("Application Context", "" + this.getApplicationContext());
         app.setmUserID(mImei);
@@ -135,7 +139,6 @@ public class MapsActivity extends FragmentActivity {
         mLayout.setOverlayed(true);
         app.trackAll(this);
         mPingButton = (Button) findViewById(R.id.topButton);
-//        mPingButton.setLayoutParams(new LinearLayout.LayoutParams(mPingButton.getMeasuredHeight(), mPingButton.getMeasuredHeight()));
         mPingButton.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
@@ -156,19 +159,8 @@ public class MapsActivity extends FragmentActivity {
                 } else {
                     LocationShareReceiver alarm = new LocationShareReceiver();
                     alarm.CancelAlarm(MapsActivity.this);
-                    pi.cancel(); // see if this works, cancel the pending intent after cancelling alarm
-//                    stopService(app.getService());
-//                    app.setService(null);
+                    pi.cancel();
                 }
-//                Intent i2 = new Intent(MapsActivity.this, LocationShareCancel.class);
-//                intent.setAction("sunglass.com.loco.LOCATION_SHARE_CANCEL");
-//                PendingIntent pi2 = PendingIntent.getBroadcast(MapsActivity.this, 0,
-//                        i2, PendingIntent.FLAG_NO_CREATE);
-//                if(pi2 != null) {
-//                    LocationShareCancel alarm = new LocationShareCancel();
-//                    alarm.CancelAlarm(MapsActivity.this);
-//                    pi2.cancel();
-//                }
             }
         });
 
@@ -329,27 +321,6 @@ public class MapsActivity extends FragmentActivity {
         return mMap;
     }
 
-//    private void zoomToCoverAllMarkers()
-//    {
-//        LatLngBounds existing = this.mMap.getProjection().getVisibleRegion().latLngBounds;
-//        boolean all = true;
-//
-//        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-//        for (String marker : mMarkers.keySet())
-//        {
-//            if (!existing.contains(mMarkers.get(marker).getPosition()))
-//                all = false;
-//            builder.include(mMarkers.get(marker).getPosition());
-//        }
-//
-//        if (!all) {
-//            LatLngBounds bounds = builder.build();
-//            int padding = 400; // offset from edges of the map in pixels
-//            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-//            mMap.moveCamera(cu);
-//            //mMap.animateCamera(cu);
-//        }
-//    }
 
     private void setUpLeftDrawer() {
         mMenuStrings = getResources().getStringArray(R.array.leftmenu);
@@ -372,17 +343,6 @@ public class MapsActivity extends FragmentActivity {
 
     /** Swaps fragments in the main content view */
     private void selectLeftItem(int position) {
-        // Create a new fragment and specify the planet to show based on position
-//        Fragment fragment = new PlanetFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-//        fragment.setArguments(args);
-//
-//        // Insert the fragment by replacing any existing fragment
-//        FragmentManager fragmentManager = getFragmentManager();
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.content_frame, fragment)
-//                .commit();
 
         // Highlight the selected item, update the title, and close the drawer
         mLeftDrawerList.setItemChecked(position, true);
