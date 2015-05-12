@@ -135,52 +135,6 @@ public class loginActivity extends Activity {
                                 }
                             });
 
-//                            ref.authWithPassword(mEmail.getText().toString(), mPassword.getText().toString(), new Firebase.AuthResultHandler() {
-//                                @Override
-//                                public void onAuthenticated(final AuthData authData) {
-//
-//                                    if (authData != null) {
-//
-//                                        ref.child("users").child(authData.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-//                                            @Override
-//                                            public void onDataChange(DataSnapshot snapshot) {
-//                                                Map<String, Object> value = (Map<String, Object>) snapshot.getValue();
-//                                                Toast.makeText(getApplicationContext(), "Welcome, " + (String)value.get("name") + "!", Toast.LENGTH_SHORT).show();
-//                                            }
-//
-//                                            @Override
-//                                            public void onCancelled(FirebaseError firebaseError) {
-//                                                // Do nothing.
-//                                            }
-//                                        });
-//
-//                                    }
-//
-//                                    Intent i = new Intent(loginActivity.this, MapsActivity.class);
-//                                    startActivity(i);
-//                                }
-//
-//                                @Override
-//                                public void onAuthenticationError(FirebaseError firebaseError) {
-//
-//                                    switch (firebaseError.getCode()) {
-//                                        case FirebaseError.INVALID_EMAIL:
-//                                            Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_SHORT).show();
-//                                            break;
-//                                        case FirebaseError.USER_DOES_NOT_EXIST:
-//                                            Toast.makeText(getApplicationContext(), "User Does Not Exist", Toast.LENGTH_SHORT).show();
-//                                            break;
-//                                        case FirebaseError.INVALID_PASSWORD:
-//                                            Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_SHORT).show();
-//                                            break;
-//                                        default:
-//                                            Toast.makeText(getApplicationContext(), "Log In Failed", Toast.LENGTH_SHORT).show();
-//                                            break;
-//                                    }
-//
-//                                }
-//                            });
-
                         }
                     });
 
