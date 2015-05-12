@@ -152,8 +152,6 @@ public class loginActivity extends Activity {
                             input.setWidth(200);
                             input.requestFocus();
                             input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-//                          if (mEmail.getText() != null)
-//                          input.setText(mEmail.getText().toString());
                             imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 //                          alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -193,7 +191,6 @@ public class loginActivity extends Activity {
 
                             alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    // Do nothing.
 
                                     imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
 //                                  imm.hideSoftInputFromWindow(input.getWindowToken(),0);
